@@ -28,11 +28,11 @@ public class AdminActionsController extends BaseController {
         if (page == null) page = Integer.valueOf(1);
         Map map = new HashMap();
         if (bean != null) {
-            map.putAll(BeanConverter.toMap( bean, false));
+            map.putAll(BeanConverter.toMap(bean, false));
             model.addAttribute("bean", bean);
         }
         map.put("orderBy", "paixu ASC");
-        Page pageBean = this.adminActionsService.getPage(page.intValue(), 2147483647, null, map);
+        Page pageBean = this.adminActionsService.getPage(page.intValue(), 50, null, map);
         model.addAttribute("pageBean", pageBean);
         return "admin/adminActions";
     }
