@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxp.blog.dao.IdcreaterMapper" >
+  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.Idcreater" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="CHAR" />
+    <result column="value" property="value" jdbcType="BIGINT" />
+    <result column="createdAt" property="createdat" jdbcType="TIMESTAMP" />
+    <result column="updatedAt" property="updatedat" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, value, createdAt, updatedAt
+  </sql>
+  <select id="getByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from idcreater
+    where name = #{name,jdbcType=CHAR}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from idcreater
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from idcreater
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xxp.blog.pojo.Idcreater" >
+    insert into idcreater (id, name, value, 
+      createdAt, updatedAt)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{value,jdbcType=BIGINT}, 
+      now(),now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.Idcreater" >
+    insert into idcreater
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="value != null" >
+        value,
+      </if>
+      <if test="createdat != null" >
+        createdAt,
+      </if>
+      <if test="updatedat != null" >
+        updatedAt,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=CHAR},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=BIGINT},
+      </if>
+      <if test="createdat != null" >
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null" >
+        #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.Idcreater" >
+    update idcreater
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=CHAR},
+      </if>
+      <if test="value != null" >
+        value = #{value,jdbcType=BIGINT},
+      </if>
+      <if test="createdat != null" >
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedat != null" >
+        updatedAt = #{updatedat,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.Idcreater" >
+    update idcreater
+    set name = #{name,jdbcType=CHAR},
+      value = #{value,jdbcType=BIGINT},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      updatedAt = #{updatedat,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateValues" parameterType="java.util.Map" >
+    update idcreater
+    set value = #{value,jdbcType=BIGINT},updatedAt = now()
+    where name = #{name,jdbcType=CHAR} and value = #{valueOld,jdbcType=BIGINT}
+  </update>
+  <sql id="map_params_where_condition" >
+    where 1=1
+    <if test="name != null">
+      and name = #{name}
+    </if>
+  </sql>
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select 
+    <include refid="Base_Column_List" />
+    from idcreater
+    <include refid="map_params_where_condition" />
+    ORDER BY id ASC
+    <if test="pageBeginIndex != null and pageSize != null">
+      LIMIT #{pageBeginIndex},#{pageSize}
+    </if>
+    <if test="pageBeginIndex == null and pageSize != null">
+      LIMIT #{pageSize}
+    </if>
+    <if test="pageBeginIndex != null and pageSize == null">
+      LIMIT #{pageBeginIndex}
+    </if>
+  </select>
+  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(id)
+    from idcreater
+    <include refid="map_params_where_condition" />
+  </select>
+</mapper>

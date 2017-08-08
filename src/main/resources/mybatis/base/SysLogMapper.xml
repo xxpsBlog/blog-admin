@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxp.blog.dao.SysLogMapper" >
+  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.SysLog" >
+	<id column="id" property="id" jdbcType="INTEGER" />
+	<result column="level" property="level" jdbcType="VARCHAR" />
+	<result column="logger" property="logger" jdbcType="VARCHAR" />
+	<result column="message" property="message" jdbcType="VARCHAR" />
+	<result column="exception" property="exception" jdbcType="VARCHAR" />
+	<result column="date_add" property="dateAdd" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id
+		,level
+		,logger
+		,message
+		,exception
+		,date_add
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM sys_log
+    WHERE id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getByCondition" resultMap="BaseResultMap" parameterType="com.xxp.blog.pojo.SysLog" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM sys_log
+    <include refid="map_params_where_condition" />
+	ORDER BY id DESC
+	LIMIT 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    DELETE FROM sys_log
+    WHERE id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xxp.blog.pojo.SysLog" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO sys_log (
+	  ,level
+	  ,logger
+	  ,message
+	  ,exception
+	  ,date_add
+      )
+    VALUES (
+		  ,
+		  #{level,jdbcType=VARCHAR}
+		  ,
+		  #{logger,jdbcType=VARCHAR}
+		  ,
+		  #{message,jdbcType=VARCHAR}
+		  ,
+		  #{exception,jdbcType=VARCHAR}
+		  ,
+		  NOW()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.SysLog" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO sys_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="level != null" >
+			level,
+		  </if>
+		  <if test="logger != null" >
+			logger,
+		  </if>
+		  <if test="message != null" >
+			message,
+		  </if>
+		  <if test="exception != null" >
+			exception,
+		  </if>
+			date_add,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="level != null" >
+			#{level,jdbcType=VARCHAR},
+		  </if>
+		  <if test="logger != null" >
+			#{logger,jdbcType=VARCHAR},
+		  </if>
+		  <if test="message != null" >
+			#{message,jdbcType=VARCHAR},
+		  </if>
+		  <if test="exception != null" >
+			#{exception,jdbcType=VARCHAR},
+		  </if>
+		  NOW(),
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.SysLog" >
+    UPDATE sys_log
+    <set >
+	  <if test="level != null" >
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+	  <if test="logger != null" >
+        logger = #{logger,jdbcType=VARCHAR},
+      </if>
+	  <if test="message != null" >
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+	  <if test="exception != null" >
+        exception = #{exception,jdbcType=VARCHAR},
+      </if>
+	  <if test="dateAdd != null" >
+        date_add = #{dateAdd,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.SysLog" >
+	UPDATE sys_log SET
+        level = #{level,jdbcType=VARCHAR},
+        logger = #{logger,jdbcType=VARCHAR},
+        message = #{message,jdbcType=VARCHAR},
+        exception = #{exception,jdbcType=VARCHAR},
+        date_add = #{dateAdd,jdbcType=TIMESTAMP}
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+  <sql id="map_params_where_condition" >
+    <trim prefix="WHERE" prefixOverrides="AND">
+	  <if test="id != null" >
+        AND id = #{id,jdbcType=INTEGER}
+	  </if>
+	  <if test="level != null" >
+        AND level = #{level,jdbcType=VARCHAR}
+	  </if>
+	  <if test="logger != null" >
+        AND logger = #{logger,jdbcType=VARCHAR}
+	  </if>
+	  <if test="message != null" >
+        AND message = #{message,jdbcType=VARCHAR}
+	  </if>
+	  <if test="exception != null" >
+        AND exception = #{exception,jdbcType=VARCHAR}
+	  </if>
+	  <if test="dateAdd != null" >
+        AND date_add = #{dateAdd,jdbcType=TIMESTAMP}
+	  </if>
+    </trim>
+  </sql>
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM sys_log
+    <include refid="map_params_where_condition" />
+    <if test="orderBy == null" >
+      ORDER BY id DESC
+    </if>
+    <if test="orderBy != null" >
+      ORDER BY ${orderBy}
+    </if>
+    <if test="pageBeginIndex != null and pageSize != null" >
+      LIMIT #{pageBeginIndex},#{pageSize}
+    </if>
+    <if test="pageBeginIndex == null and pageSize != null" >
+      LIMIT #{pageSize}
+    </if>
+    <if test="pageBeginIndex != null and pageSize == null" >
+      LIMIT #{pageBeginIndex}
+    </if>
+  </select>
+  <delete id="delete" parameterType="java.util.Map" >
+    DELETE
+    FROM sys_log
+    <include refid="map_params_where_condition" />
+  </delete>
+  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    SELECT COUNT(id)
+    FROM sys_log
+    <include refid="map_params_where_condition" />
+  </select>
+  <update id="updateByCondition" parameterType="java.util.Map" >
+    UPDATE sys_log
+    <set>
+	  <if test="entity.level != null" >
+        level = #{entity.level,jdbcType=VARCHAR},
+      </if>
+	  <if test="entity.logger != null" >
+        logger = #{entity.logger,jdbcType=VARCHAR},
+      </if>
+	  <if test="entity.message != null" >
+        message = #{entity.message,jdbcType=VARCHAR},
+      </if>
+	  <if test="entity.exception != null" >
+        exception = #{entity.exception,jdbcType=VARCHAR},
+      </if>
+	  <if test="entity.dateAdd != null" >
+        date_add = #{entity.dateAdd,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <trim prefix="WHERE" prefixOverrides="AND">
+	  <if test="condition.id != null" >
+        AND id = #{condition.id,jdbcType=INTEGER}
+	  </if>
+	  <if test="condition.level != null" >
+        AND level = #{condition.level,jdbcType=VARCHAR}
+	  </if>
+	  <if test="condition.logger != null" >
+        AND logger = #{condition.logger,jdbcType=VARCHAR}
+	  </if>
+	  <if test="condition.message != null" >
+        AND message = #{condition.message,jdbcType=VARCHAR}
+	  </if>
+	  <if test="condition.exception != null" >
+        AND exception = #{condition.exception,jdbcType=VARCHAR}
+	  </if>
+	  <if test="condition.dateAdd != null" >
+        AND date_add = #{condition.dateAdd,jdbcType=TIMESTAMP}
+	  </if>
+    </trim>
+  </update>
+</mapper>

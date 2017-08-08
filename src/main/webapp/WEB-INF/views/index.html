@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title><#if tagBean?exists>标签：${tagBean.name} | </#if>s2mBlog 免费博客平台</title>
+    <meta name="description" content="s2mBlog 是一套基于 J2EE 构建的免费博客平台（springmvc mybatis freemarker bootstrap），采用强MVC分离，是的更换模板、二次开发显得极其简易。" />
+    <meta name="keywords" content="s2mBlog,blog,java博客,springMVC">
+    <#include "/include/cssjs.html" encoding="UTF-8"/>
+</head>
+<body class="home-template">
+	<#if !tagBean?exists>
+	<#assign headerNavPos="index">
+	<#else>
+	<#assign headerNavPos=tagBean.url>
+	</#if>
+    <#include "/include/head.html" encoding="UTF-8"/>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content">              
+					<#if tagBean?exists>
+					<div class="cover tag-cover">
+						<h3 class="tag-name">
+							标签：${tagBean.name}
+						</h3>
+						<div class="post-count">
+							共 ${pageBean.totalRow} 篇文章
+						</div>
+					</div>
+					</#if>
+					<#list pageBean.result as bean>
+					<article class="post">
+						<#if bean.type == 1>
+						<div title="推荐文章" class="featured">
+							<i class="icon-heart-empty"></i>
+						</div>
+						</#if>
+						<div class="post-head">
+							<h1 class="post-title"><a href="/blog/${bean.url}/">${bean.title}</a></h1>
+							<div class="post-meta">
+								<span class="author">作者：${bean.author}</span> &bull;
+								<time class="post-date" datetime="${bean.dateAdd?string("yyyy年MM月dd日HH点mm分ss秒")}" title="${bean.dateAdd?string("yyyy年MM月dd日HH点mm分ss秒")}">${bean.dateAdd?string("yyyy年MM月dd日")}</time>
+							</div>
+						</div>
+						<div class="post-content">
+							<#if bean.pic?exists && bean.pic != "">
+							<p><img src="${bean.pic}" /></p>
+							</#if>
+							<p>${bean.profile}</p>
+						</div>
+						<div class="post-permalink">
+							<a href="/blog/${bean.url}/" class="btn btn-default">阅读全文</a>
+						</div>
+
+						<footer class="post-footer clearfix">
+							<div class="pull-left tag-list">
+								<i class="icon-folder-open-alt"></i>
+								<#list articleTags(bean.id) as test>
+								<a href="/tags/${test.url}/">${test.name}</a>&nbsp;&nbsp;
+								</#list>
+							</div>
+							<div class="pull-right share">
+							</div>
+						</footer>
+					</article>
+					</#list>
+					${pageBar(pageBean.totalPage,pageBean.url,pageBean.hasPrevPage,pageBean.hasNextPage,pageBean.curPage)}
+                </main>
+                <#include "/include/right.html" encoding="UTF-8"/>
+            </div>
+        </div>
+    </section>
+	<#include "/include/foot.html" encoding="UTF-8"/>
+</body>
+</html>

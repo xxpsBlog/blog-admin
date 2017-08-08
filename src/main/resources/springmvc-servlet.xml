@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.1.xsd
+    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+        
+    <!-- 加载配置文件 -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+        <property name="locations">  
+            <list>  
+                <value>classpath:config.properties</value>  
+            </list>  
+        </property>  
+    </bean>
+    <context:component-scan base-package="cc.s2m.web.s2mBlog.controller" />
+    <context:component-scan base-package="cc.s2m.web.s2mBlog.init" />
+    <context:component-scan base-package="cc.s2m.web.s2mBlog.task" />
+    <cache:annotation-driven />
+	<bean id="memcachedClient" class="net.spy.memcached.spring.MemcachedClientFactoryBean">
+		<!-- <property name="servers" value="host1:11211,host2:11211,host3:11211"/> -->
+		<property name="servers" value="${memcached.server}"/>  
+		<!-- 
+		<property name="protocol" value="BINARY"/>
+		<property name="transcoder">  
+			<bean class="net.spy.memcached.transcoders.SerializingTranscoder">  
+				<property name="compressionThreshold" value="1024"/>  
+			</bean>  
+		</property>  
+		<property name="locatorType" value="CONSISTENT"/>   
+		<property name="failureMode" value="Redistribute"/>  
+		<property name="useNagleAlgorithm" value="false"/>  
+		 -->
+	</bean>
+	<!-- 
+		属性说明：
+		Servers
+		一个字符串，包括由空格或逗号分隔的主机或IP地址与端口号
+		Daemon
+		设置IO线程的守护进程(默认为true)状态
+		FailureMode
+		设置故障模式(取消，重新分配，重试)，默认是重新分配
+		HashAlg
+		设置哈希算法(见net.spy.memcached.HashAlgorithm的值)
+		InitialObservers
+		设置初始连接的观察者(观察初始连接)
+		LocatorType
+		设置定位器类型(ARRAY_MOD,CONSISTENT),默认是ARRAY_MOD
+		MaxReconnectDelay
+		设置最大的连接延迟
+		OpFact
+		设置操作工厂
+		OpQueueFactory
+		设置操作队列工厂
+		OpTimeout
+		以毫秒为单位设置默认的操作超时时间
+		Protocol
+		指定要使用的协议(BINARY,TEXT),默认是TEXT
+		ReadBufferSize
+		设置读取的缓冲区大小
+		ReadOpQueueFactory
+		设置读队列工厂
+		ShouldOptimize
+		如果默认操作优化是不可取的，设置为false(默认为true)
+		Transcoder
+		设置默认的转码器(默认以net.spy.memcached.transcoders.SerializingTranscoder)
+		UseNagleAlgorithm
+		如果你想使用Nagle算法，设置为true
+		WriteOpQueueFactory
+		设置写队列工厂
+		AuthDescriptor
+		设置authDescriptor,在新的连接上使用身份验证
+	 -->
+    <bean id="cacheManager" class="cc.s2m.web.s2mBlog.util.MemcacheCacheManager">
+    	<property name="client" ref="memcachedClient"/>
+	    <property name="caches">  
+	        <set>  
+	            <bean class="cc.s2m.web.s2mBlog.util.MemcacheCache">  
+	                <property name="name" value="defaultCache"/>
+	                <property name="client" ref="memcachedClient"/>
+	            </bean>  
+	        </set>  
+	    </property>  
+	</bean>
+    <mvc:annotation-driven>
+		<mvc:async-support default-timeout="10000"/>
+        <mvc:message-converters>
+          <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter" />
+        </mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<mvc:resources mapping="/*.html" location="/" />
+	<mvc:resources mapping="/favicon.ico" location="/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
+	<mvc:resources mapping="/js/**" location="/js/" />
+	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/fonts/**" location="/fonts/" />
+	<mvc:resources mapping="/umeditor/**" location="/umeditor/" />
+	<mvc:resources mapping="/assets/**" location="/assets/" />
+	<mvc:resources mapping="/pdfTmp/**" location="/pdfTmp/" />
+	<mvc:resources mapping="/upload/**" location="/upload/" />
+	
+	<mvc:interceptors>
+        <!-- 通用过滤器设置
+		<bean class="cc.s2m.web.s2mBlog.interceptors.BaseInterceptor" />
+        -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="cc.s2m.web.s2mBlog.interceptors.TokenInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/**"/>
+			<mvc:exclude-mapping path="/admin/login/**"/>
+			<bean class="cc.s2m.web.s2mBlog.interceptors.AdminInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- <property name="maxUploadSize" value="100000"/> -->
+	</bean>
+	
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/views/"/>
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="url_escaping_charset">UTF-8</prop>
+				<prop key="locale">zh_CN</prop>
+				<prop key="localized_lookup">false</prop>
+				<prop key="classic_compatible">true</prop>
+                <prop key="number_format">0.######</prop>
+                <prop key="template_exception_handler">cc.s2m.web.s2mBlog.freemarker.ExceptionHandler</prop>
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <prop key="date_format">yyyy-MM-dd</prop>
+				<!-- 
+				<prop key="template_update_delay">1</prop>
+				<prop key="boolean_format">true,false</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<prop key="whitespace_stripping">true</prop>
+				 -->
+			</props>
+		</property>
+	</bean>
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="contentType" value="text/html;charset=UTF-8"/>
+		<property name="cache" value="true"/>
+		<property name="prefix" value="" />
+		<property name="suffix" value=".html" />
+		<property name="attributesMap">  
+	        <map>  
+	            <entry key="fmExtTags">  
+	                <bean class="cc.s2m.web.s2mBlog.freemarker.Tags" />  
+	            </entry>  
+	            <entry key="articleTags">  
+	                <bean class="cc.s2m.web.s2mBlog.freemarker.ArticleTag" />  
+	            </entry>  
+	            <entry key="pageBar">  
+	                <bean class="cc.s2m.web.s2mBlog.freemarker.PageBar" />  
+	            </entry>  
+	            <entry key="comments">  
+	                <bean class="cc.s2m.web.s2mBlog.freemarker.CommentExt" />  
+	            </entry>  
+	            <entry key="sysconfig">  
+	                <bean class="cc.s2m.web.s2mBlog.freemarker.SysconfigExt" />  
+	            </entry>  
+	        </map>  
+	    </property>
+	</bean>
+</beans>  

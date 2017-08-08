@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxp.blog.dao.ArticlesMapper" >
+  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.Articles" >
+	<id column="id" property="id" />
+	<result column="url" property="url" />
+	<result column="title" property="title" />
+	<result column="profile" property="profile" />
+	<result column="author" property="author" />
+	<result column="date_add" property="dateAdd" />
+	<result column="views" property="views" />
+	<result column="comments" property="comments" />
+	<result column="type" property="type" />
+	<result column="pic" property="pic" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id
+		,url
+		,title
+		,profile
+		,author
+		,date_add
+		,views
+		,comments
+		,type
+		,pic
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM articles
+    WHERE id = #{id}
+  </select>
+  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM articles
+    <include refid="map_params_where_condition" />
+	<if test="orderBy == null" >
+      ORDER BY id DESC
+    </if>
+    <if test="orderBy != null" >
+      ORDER BY ${orderBy}
+    </if>
+	LIMIT 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    DELETE FROM articles
+    WHERE id = #{id}
+  </delete>
+  <insert id="insert" parameterType="com.xxp.blog.pojo.Articles" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO articles (
+	  url
+	  ,title
+	  ,profile
+	  ,author
+	  ,date_add
+	  ,views
+	  ,comments
+	  ,type
+	  ,pic
+      )
+    VALUES (
+		  
+		  #{url}
+		  ,
+		  #{title}
+		  ,
+		  #{profile}
+		  ,
+		  #{author}
+		  ,
+		  NOW()
+		  ,
+		  #{views}
+		  ,
+		  #{comments}
+		  ,
+		  #{type}
+		  ,
+		  #{pic}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.Articles" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO articles
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="url != null" >
+			url,
+		  </if>
+		  <if test="title != null" >
+			title,
+		  </if>
+		  <if test="profile != null" >
+			profile,
+		  </if>
+		  <if test="author != null" >
+			author,
+		  </if>
+			date_add,
+		  <if test="views != null" >
+			views,
+		  </if>
+		  <if test="comments != null" >
+			comments,
+		  </if>
+		  <if test="type != null" >
+			type,
+		  </if>
+		  <if test="pic != null" >
+			pic,
+		  </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="url != null" >
+			#{url},
+		  </if>
+		  <if test="title != null" >
+			#{title},
+		  </if>
+		  <if test="profile != null" >
+			#{profile},
+		  </if>
+		  <if test="author != null" >
+			#{author},
+		  </if>
+		  NOW(),
+		  <if test="views != null" >
+			#{views},
+		  </if>
+		  <if test="comments != null" >
+			#{comments},
+		  </if>
+		  <if test="type != null" >
+			#{type},
+		  </if>
+		  <if test="pic != null" >
+			#{pic},
+		  </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.Articles" >
+    UPDATE articles
+    <set >
+	  <if test="url != null" >
+        url = #{url},
+      </if>
+	  <if test="title != null" >
+        title = #{title},
+      </if>
+	  <if test="profile != null" >
+        profile = #{profile},
+      </if>
+	  <if test="author != null" >
+        author = #{author},
+      </if>
+	  <if test="dateAdd != null" >
+        date_add = #{dateAdd},
+      </if>
+	  <if test="views != null" >
+        views = #{views},
+      </if>
+	  <if test="comments != null" >
+        comments = #{comments},
+      </if>
+	  <if test="type != null" >
+        type = #{type},
+      </if>
+	  <if test="pic != null" >
+        pic = #{pic},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.Articles" >
+	UPDATE articles SET
+        url = #{url},
+        title = #{title},
+        profile = #{profile},
+        author = #{author},
+        date_add = #{dateAdd},
+        views = #{views},
+        comments = #{comments},
+        type = #{type},
+        pic = #{pic}
+    WHERE id = #{id}
+  </update>
+  <sql id="map_params_where_condition" >
+    <trim prefix="WHERE" prefixOverrides="AND">
+	  <if test="id != null" >
+        AND id = #{id}
+	  </if>
+	  <if test="url != null" >
+        AND url = #{url}
+	  </if>
+	  <if test="title != null" >
+        AND title = #{title}
+	  </if>
+	  <if test="profile != null" >
+        AND profile = #{profile}
+	  </if>
+	  <if test="author != null" >
+        AND author = #{author}
+	  </if>
+	  <if test="dateAdd != null" >
+        AND date_add = #{dateAdd}
+	  </if>
+	  <if test="views != null" >
+        AND views = #{views}
+	  </if>
+	  <if test="comments != null" >
+        AND comments = #{comments}
+	  </if>
+	  <if test="type != null" >
+        AND type = #{type}
+	  </if>
+	  <if test="pic != null" >
+        AND pic = #{pic}
+	  </if>
+	  <if test="condition != null">
+	  <if test="condition.id != null" >
+        AND id = #{condition.id}
+	  </if>
+	  <if test="condition.url != null" >
+        AND url = #{condition.url}
+	  </if>
+	  <if test="condition.title != null" >
+        AND title = #{condition.title}
+	  </if>
+	  <if test="condition.profile != null" >
+        AND profile = #{condition.profile}
+	  </if>
+	  <if test="condition.author != null" >
+        AND author = #{condition.author}
+	  </if>
+	  <if test="condition.dateAdd != null" >
+        AND date_add = #{condition.dateAdd}
+	  </if>
+	  <if test="condition.views != null" >
+        AND views = #{condition.views}
+	  </if>
+	  <if test="condition.comments != null" >
+        AND comments = #{condition.comments}
+	  </if>
+	  <if test="condition.type != null" >
+        AND type = #{condition.type}
+	  </if>
+	  <if test="condition.pic != null" >
+        AND pic = #{condition.pic}
+	  </if>
+	  </if>
+	  <if test="vo != null and !vo.expressionChainList.empty">
+        AND
+        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+          <if test="!expressionChain.expressionList.empty">
+            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+              <choose>
+                <when test="expression.type == 0">
+                  ${expression.column} ${expression.operator}
+                </when>
+                <when test="expression.type == 1">
+                  ${expression.column} ${expression.operator} #{expression.value}
+                </when>
+                <when test="expression.type == 2">
+                  ${expression.column} ${expression.operator} #{expression.value} AND #{expression.value1}
+                </when>
+                <when test="expression.type == 3">
+                  ${expression.column} ${expression.operator}
+                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+                    #{value}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </if>
+        </foreach>
+      </if>
+    </trim>
+  </sql>
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM articles
+    <include refid="map_params_where_condition" />
+    <if test="orderBy == null" >
+      ORDER BY id DESC
+    </if>
+    <if test="orderBy != null" >
+      ORDER BY ${orderBy}
+    </if>
+    <if test="pageBeginIndex != null and pageSize != null" >
+      LIMIT #{pageBeginIndex},#{pageSize}
+    </if>
+    <if test="pageBeginIndex == null and pageSize != null" >
+      LIMIT #{pageSize}
+    </if>
+    <if test="pageBeginIndex != null and pageSize == null" >
+      LIMIT #{pageBeginIndex}
+    </if>
+  </select>
+  <delete id="delete" parameterType="java.util.Map" >
+    DELETE
+    FROM articles
+    <include refid="map_params_where_condition" />
+  </delete>
+  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    SELECT COUNT(id)
+    FROM articles
+    <include refid="map_params_where_condition" />
+  </select>
+  <update id="updateByCondition" parameterType="java.util.Map" >
+    UPDATE articles
+    <set>
+	  <if test="entity.url != null" >
+        url = #{entity.url},
+      </if>
+	  <if test="entity.title != null" >
+        title = #{entity.title},
+      </if>
+	  <if test="entity.profile != null" >
+        profile = #{entity.profile},
+      </if>
+	  <if test="entity.author != null" >
+        author = #{entity.author},
+      </if>
+	  <if test="entity.dateAdd != null" >
+        date_add = #{entity.dateAdd},
+      </if>
+	  <if test="entity.views != null" >
+        views = #{entity.views},
+      </if>
+	  <if test="entity.comments != null" >
+        comments = #{entity.comments},
+      </if>
+	  <if test="entity.type != null" >
+        type = #{entity.type},
+      </if>
+	  <if test="entity.pic != null" >
+        pic = #{entity.pic},
+      </if>
+    </set>
+    <include refid="map_params_where_condition" />
+  </update>
+</mapper>

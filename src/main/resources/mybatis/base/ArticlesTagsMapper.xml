@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxp.blog.dao.ArticlesTagsMapper" >
+  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.ArticlesTags" >
+	<id column="id" property="id" jdbcType="INTEGER" />
+	<result column="aid" property="aid" jdbcType="INTEGER" />
+	<result column="tid" property="tid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id
+		,aid
+		,tid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM articles_tags
+    WHERE id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM articles_tags
+    <include refid="map_params_where_condition" />
+	ORDER BY id DESC
+	LIMIT 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    DELETE FROM articles_tags
+    WHERE id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xxp.blog.pojo.ArticlesTags" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO articles_tags (
+	  aid
+	  ,tid
+      )
+    VALUES (
+		  
+		  #{aid,jdbcType=INTEGER}
+		  ,
+		  #{tid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.ArticlesTags" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO articles_tags
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="aid != null" >
+			aid,
+		  </if>
+		  <if test="tid != null" >
+			tid,
+		  </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="aid != null" >
+			#{aid,jdbcType=INTEGER},
+		  </if>
+		  <if test="tid != null" >
+			#{tid,jdbcType=INTEGER},
+		  </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.ArticlesTags" >
+    UPDATE articles_tags
+    <set >
+	  <if test="aid != null" >
+        aid = #{aid,jdbcType=INTEGER},
+      </if>
+	  <if test="tid != null" >
+        tid = #{tid,jdbcType=INTEGER},
+      </if>
+    </set>
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.ArticlesTags" >
+	UPDATE articles_tags SET
+        aid = #{aid,jdbcType=INTEGER},
+        tid = #{tid,jdbcType=INTEGER}
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+  <sql id="map_params_where_condition" >
+    <trim prefix="WHERE" prefixOverrides="AND">
+	  <if test="id != null" >
+        AND id = #{id,jdbcType=INTEGER}
+	  </if>
+	  <if test="aid != null" >
+        AND aid = #{aid,jdbcType=INTEGER}
+	  </if>
+	  <if test="tid != null" >
+        AND tid = #{tid,jdbcType=INTEGER}
+	  </if>
+	  <if test="condition != null">
+	  <if test="condition.id != null" >
+        AND id = #{condition.id,jdbcType=INTEGER}
+	  </if>
+	  <if test="condition.aid != null" >
+        AND aid = #{condition.aid,jdbcType=INTEGER}
+	  </if>
+	  <if test="condition.tid != null" >
+        AND tid = #{condition.tid,jdbcType=INTEGER}
+	  </if>
+	  </if>
+	  <if test="vo != null and !vo.expressionChainList.empty">
+        AND
+        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+          <if test="!expressionChain.expressionList.empty">
+            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+              <choose>
+                <when test="expression.type == 0">
+                  ${expression.column} ${expression.operator}
+                </when>
+                <when test="expression.type == 1">
+                  ${expression.column} ${expression.operator} #{expression.value}
+                </when>
+                <when test="expression.type == 2">
+                  ${expression.column} ${expression.operator} #{expression.value} AND #{expression.value1}
+                </when>
+                <when test="expression.type == 3">
+                  ${expression.column} ${expression.operator}
+                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+                    #{value}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </if>
+        </foreach>
+      </if>
+    </trim>
+  </sql>
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM articles_tags
+    <include refid="map_params_where_condition" />
+    <if test="orderBy == null" >
+      ORDER BY id DESC
+    </if>
+    <if test="orderBy != null" >
+      ORDER BY ${orderBy}
+    </if>
+    <if test="pageBeginIndex != null and pageSize != null" >
+      LIMIT #{pageBeginIndex},#{pageSize}
+    </if>
+    <if test="pageBeginIndex == null and pageSize != null" >
+      LIMIT #{pageSize}
+    </if>
+    <if test="pageBeginIndex != null and pageSize == null" >
+      LIMIT #{pageBeginIndex}
+    </if>
+  </select>
+  <delete id="delete" parameterType="java.util.Map" >
+    DELETE
+    FROM articles_tags
+    <include refid="map_params_where_condition" />
+  </delete>
+  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    SELECT COUNT(id)
+    FROM articles_tags
+    <include refid="map_params_where_condition" />
+  </select>
+  <update id="updateByCondition" parameterType="java.util.Map" >
+    UPDATE articles_tags
+    <set>
+	  <if test="entity.aid != null" >
+        aid = #{entity.aid,jdbcType=INTEGER},
+      </if>
+	  <if test="entity.tid != null" >
+        tid = #{entity.tid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <include refid="map_params_where_condition" />
+  </update>
+</mapper>

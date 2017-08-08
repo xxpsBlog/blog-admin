@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxp.blog.dao.AdminRolesMapper" >
+  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.AdminRoles" >
+	<id column="id" property="id" />
+	<result column="aid" property="aid" />
+	<result column="rid" property="rid" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id
+		,aid
+		,rid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM admin_roles
+    WHERE id = #{id}
+  </select>
+  <select id="getByCondition" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM admin_roles
+    <include refid="map_params_where_condition" />
+	ORDER BY id DESC
+	LIMIT 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    DELETE FROM admin_roles
+    WHERE id = #{id}
+  </delete>
+  <insert id="insert" parameterType="com.xxp.blog.pojo.AdminRoles" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO admin_roles (
+	  aid
+	  ,rid
+      )
+    VALUES (
+		  
+		  #{aid}
+		  ,
+		  #{rid}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.AdminRoles" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO admin_roles
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="aid != null" >
+			aid,
+		  </if>
+		  <if test="rid != null" >
+			rid,
+		  </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="aid != null" >
+			#{aid},
+		  </if>
+		  <if test="rid != null" >
+			#{rid},
+		  </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.AdminRoles" >
+    UPDATE admin_roles
+    <set >
+	  <if test="aid != null" >
+        aid = #{aid},
+      </if>
+	  <if test="rid != null" >
+        rid = #{rid},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.AdminRoles" >
+	UPDATE admin_roles SET
+        aid = #{aid},
+        rid = #{rid}
+    WHERE id = #{id}
+  </update>
+  <sql id="map_params_where_condition" >
+    <trim prefix="WHERE" prefixOverrides="AND">
+	  <if test="id != null" >
+        AND id = #{id}
+	  </if>
+	  <if test="aid != null" >
+        AND aid = #{aid}
+	  </if>
+	  <if test="rid != null" >
+        AND rid = #{rid}
+	  </if>
+	  <if test="condition != null">
+	  <if test="condition.id != null" >
+        AND id = #{condition.id}
+	  </if>
+	  <if test="condition.aid != null" >
+        AND aid = #{condition.aid}
+	  </if>
+	  <if test="condition.rid != null" >
+        AND rid = #{condition.rid}
+	  </if>
+	  </if>
+	  <if test="vo != null and !vo.expressionChainList.empty">
+        AND
+        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+          <if test="!expressionChain.expressionList.empty">
+            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+              <choose>
+                <when test="expression.type == 0">
+                  ${expression.column} ${expression.operator}
+                </when>
+                <when test="expression.type == 1">
+                  ${expression.column} ${expression.operator} #{expression.value}
+                </when>
+                <when test="expression.type == 2">
+                  ${expression.column} ${expression.operator} #{expression.value} AND #{expression.value1}
+                </when>
+                <when test="expression.type == 3">
+                  ${expression.column} ${expression.operator}
+                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+                    #{value}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </if>
+        </foreach>
+      </if>
+    </trim>
+  </sql>
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM admin_roles
+    <include refid="map_params_where_condition" />
+    <if test="orderBy == null" >
+      ORDER BY id DESC
+    </if>
+    <if test="orderBy != null" >
+      ORDER BY ${orderBy}
+    </if>
+    <if test="pageBeginIndex != null and pageSize != null" >
+      LIMIT #{pageBeginIndex},#{pageSize}
+    </if>
+    <if test="pageBeginIndex == null and pageSize != null" >
+      LIMIT #{pageSize}
+    </if>
+    <if test="pageBeginIndex != null and pageSize == null" >
+      LIMIT #{pageBeginIndex}
+    </if>
+  </select>
+  <delete id="delete" parameterType="java.util.Map" >
+    DELETE
+    FROM admin_roles
+    <include refid="map_params_where_condition" />
+  </delete>
+  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    SELECT COUNT(id)
+    FROM admin_roles
+    <include refid="map_params_where_condition" />
+  </select>
+  <update id="updateByCondition" parameterType="java.util.Map" >
+    UPDATE admin_roles
+    <set>
+	  <if test="entity.aid != null" >
+        aid = #{entity.aid},
+      </if>
+	  <if test="entity.rid != null" >
+        rid = #{entity.rid},
+      </if>
+    </set>
+    <include refid="map_params_where_condition" />
+  </update>
+</mapper>

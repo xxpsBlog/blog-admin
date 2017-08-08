@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxp.blog.dao.AdminMapper" >
+  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.Admin" >
+	<id column="id" property="id" jdbcType="INTEGER" />
+	<result column="username" property="username" jdbcType="VARCHAR" />
+	<result column="pwd" property="pwd" jdbcType="VARCHAR" />
+	<result column="dateLogin" property="dateLogin" jdbcType="TIMESTAMP" />
+	<result column="ipLogin" property="ipLogin" jdbcType="VARCHAR" />
+	<result column="realname" property="realname" jdbcType="VARCHAR" />
+	<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+	<result column="isLock" property="isLock" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+		id
+		,username
+		,pwd
+		,dateLogin
+		,ipLogin
+		,realname
+		,mobile
+		,isLock
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM admin
+    WHERE id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getByCondition" resultMap="BaseResultMap" parameterType="com.xxp.blog.pojo.Admin" >
+    SELECT 
+    <include refid="Base_Column_List" />
+    FROM admin
+    <include refid="map_params_where_condition" />
+	ORDER BY id DESC
+	LIMIT 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    DELETE FROM admin
+    WHERE id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xxp.blog.pojo.Admin" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO admin (
+	  ,username
+	  ,pwd
+	  ,dateLogin
+	  ,ipLogin
+	  ,realname
+	  ,mobile
+	  ,isLock
+      )
+    VALUES (
+	  ,#{username,jdbcType=VARCHAR}
+	  ,#{pwd,jdbcType=VARCHAR}
+	  ,#{dateLogin,jdbcType=TIMESTAMP}
+	  ,#{ipLogin,jdbcType=VARCHAR}
+	  ,#{realname,jdbcType=VARCHAR}
+	  ,#{mobile,jdbcType=VARCHAR}
+	  ,#{isLock,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.Admin" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO admin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+	  <if test="username != null" >
+        username,
+      </if>
+	  <if test="pwd != null" >
+        pwd,
+      </if>
+	  <if test="dateLogin != null" >
+        dateLogin,
+      </if>
+	  <if test="ipLogin != null" >
+        ipLogin,
+      </if>
+	  <if test="realname != null" >
+        realname,
+      </if>
+	  <if test="mobile != null" >
+        mobile,
+      </if>
+	  <if test="isLock != null" >
+        isLock,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	  <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+	  <if test="pwd != null" >
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+	  <if test="dateLogin != null" >
+        #{dateLogin,jdbcType=TIMESTAMP},
+      </if>
+	  <if test="ipLogin != null" >
+        #{ipLogin,jdbcType=VARCHAR},
+      </if>
+	  <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+	  <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+	  <if test="isLock != null" >
+        #{isLock,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.Admin" >
+    UPDATE admin
+    <set >
+	  <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+	  <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+	  <if test="dateLogin != null" >
+        dateLogin = #{dateLogin,jdbcType=TIMESTAMP},
+      </if>
+	  <if test="ipLogin != null" >
+        ipLogin = #{ipLogin,jdbcType=VARCHAR},
+      </if>
+	  <if test="realname != null" >
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+	  <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+	  <if test="isLock != null" >
+        isLock = #{isLock,jdbcType=BIT},
+      </if>
+    </set>
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.Admin" >
+	UPDATE admin SET
+        username = #{username,jdbcType=VARCHAR},
+        pwd = #{pwd,jdbcType=VARCHAR},
+        dateLogin = #{dateLogin,jdbcType=TIMESTAMP},
+        ipLogin = #{ipLogin,jdbcType=VARCHAR},
+        realname = #{realname,jdbcType=VARCHAR},
+        mobile = #{mobile,jdbcType=VARCHAR},
+        isLock = #{isLock,jdbcType=BIT}
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+  <sql id="map_params_where_condition" >
+    <trim prefix="WHERE" prefixOverrides="AND">
+	  <if test="id != null" >
+        AND id = #{id,jdbcType=INTEGER}
+	  </if>
+	  <if test="username != null" >
+        AND username = #{username,jdbcType=VARCHAR}
+	  </if>
+	  <if test="pwd != null" >
+        AND pwd = #{pwd,jdbcType=VARCHAR}
+	  </if>
+	  <if test="dateLogin != null" >
+        AND dateLogin = #{dateLogin,jdbcType=TIMESTAMP}
+	  </if>
+	  <if test="ipLogin != null" >
+        AND ipLogin = #{ipLogin,jdbcType=VARCHAR}
+	  </if>
+	  <if test="realname != null" >
+        AND realname = #{realname,jdbcType=VARCHAR}
+	  </if>
+	  <if test="mobile != null" >
+        AND mobile = #{mobile,jdbcType=VARCHAR}
+	  </if>
+	  <if test="isLock != null" >
+        AND isLock = #{isLock,jdbcType=BIT}
+	  </if>
+	  <if test="condition != null">
+	  <if test="condition.id != null" >
+        AND id = #{condition.id,jdbcType=INTEGER}
+	  </if>
+	  <if test="condition.username != null" >
+        AND username = #{condition.username,jdbcType=VARCHAR}
+	  </if>
+	  <if test="condition.pwd != null" >
+        AND pwd = #{condition.pwd,jdbcType=VARCHAR}
+	  </if>
+	  <if test="condition.dateLogin != null" >
+        AND dateLogin = #{condition.dateLogin,jdbcType=TIMESTAMP}
+	  </if>
+	  <if test="condition.ipLogin != null" >
+        AND ipLogin = #{condition.ipLogin,jdbcType=VARCHAR}
+	  </if>
+	  <if test="condition.realname != null" >
+        AND realname = #{condition.realname,jdbcType=VARCHAR}
+	  </if>
+	  <if test="condition.mobile != null" >
+        AND mobile = #{condition.mobile,jdbcType=VARCHAR}
+	  </if>
+	  <if test="condition.isLock != null" >
+        AND isLock = #{condition.isLock,jdbcType=BIT}
+	  </if>
+	  </if>
+	  <if test="vo != null and !vo.expressionChainList.empty">
+        AND
+        <foreach collection="vo.expressionChainList" item="expressionChain" separator="OR">
+          <if test="!expressionChain.expressionList.empty">
+            <foreach collection="expressionChain.expressionList" item="expression" separator="AND">
+              <choose>
+                <when test="expression.type == 0">
+                  ${expression.column} ${expression.operator}
+                </when>
+                <when test="expression.type == 1">
+                  ${expression.column} ${expression.operator} #{expression.value}
+                </when>
+                <when test="expression.type == 2">
+                  ${expression.column} ${expression.operator} #{expression.value} AND #{expression.value1}
+                </when>
+                <when test="expression.type == 3">
+                  ${expression.column} ${expression.operator}
+                  <foreach collection="expression.values" item="value" open="(" separator="," close=")">
+                    #{value}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </if>
+        </foreach>
+      </if>
+    </trim>
+  </sql>
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM admin
+    <include refid="map_params_where_condition" />
+    <if test="orderBy == null" >
+      ORDER BY id DESC
+    </if>
+    <if test="orderBy != null" >
+      ORDER BY #{orderBy}
+    </if>
+    <if test="pageBeginIndex != null and pageSize != null" >
+      LIMIT #{pageBeginIndex},#{pageSize}
+    </if>
+    <if test="pageBeginIndex == null and pageSize != null" >
+      LIMIT #{pageSize}
+    </if>
+    <if test="pageBeginIndex != null and pageSize == null" >
+      LIMIT #{pageBeginIndex}
+    </if>
+  </select>
+  <delete id="delete" parameterType="java.util.Map" >
+    DELETE
+    FROM admin
+    <include refid="map_params_where_condition" />
+  </delete>
+  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+    SELECT COUNT(id)
+    FROM admin
+    <include refid="map_params_where_condition" />
+  </select>
+  <update id="updateByCondition" parameterType="java.util.Map" >
+    UPDATE admin
+    <set >
+	  <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+	  <if test="pwd != null" >
+        pwd = #{pwd,jdbcType=VARCHAR},
+      </if>
+	  <if test="dateLogin != null" >
+        dateLogin = #{dateLogin,jdbcType=TIMESTAMP},
+      </if>
+	  <if test="ipLogin != null" >
+        ipLogin = #{ipLogin,jdbcType=VARCHAR},
+      </if>
+	  <if test="realname != null" >
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+	  <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+	  <if test="isLock != null" >
+        isLock = #{isLock,jdbcType=BIT},
+      </if>
+    </set>
+    <include refid="map_params_where_condition" />
+  </update>
+</mapper>

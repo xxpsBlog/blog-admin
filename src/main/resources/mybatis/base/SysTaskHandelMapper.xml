@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xxp.blog.dao.SysTaskHandelMapper" >
+  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.SysTaskHandel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+    <result column="hostname" property="hostname" jdbcType="VARCHAR" />
+    <result column="ip_address" property="ipAddress" jdbcType="VARCHAR" />
+    <result column="isEnabled" property="isEnabled" jdbcType="BIT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, module_name, hostname, ip_address, isEnabled, created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_task_handel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_task_handel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xxp.blog.pojo.SysTaskHandel" >
+    insert into sys_task_handel (id, module_name, hostname, 
+      ip_address, isEnabled, created_at, 
+      updated_at)
+    values (#{id,jdbcType=INTEGER}, #{moduleName,jdbcType=VARCHAR}, #{hostname,jdbcType=VARCHAR}, 
+      #{ipAddress,jdbcType=VARCHAR}, #{isEnabled,jdbcType=BIT}, NOW(),NOW())
+  </insert>
+  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.SysTaskHandel" >
+    insert into sys_task_handel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="moduleName != null" >
+        module_name,
+      </if>
+      <if test="hostname != null" >
+        hostname,
+      </if>
+      <if test="ipAddress != null" >
+        ip_address,
+      </if>
+      <if test="isEnabled != null" >
+        isEnabled,
+      </if>
+        created_at,
+        updated_at,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="moduleName != null" >
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="hostname != null" >
+        #{hostname,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddress != null" >
+        #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnabled != null" >
+        #{isEnabled,jdbcType=BIT},
+      </if>
+      NOW(),NOW(),
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.SysTaskHandel" >
+    update sys_task_handel
+    <set >
+      <if test="moduleName != null" >
+        module_name = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="hostname != null" >
+        hostname = #{hostname,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddress != null" >
+        ip_address = #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnabled != null" >
+        isEnabled = #{isEnabled,jdbcType=bit},
+      </if>
+      <if test="createdAt != null" >
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null" >
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.SysTaskHandel" >
+    update sys_task_handel
+    set module_name = #{moduleName,jdbcType=VARCHAR},
+      hostname = #{hostname,jdbcType=VARCHAR},
+      ip_address = #{ipAddress,jdbcType=VARCHAR},
+      isEnabled = #{isEnabled,jdbcType=BIT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <sql id="map_params_where_condition" >
+    where 1=1
+    <if test="moduleName != null">
+      and module_name = #{moduleName}
+    </if>
+    <if test="hostname != null">
+      and hostname = #{hostname}
+    </if>
+    <if test="ipAddress != null">
+      and ip_address like #{ipAddress}
+    </if>
+    <if test="isEnabled != null">
+      and isEnabled = #{isEnabled}
+    </if>
+  </sql>
+  <select id="getList" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_task_handel
+    <include refid="map_params_where_condition" />
+    ORDER BY module_name DESC,id ASC
+    <if test="pageBeginIndex != null and pageSize != null">
+      LIMIT #{pageBeginIndex},#{pageSize}
+    </if>
+    <if test="pageBeginIndex == null and pageSize != null">
+      LIMIT #{pageSize}
+    </if>
+    <if test="pageBeginIndex != null and pageSize == null">
+      LIMIT #{pageBeginIndex}
+    </if>
+  </select>
+  <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(id)
+    from sys_task_handel
+    <include refid="map_params_where_condition" />
+  </select>
+</mapper>

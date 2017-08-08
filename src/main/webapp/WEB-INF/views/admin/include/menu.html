@@ -1,0 +1,89 @@
+<div class="sidebar" id="sidebar">
+	<script type="text/javascript">
+		try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+	</script>
+
+	<ul class="nav nav-list">
+		<li ${(adminMenuPosFlag=="main")?string("class='active'","")}>
+			<a href="/admin/">
+				<i class="icon-home"></i>
+				<span class="menu-text"> 首页 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="adminActions")?string("class='active'","")}>
+			<a href="/admin/adminActions/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 权限设置 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="roles")?string("class='active'","")}>
+			<a href="/admin/roles/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 角色管理 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="admin")?string("class='active'","")}>
+			<a href="/admin/admin/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 管理员列表 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="sysConfig")?string("class='active'","")}>
+			<a href="/admin/sysConfig/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 系统设置 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="sysTaskHandel")?string("class='active'","")}>
+			<a href="/admin/sysTaskHandel/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 定时任务 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="sysTaskLog")?string("class='active'","")}>
+			<a href="/admin/sysTaskLog/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 定时任务记录 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="sysLog")?string("class='active'","")}>
+			<a href="/admin/sysLog/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 系统日志 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="tags")?string("class='active'","")}>
+			<a href="/admin/tags/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 标签管理 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="articles")?string("class='active'","")}>
+			<a href="/admin/articles/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 文章管理 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="comment")?string("class='active'","")}>
+			<a href="/admin/comment/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 评论管理 </span>
+			</a>
+		</li>
+		<li ${(adminMenuPosFlag=="weixinAdmin")?string("class='active'","")}>
+			<a href="/admin/weixinAdmin/list/">
+				<i class="icon-folder-close-alt"></i>
+				<span class="menu-text"> 微信管理员 </span>
+			</a>
+		</li>
+		<!-- autoMakingMenu -->
+	</ul><!-- /.nav-list -->
+
+	<div class="sidebar-collapse" id="sidebar-collapse">
+		<i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>
+	</div>
+
+	<script type="text/javascript">
+		try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+	</script>
+</div>

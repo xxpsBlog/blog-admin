@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>${bean.title} | s2mBlog 免费博客平台</title>
+    <meta name="keywords" content="<#list articleTags(bean.id) as test>${test.name},</#list>">
+	<meta name="description" content="${bean.profile}" />
+    <#include "/include/cssjs.html" encoding="UTF-8"/>
+</head>
+<body class="home-template">
+	<#assign headerNavPos="${bean.url}">
+    <#include "/include/head.html" encoding="UTF-8"/>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content">
+					<article class="post tag-opensource featured" id="78">
+						<header class="post-head">
+							<h1 class="post-title">${bean.title}</h1>
+							<section class="post-meta">
+								<span class="author">作者：${bean.author}</span>&bull;
+								<time title="${bean.dateAdd?string("yyyy年MM月dd日HH点mm分ss秒")}" datetime="${bean.dateAdd?string("yyyy年MM月dd日HH点mm分ss秒")}" class="post-date">${bean.dateAdd?string("yyyy年MM月dd日")}</time>
+							</section>
+						</header>
+						<section class="post-content">${content.content}</section>
+						<footer class="post-footer clearfix">
+							<div class="pull-left tag-list">
+								<i class="icon-folder-open-alt"></i>
+								<#list articleTags(bean.id) as test>
+								<a href="/tags/${test.url}/">${test.name}</a>&nbsp;&nbsp;
+								</#list>
+							</div>
+							<p>&nbsp;</p>
+							<#if preArt?exists>
+							<p><a href="/blog/${preArt.url}/">上一篇：${preArt.title}</a></p>
+							</#if>
+							<#if nextArt?exists>
+							<p><a href="/blog/${nextArt.url}/">下一篇：${nextArt.title}</a></p>
+							</#if>
+						</footer>
+					</article>
+					<#if linkedArts?exists && linkedArts?size gt 0>
+					<article class="post tag-opensource featured" id="78">
+						<form role="form" class="form-horizontal" method="post" onsubmit="return checkFormMan(this)">
+						<header class="post-head">
+							<h1 class="post-title" style="font-size:1.1em;">相关博文</h1>
+						</header>
+						<footer class="post-footer clearfix">
+							<ul>
+							<#list linkedArts as test>
+							<li><a href="/blog/${test.url}/">${test.title}</a></li>
+							</#list>
+							</ul>
+						</footer>
+						</form>
+					</article>
+					</#if>
+					<#list comments(bean.id,100000) as test>
+					<article class="post tag-opensource featured" id="78">
+						<header class="post-head">
+							<h1 class="post-title" style="font-size:1.1em;">
+							<span style="color:#e67e22;">${test.name}</span> 说：
+							</h1>
+						</header>
+						<section class="post-content" style="font-size:12px;">${test.msg}</section>
+						<footer class="post-footer clearfix">
+							<time title="${test.dateAdd?string("yyyy年MM月dd日HH点mm分ss秒")}" datetime="${test.dateAdd?string("yyyy年MM月dd日HH点mm分ss秒")}" class="post-date">${test.dateAdd?string("yyyy年MM月dd日")}</time>
+						</footer>
+						<#if test.reply?exists && test.reply!= "">
+						<section class="post-content" style="font-size:12px;color:red;">${test.reply}</section>
+						</#if>
+					</article>
+					</#list>
+					<article class="post tag-opensource featured" id="78">
+						<form role="form" class="form-horizontal" method="post" onsubmit="return checkFormMan(this)">
+						<header class="post-head">
+							<h1 class="post-title" style="font-size:1.1em;">说点什么吧...</h1>
+							<section class="post-meta">
+								<hr/>
+							</section>
+						</header>
+						<section class="post-content">
+								<div class="form-group">
+									<label for="commentName" class="col-sm-2 control-label" style="padding-top:0px;font-weight:normal;font-size:14px;"> 昵称： </label>
+									<div class="col-sm-10">
+										<input id="commentName" class="form-control" type="text" name="name" value="游客">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="commentlinkMsg" class="col-sm-2 control-label" style="padding-top:0px;font-weight:normal;font-size:14px;"> 联系方式： </label>
+									<div class="col-sm-10">
+										<input id="commentlinkMsg" class="form-control" type="text" name="linkMsg" placeholder="联系方式不会公开">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="commentmsg" class="col-sm-2 control-label" style="padding-top:0px;font-weight:normal;font-size:14px;"> 留言内容： </label>
+									<div class="col-sm-10">
+										<textarea id="commentmsg" class="form-control" name="msg" placeholder="您的评论是对我们莫大的支持和鼓励，请不要发布纯表情，网址，无意义内容的评论。"></textarea>
+									</div>
+								</div>
+						</section>
+						<footer class="post-footer clearfix">
+							<div class="pull-right tag-list">
+								<input type="hidden" name="token" value="${token}" />
+								<input type="hidden" name="aid" value="${bean.id}" />
+								<button type="submit" class="btn btn-warning"> 发 布 </button>
+							</div>
+						</footer>
+						</form>
+					</article>
+                </main>
+                <#include "/include/right.html" encoding="UTF-8"/>
+            </div>
+        </div>
+    </section>
+	<#include "/include/foot.html" encoding="UTF-8"/>
+	<script src="/assets/js/jquery.qqFace.js"></script>
+	<script type="text/javascript">
+	function checkFormMan(obj){
+			$.post("/comment/save",$(obj).serialize(),function(result){
+				if(result == "empty"){
+					alert("昵称和留言内容不能为空");
+					return false;
+				}
+				if(result == "noArticle"){
+					alert("您评论的文章不存在");
+					return false;
+				}
+				if(result == "tooFreq"){
+					alert("请休息一分钟再继续评论");
+					return false;
+				}
+				if(result == "success"){
+					alert("提交成功");
+					$("#commentlinkMsg").val("");
+					$("#commentmsg").val("");
+				}
+			});
+			return false;
+		}
+	</script>
+</body>
+</html>

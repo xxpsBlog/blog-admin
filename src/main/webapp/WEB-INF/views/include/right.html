@@ -1,0 +1,34 @@
+<aside class="col-md-4 sidebar">
+	<div class="widget">
+		<h4 class="title">交流</h4>
+		<div class="content community">
+			<p>QQ群：452343084</p>
+			<p>邮件：<a href="mailto:service@s2m.cc" target="_blank"><i class="fa fa-comments"></i> service@s2m.cc</a></p>
+			<p>微信：<img width="150px;" src="/assets/images/weixin.jpg" /></p>
+		</div>
+	</div>
+	<div class="widget">
+		<h4 class="title">下载 s2mBlog</h4>
+		<div class="content download">
+			<a href="/tags/release/" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载Ghost'])">s2mBlog（${sysconfig("VERSION").value}）</a>
+		</div>
+	</div>
+	<div class="widget">
+		<h4 class="title">标签云</h4>
+		<div class="content tag-cloud">
+			<#list fmExtTags(20) as test>
+			<a href="/tags/${test.url}/">${test.name}</a>
+			</#list>
+			<a href="/tags/">...</a>
+		</div>
+	</div>   
+	<div class="widget">
+		<h4 class="title">最新评论</h4>
+		<div class="content tag-cloud">
+			<#list comments(-1,40) as test>
+			<p><span style="color:#e67e22;">${test.name}</span> 说：</p>
+			<p><a href="/blog/${test.articles.url}/" target="_blank">${test.msg}</a></p>
+			</#list>
+		</div>
+	</div>  	
+</aside>

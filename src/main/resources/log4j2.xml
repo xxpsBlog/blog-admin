@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF8"?>  
+<configuration status="trace" monitorInterval="5">  
+  <appenders>  
+    <Console name="Console" target="SYSTEM_OUT">  
+		<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>  
+    </Console>
+	<JDBC name="SYSLOG" tableName="sys_log">
+      <ConnectionFactory class="cc.s2m.web.s2mBlog.util.StaticProp" method="getDatabaseConnection" />
+      <Column name="date_add" isEventTimestamp="true" />
+      <Column name="level" pattern="%level" />
+      <Column name="logger" pattern="%logger" />
+      <Column name="message" pattern="%message" />
+      <Column name="exception" pattern="%ex{full}" />
+    </JDBC>
+	<JDBC name="errorLevel" tableName="sys_log">
+	  <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+      <ConnectionFactory class="cc.s2m.web.s2mBlog.util.StaticProp" method="getDatabaseConnection" />
+      <Column name="date_add" isEventTimestamp="true" />
+      <Column name="level" pattern="%level" />
+      <Column name="logger" pattern="%logger" />
+      <Column name="message" pattern="%message" />
+      <Column name="exception" pattern="%ex{full}" />
+    </JDBC>
+    <RollingFile name="RollingFile" fileName="${log.filePath}/log4j.log"
+                 filePattern="${log.filePath}/log4j-%d{yyyy-MM-dd}.log.gz">
+      <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>  
+      <Policies>  
+        <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+      </Policies>  
+      <DefaultRolloverStrategy max="10"/>  
+    </RollingFile>
+    
+  </appenders>  
+  <loggers> 
+  	<logger name="SYSLOG" additivity="false">
+      <appender-ref ref="SYSLOG"/> 
+    </logger>
+  	<logger name="org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor" 
+  	    level="ERROR" additivity="true">
+    </logger>
+    <root level="${log.level}">
+      <appender-ref ref="errorLevel"/> 
+      <appender-ref ref="${log.appender}"/>  
+    </root>  
+  </loggers>  
+</configuration>
