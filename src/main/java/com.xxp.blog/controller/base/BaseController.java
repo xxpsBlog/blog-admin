@@ -1,10 +1,23 @@
 package com.xxp.blog.controller.base;
 
+import com.xxp.blog.util.MemcacheKeys;
+import com.xxp.blog.util.StaticProp;
+import net.spy.memcached.MemcachedClient;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+
 public class BaseController extends ExceptionBaseController {
 
     protected final int sessionOutTime = 1800;
 
-/*    @Autowired
+    @Autowired
     private MemcachedClient memcachedClient;
 
     public <T> T getMemObjectFromCookie(MemcacheKeys memcacheKeys, HttpServletRequest request) {
@@ -41,17 +54,17 @@ public class BaseController extends ExceptionBaseController {
     }
 
     public boolean checkCodeIsEqual(HttpServletRequest request, String picCode) {
-        if ((picCode == null) || (picCode.trim().isEmpty())) {
+        if (StringUtils.isBlank(picCode)) {
             return false;
         }
         CookieUtil cookie = new CookieUtil(request, null);
         String cookieId = cookie.getCookie(StaticProp.cookieID);
-        if ((cookieId == null) || (cookieId.trim().isEmpty())) {
+        if (StringUtils.isBlank(cookieId)) {
             return false;
         }
         if (StaticProp.IS_USER_MEMCACHED) {
             String code_m = (String) memcachedClient.get(MemcacheKeys.PIC_CODE.getKey() + cookieId);
-            if ((code_m == null) || (code_m.trim().isEmpty())) {
+            if (StringUtils.isBlank(code_m)) {
                 return false;
             }
             if (!picCode.equalsIgnoreCase(code_m)) {
@@ -67,7 +80,7 @@ public class BaseController extends ExceptionBaseController {
             return true;
         }
         String code_m = (String) request.getSession(true).getAttribute(MemcacheKeys.PIC_CODE.getKey() + cookieId);
-        if ((code_m == null) || (code_m.trim().isEmpty())) {
+        if (StringUtils.isBlank(code_m)) {
             return false;
         }
         if (!picCode.equalsIgnoreCase(code_m)) {
@@ -131,5 +144,5 @@ public class BaseController extends ExceptionBaseController {
         }
         resultJson.put("type", fileName.substring(fileName.lastIndexOf(".")));
         return resultJson;
-    }*/
+    }
 }
