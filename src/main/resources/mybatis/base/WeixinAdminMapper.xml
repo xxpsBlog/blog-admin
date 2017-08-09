@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xxp.blog.dao.WeixinAdminMapper" >
-  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.WeixinAdmin" >
+<mapper namespace="com.xuxinpei.blog.dao.WeixinAdminMapper" >
+  <resultMap id="BaseResultMap" type="com.xuxinpei.blog.pojo.WeixinAdmin" >
 	<id column="id" property="id" />
 	<result column="openid" property="openid" />
   </resultMap>
@@ -27,7 +27,7 @@
     DELETE FROM weixin_admin
     WHERE `id` = #{id}
   </delete>
-  <insert id="insert" parameterType="com.xxp.blog.pojo.WeixinAdmin" >
+  <insert id="insert" parameterType="com.xuxinpei.blog.pojo.WeixinAdmin" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -39,7 +39,7 @@
 		  #{openid}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.WeixinAdmin" >
+  <insert id="insertSelective" parameterType="com.xuxinpei.blog.pojo.WeixinAdmin" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -55,7 +55,7 @@
 		  </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.WeixinAdmin" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuxinpei.blog.pojo.WeixinAdmin" >
     UPDATE weixin_admin
     <set >
 	  <if test="openid != null" >
@@ -64,7 +64,7 @@
     </set>
     WHERE `id` = #{id}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.WeixinAdmin" >
+  <update id="updateByPrimaryKey" parameterType="com.xuxinpei.blog.pojo.WeixinAdmin" >
 	UPDATE weixin_admin SET
         `openid` = #{openid}
     WHERE `id` = #{id}

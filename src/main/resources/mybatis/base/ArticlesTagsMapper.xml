@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xxp.blog.dao.ArticlesTagsMapper" >
-  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.ArticlesTags" >
+<mapper namespace="com.xuxinpei.blog.dao.ArticlesTagsMapper" >
+  <resultMap id="BaseResultMap" type="com.xuxinpei.blog.pojo.ArticlesTags" >
 	<id column="id" property="id" jdbcType="INTEGER" />
 	<result column="aid" property="aid" jdbcType="INTEGER" />
 	<result column="tid" property="tid" jdbcType="INTEGER" />
@@ -29,7 +29,7 @@
     DELETE FROM articles_tags
     WHERE id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.xxp.blog.pojo.ArticlesTags" >
+  <insert id="insert" parameterType="com.xuxinpei.blog.pojo.ArticlesTags" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -44,7 +44,7 @@
 		  #{tid,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.ArticlesTags" >
+  <insert id="insertSelective" parameterType="com.xuxinpei.blog.pojo.ArticlesTags" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -66,7 +66,7 @@
 		  </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.ArticlesTags" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuxinpei.blog.pojo.ArticlesTags" >
     UPDATE articles_tags
     <set >
 	  <if test="aid != null" >
@@ -78,7 +78,7 @@
     </set>
     WHERE id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.ArticlesTags" >
+  <update id="updateByPrimaryKey" parameterType="com.xuxinpei.blog.pojo.ArticlesTags" >
 	UPDATE articles_tags SET
         aid = #{aid,jdbcType=INTEGER},
         tid = #{tid,jdbcType=INTEGER}

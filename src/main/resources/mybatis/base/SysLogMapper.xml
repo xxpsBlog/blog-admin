@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xxp.blog.dao.SysLogMapper" >
-  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.SysLog" >
+<mapper namespace="com.xuxinpei.blog.dao.SysLogMapper" >
+  <resultMap id="BaseResultMap" type="com.xuxinpei.blog.pojo.SysLog" >
 	<id column="id" property="id" jdbcType="INTEGER" />
 	<result column="level" property="level" jdbcType="VARCHAR" />
 	<result column="logger" property="logger" jdbcType="VARCHAR" />
@@ -23,7 +23,7 @@
     FROM sys_log
     WHERE id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="getByCondition" resultMap="BaseResultMap" parameterType="com.xxp.blog.pojo.SysLog" >
+  <select id="getByCondition" resultMap="BaseResultMap" parameterType="com.xuxinpei.blog.pojo.SysLog" >
     SELECT 
     <include refid="Base_Column_List" />
     FROM sys_log
@@ -35,7 +35,7 @@
     DELETE FROM sys_log
     WHERE id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.xxp.blog.pojo.SysLog" >
+  <insert id="insert" parameterType="com.xuxinpei.blog.pojo.SysLog" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -59,7 +59,7 @@
 		  NOW()
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.SysLog" >
+  <insert id="insertSelective" parameterType="com.xuxinpei.blog.pojo.SysLog" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -95,7 +95,7 @@
 		  NOW(),
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.SysLog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuxinpei.blog.pojo.SysLog" >
     UPDATE sys_log
     <set >
 	  <if test="level != null" >
@@ -116,7 +116,7 @@
     </set>
     WHERE id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.SysLog" >
+  <update id="updateByPrimaryKey" parameterType="com.xuxinpei.blog.pojo.SysLog" >
 	UPDATE sys_log SET
         level = #{level,jdbcType=VARCHAR},
         logger = #{logger,jdbcType=VARCHAR},

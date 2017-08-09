@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xxp.blog.dao.SysConfigMapper" >
-  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.SysConfig" >
+<mapper namespace="com.xuxinpei.blog.dao.SysConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.xuxinpei.blog.pojo.SysConfig" >
 	<id column="id" property="id" />
 	<result column="type" property="type" />
 	<result column="key" property="key" />
@@ -37,7 +37,7 @@
     DELETE FROM sys_config
     WHERE `id` = #{id}
   </delete>
-  <insert id="insert" parameterType="com.xxp.blog.pojo.SysConfig" >
+  <insert id="insert" parameterType="com.xuxinpei.blog.pojo.SysConfig" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -64,7 +64,7 @@
 		  NOW()
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.SysConfig" >
+  <insert id="insertSelective" parameterType="com.xuxinpei.blog.pojo.SysConfig" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -102,7 +102,7 @@
 		  NOW(),
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.SysConfig" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuxinpei.blog.pojo.SysConfig" >
     UPDATE sys_config
     <set >
 	  <if test="type != null" >
@@ -126,7 +126,7 @@
     </set>
     WHERE `id` = #{id}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.SysConfig" >
+  <update id="updateByPrimaryKey" parameterType="com.xuxinpei.blog.pojo.SysConfig" >
 	UPDATE sys_config SET
         `type` = #{type},
         `key` = #{key},

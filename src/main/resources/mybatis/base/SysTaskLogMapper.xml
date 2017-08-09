@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xxp.blog.dao.SysTaskLogMapper" >
-  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.SysTaskLog" >
+<mapper namespace="com.xuxinpei.blog.dao.SysTaskLogMapper" >
+  <resultMap id="BaseResultMap" type="com.xuxinpei.blog.pojo.SysTaskLog" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
     <result column="hostname" property="hostname" jdbcType="VARCHAR" />
@@ -23,7 +23,7 @@
     delete from sys_task_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.xxp.blog.pojo.SysTaskLog" useGeneratedKeys="true" keyProperty="id" >
+  <insert id="insert" parameterType="com.xuxinpei.blog.pojo.SysTaskLog" useGeneratedKeys="true" keyProperty="id" >
     insert into sys_task_log (id, module_name, hostname, 
       ip_address, isSuccess, created_at, 
       updated_at)
@@ -31,7 +31,7 @@
       #{ipAddress,jdbcType=VARCHAR}, #{issuccess,jdbcType=BIT}, NOW(), 
       NOW())
   </insert>
-  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.SysTaskLog" >
+  <insert id="insertSelective" parameterType="com.xuxinpei.blog.pojo.SysTaskLog" >
     insert into sys_task_log
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -71,7 +71,7 @@
       NOW(),NOW(),
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.SysTaskLog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuxinpei.blog.pojo.SysTaskLog" >
     update sys_task_log
     <set >
       <if test="moduleName != null" >
@@ -93,7 +93,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.SysTaskLog" >
+  <update id="updateByPrimaryKey" parameterType="com.xuxinpei.blog.pojo.SysTaskLog" >
     update sys_task_log
     set module_name = #{moduleName,jdbcType=VARCHAR},
       hostname = #{hostname,jdbcType=VARCHAR},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xxp.blog.dao.AdminMapper" >
-  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.Admin" >
+<mapper namespace="com.xuxinpei.blog.dao.AdminMapper" >
+  <resultMap id="BaseResultMap" type="com.xuxinpei.blog.pojo.Admin" >
 	<id column="id" property="id" jdbcType="INTEGER" />
 	<result column="username" property="username" jdbcType="VARCHAR" />
 	<result column="pwd" property="pwd" jdbcType="VARCHAR" />
@@ -27,7 +27,7 @@
     FROM admin
     WHERE id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="getByCondition" resultMap="BaseResultMap" parameterType="com.xxp.blog.pojo.Admin" >
+  <select id="getByCondition" resultMap="BaseResultMap" parameterType="com.xuxinpei.blog.pojo.Admin" >
     SELECT 
     <include refid="Base_Column_List" />
     FROM admin
@@ -39,7 +39,7 @@
     DELETE FROM admin
     WHERE id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.xxp.blog.pojo.Admin" >
+  <insert id="insert" parameterType="com.xuxinpei.blog.pojo.Admin" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -62,7 +62,7 @@
 	  ,#{isLock,jdbcType=BIT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.Admin" >
+  <insert id="insertSelective" parameterType="com.xuxinpei.blog.pojo.Admin" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -114,7 +114,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.Admin" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuxinpei.blog.pojo.Admin" >
     UPDATE admin
     <set >
 	  <if test="username != null" >
@@ -141,7 +141,7 @@
     </set>
     WHERE id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.Admin" >
+  <update id="updateByPrimaryKey" parameterType="com.xuxinpei.blog.pojo.Admin" >
 	UPDATE admin SET
         username = #{username,jdbcType=VARCHAR},
         pwd = #{pwd,jdbcType=VARCHAR},

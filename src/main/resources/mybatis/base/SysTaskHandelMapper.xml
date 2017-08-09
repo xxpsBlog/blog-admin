@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xxp.blog.dao.SysTaskHandelMapper" >
-  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.SysTaskHandel" >
+<mapper namespace="com.xuxinpei.blog.dao.SysTaskHandelMapper" >
+  <resultMap id="BaseResultMap" type="com.xuxinpei.blog.pojo.SysTaskHandel" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
     <result column="hostname" property="hostname" jdbcType="VARCHAR" />
@@ -23,14 +23,14 @@
     delete from sys_task_handel
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.xxp.blog.pojo.SysTaskHandel" >
+  <insert id="insert" parameterType="com.xuxinpei.blog.pojo.SysTaskHandel" >
     insert into sys_task_handel (id, module_name, hostname, 
       ip_address, isEnabled, created_at, 
       updated_at)
     values (#{id,jdbcType=INTEGER}, #{moduleName,jdbcType=VARCHAR}, #{hostname,jdbcType=VARCHAR}, 
       #{ipAddress,jdbcType=VARCHAR}, #{isEnabled,jdbcType=BIT}, NOW(),NOW())
   </insert>
-  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.SysTaskHandel" >
+  <insert id="insertSelective" parameterType="com.xuxinpei.blog.pojo.SysTaskHandel" >
     insert into sys_task_handel
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -70,7 +70,7 @@
       NOW(),NOW(),
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.SysTaskHandel" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuxinpei.blog.pojo.SysTaskHandel" >
     update sys_task_handel
     <set >
       <if test="moduleName != null" >
@@ -94,7 +94,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.SysTaskHandel" >
+  <update id="updateByPrimaryKey" parameterType="com.xuxinpei.blog.pojo.SysTaskHandel" >
     update sys_task_handel
     set module_name = #{moduleName,jdbcType=VARCHAR},
       hostname = #{hostname,jdbcType=VARCHAR},

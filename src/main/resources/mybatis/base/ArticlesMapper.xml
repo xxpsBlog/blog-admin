@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xxp.blog.dao.ArticlesMapper" >
-  <resultMap id="BaseResultMap" type="com.xxp.blog.pojo.Articles" >
+<mapper namespace="com.xuxinpei.blog.dao.ArticlesMapper" >
+  <resultMap id="BaseResultMap" type="com.xuxinpei.blog.pojo.Articles" >
 	<id column="id" property="id" />
 	<result column="url" property="url" />
 	<result column="title" property="title" />
@@ -48,7 +48,7 @@
     DELETE FROM articles
     WHERE id = #{id}
   </delete>
-  <insert id="insert" parameterType="com.xxp.blog.pojo.Articles" >
+  <insert id="insert" parameterType="com.xuxinpei.blog.pojo.Articles" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -84,7 +84,7 @@
 		  #{pic}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.xxp.blog.pojo.Articles" >
+  <insert id="insertSelective" parameterType="com.xuxinpei.blog.pojo.Articles" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -144,7 +144,7 @@
 		  </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xxp.blog.pojo.Articles" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.xuxinpei.blog.pojo.Articles" >
     UPDATE articles
     <set >
 	  <if test="url != null" >
@@ -177,7 +177,7 @@
     </set>
     WHERE id = #{id}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.xxp.blog.pojo.Articles" >
+  <update id="updateByPrimaryKey" parameterType="com.xuxinpei.blog.pojo.Articles" >
 	UPDATE articles SET
         url = #{url},
         title = #{title},
