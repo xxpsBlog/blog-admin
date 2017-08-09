@@ -64,14 +64,13 @@ public class AdminController extends BaseController {
         if (id != null) {
             Admin bean = (Admin) adminService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
-
-            AdminRoles condition = new AdminRoles();
-            condition.setAid(id);
-            List myRoles = adminRolesService.getList(condition, null);
+            // 获取管理角色
+            List myRoles = adminRolesService.getListByAid(id);
             model.addAttribute("myRoles", myRoles);
         }
 
-        List roles = rolesService.getList(new Roles(), null);
+        // 所有角色
+        List roles = rolesService.getList();
         model.addAttribute("roles", roles);
         return "admin/admin_add";
     }
@@ -134,7 +133,7 @@ public class AdminController extends BaseController {
 
             AdminRoles ar_condition = new AdminRoles();
             ar_condition.setAid(id);
-            adminRolesService.delete(ar_condition, null);
+            adminRolesService.delete(String.valueOf(id));
         }
         return "success";
     }

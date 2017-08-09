@@ -6,6 +6,8 @@ import com.xuxinpei.blog.service.IAdminRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdminRolesImpl extends BaseServiceImpl<AdminRoles, AdminRolesMapper, Integer>
         implements IAdminRoles {
@@ -15,5 +17,15 @@ public class AdminRolesImpl extends BaseServiceImpl<AdminRoles, AdminRolesMapper
 
     protected AdminRolesMapper getDao() {
         return this.adminRolesMapper;
+    }
+
+    /**
+     * 获取管理角色
+     * @param id
+     * @return
+     */
+    public List getListByAid(Integer id) {
+
+        return null;
     }
 }

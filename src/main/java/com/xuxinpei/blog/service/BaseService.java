@@ -7,16 +7,13 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public abstract interface BaseService<T, PK extends Serializable> {
-    public abstract List<T> getList(T paramT, Map<String, Object> paramMap);
+public interface BaseService<T, PK extends Serializable> {
 
     public abstract int getCount(Map<String, ?> paramMap);
 
     public abstract Page<T> getPage(int paramInt1, int paramInt2, String paramString, Map<String, Object> paramMap);
 
     public abstract int deleteByPrimaryKey(PK paramPK);
-
-    public abstract int delete(T paramT, Map<String, Object> paramMap);
 
     public abstract int insert(T paramT);
 

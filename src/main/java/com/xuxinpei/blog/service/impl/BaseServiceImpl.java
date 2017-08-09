@@ -1,7 +1,5 @@
 package com.xuxinpei.blog.service.impl;
 
-import cc.s2m.util.Method;
-import cc.s2m.util.PageUtil;
 import com.xuxinpei.blog.util.BeanConverter;
 import com.xuxinpei.blog.dao.BaseDao;
 import com.xuxinpei.blog.util.Page;
@@ -19,14 +17,6 @@ public abstract class BaseServiceImpl<T, DAO extends BaseDao<T, PK>, PK extends 
         return getDao().deleteByPrimaryKey(id);
     }
 
-    public int delete(T condition, Map<String, Object> map) {
-        if (map == null) {
-            map = new HashMap<String, Object>();
-        }
-        map.putAll(BeanConverter.toMap(condition));
-        return getDao().delete(map);
-    }
-
     public int insert(T record) {
         return getDao().insert(record);
     }
@@ -42,14 +32,14 @@ public abstract class BaseServiceImpl<T, DAO extends BaseDao<T, PK>, PK extends 
     public T getByCondition(T record) {
         Map params = new HashMap();
         params.put("condition", record);
-        return getDao().getByCondition(params);
+        return (T) getDao().getByCondition(params);
     }
 
     public T getByCondition(T record, VO vo) {
         Map params = new HashMap();
         params.put("condition", record);
         params.put("vo", vo);
-        return getDao().getByCondition(params);
+        return (T) getDao().getByCondition(params);
     }
 
     public T getByCondition(T record, VO vo, String orderBy) {
@@ -57,7 +47,7 @@ public abstract class BaseServiceImpl<T, DAO extends BaseDao<T, PK>, PK extends 
         params.put("condition", record);
         params.put("vo", vo);
         params.put("orderBy", orderBy);
-        return getDao().getByCondition(params);
+        return (T) getDao().getByCondition(params);
     }
 
     public int updateByPrimaryKeySelective(T record) {
@@ -73,16 +63,6 @@ public abstract class BaseServiceImpl<T, DAO extends BaseDao<T, PK>, PK extends 
 
     public int updateByPrimaryKey(T record) {
         return getDao().updateByPrimaryKey(record);
-    }
-
-    public List<T> getList(T condition, Map<String, Object> map) {
-        if (map == null) {
-            map = new HashMap<String, Object>();
-        }
-        if (condition != null) {
-            map.putAll(BeanConverter.toMap(condition));
-        }
-        return getDao().getList(map);
     }
 
     public int getCount(Map<String, ?> map) {
