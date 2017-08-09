@@ -13,8 +13,8 @@ public class BaseController extends ExceptionBaseController {
         if (StringUtils.isBlank(cookieId)) {
             return null;
         }
-        Object t = this.memcachedClient.get(memcacheKeys.getKey() + cookieId);
-        this.memcachedClient.replace(memcacheKeys.getKey() + cookieId, 1800, t);
+        Object t = memcachedClient.get(memcacheKeys.getKey() + cookieId);
+        memcachedClient.replace(memcacheKeys.getKey() + cookieId, 1800, t);
         return t;
     }
 
@@ -28,7 +28,7 @@ public class BaseController extends ExceptionBaseController {
         if (StringUtils.isBlank(cookieId)) {
             return;
         }
-        this.memcachedClient.replace(memcacheKeys.getKey() + cookieId, 1800, o);
+        memcachedClient.replace(memcacheKeys.getKey() + cookieId, 1800, o);
     }
 
     public void delMemObjectFromCookie(MemcacheKeys memcacheKeys, HttpServletRequest request, HttpServletResponse response) {
@@ -37,7 +37,7 @@ public class BaseController extends ExceptionBaseController {
         if (StringUtils.isBlank(cookieId)) {
             return;
         }
-        this.memcachedClient.delete(memcacheKeys.getKey() + cookieId);
+        memcachedClient.delete(memcacheKeys.getKey() + cookieId);
     }
 
     public boolean checkCodeIsEqual(HttpServletRequest request, String picCode) {
@@ -50,20 +50,20 @@ public class BaseController extends ExceptionBaseController {
             return false;
         }
         if (StaticProp.IS_USER_MEMCACHED) {
-            String code_m = (String) this.memcachedClient.get(MemcacheKeys.PIC_CODE.getKey() + cookieId);
+            String code_m = (String) memcachedClient.get(MemcacheKeys.PIC_CODE.getKey() + cookieId);
             if ((code_m == null) || (code_m.trim().isEmpty())) {
                 return false;
             }
             if (!picCode.equalsIgnoreCase(code_m)) {
-                long errorNum = this.memcachedClient.incr(MemcacheKeys.PIC_CODE.getKey() + cookieId + "_errorsNum", 1, 1L, 300);
+                long errorNum = memcachedClient.incr(MemcacheKeys.PIC_CODE.getKey() + cookieId + "_errorsNum", 1, 1L, 300);
                 if (errorNum > 5L) {
-                    this.memcachedClient.delete(MemcacheKeys.PIC_CODE.getKey() + cookieId);
-                    this.memcachedClient.delete(MemcacheKeys.PIC_CODE.getKey() + cookieId + "_errorsNum");
+                    memcachedClient.delete(MemcacheKeys.PIC_CODE.getKey() + cookieId);
+                    memcachedClient.delete(MemcacheKeys.PIC_CODE.getKey() + cookieId + "_errorsNum");
                 }
                 return false;
             }
-            this.memcachedClient.delete(MemcacheKeys.PIC_CODE.getKey() + cookieId);
-            this.memcachedClient.delete(MemcacheKeys.PIC_CODE.getKey() + cookieId + "_errorsNum");
+            memcachedClient.delete(MemcacheKeys.PIC_CODE.getKey() + cookieId);
+            memcachedClient.delete(MemcacheKeys.PIC_CODE.getKey() + cookieId + "_errorsNum");
             return true;
         }
         String code_m = (String) request.getSession(true).getAttribute(MemcacheKeys.PIC_CODE.getKey() + cookieId);
@@ -71,7 +71,7 @@ public class BaseController extends ExceptionBaseController {
             return false;
         }
         if (!picCode.equalsIgnoreCase(code_m)) {
-            long errorNum = this.memcachedClient.incr(MemcacheKeys.PIC_CODE.getKey() + cookieId + "_errorsNum", 1, 1L, 300);
+            long errorNum = memcachedClient.incr(MemcacheKeys.PIC_CODE.getKey() + cookieId + "_errorsNum", 1, 1L, 300);
             if (errorNum > 5L) {
                 request.getSession(true).removeAttribute(MemcacheKeys.PIC_CODE.getKey() + cookieId);
                 request.getSession(true).removeAttribute(MemcacheKeys.PIC_CODE.getKey() + cookieId + "_errorsNum");

@@ -1,40 +1,30 @@
-package cc.s2m.web.s2mBlog.controller;
+package com.xxp.blog.controller;
 
-import cc.s2m.open_all_open.weixin.WxRecieveMsg;
-import cc.s2m.web.s2mBlog.controller.base.BaseController;
-import cc.s2m.web.s2mBlog.pojo.Articles;
-import cc.s2m.web.s2mBlog.pojo.ArticlesTags;
-import cc.s2m.web.s2mBlog.pojo.SysConfig;
-import cc.s2m.web.s2mBlog.pojo.Tags;
-import cc.s2m.web.s2mBlog.pojo.WeixinAdmin;
-import cc.s2m.web.s2mBlog.service.IArticles;
-import cc.s2m.web.s2mBlog.service.IArticlesTags;
-import cc.s2m.web.s2mBlog.service.ISysConfig;
-import cc.s2m.web.s2mBlog.service.ITags;
-import cc.s2m.web.s2mBlog.service.IWeixinAdmin;
-import cc.s2m.web.s2mBlog.util.MemcacheKeys;
-import cc.s2m.web.s2mBlog.util.StaticProp;
-import cc.s2m.web.s2mBlog.vo.Expressions;
-import cc.s2m.web.s2mBlog.vo.VO;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.xxp.blog.controller.base.BaseController;
+import com.xxp.blog.pojo.Articles;
+import com.xxp.blog.pojo.ArticlesTags;
+import com.xxp.blog.pojo.WeixinAdmin;
+import com.xxp.blog.service.*;
+import com.xxp.blog.util.MemcacheKeys;
+import com.xxp.blog.util.StaticProp;
+import com.xxp.blog.vo.Expressions;
+import com.xxp.blog.vo.VO;
 import net.spy.memcached.MemcachedClient;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class Weixin extends BaseController {
@@ -94,7 +84,7 @@ public class Weixin extends BaseController {
                     buffer.append("<FromUserName><![CDATA[" + (String) message.get("ToUserName") + "]]></FromUserName>");
                     buffer.append("<CreateTime>" + (String) message.get("CreateTime") + "</CreateTime>");
                     buffer.append("<MsgType><![CDATA[text]]></MsgType>");
-                    buffer.append("<Content><![CDATA[" + this.sysConfigService.getByCode("WEIXIN_WELCOME").getValue() + "]]></Content>");
+                    buffer.append("<Content><![CDATA[" + sysConfigService.getByCode("WEIXIN_WELCOME").getValue() + "]]></Content>");
                     buffer.append("</xml>");
 
                     response.setContentType("text/xml;charset=UTF-8");
@@ -122,7 +112,7 @@ public class Weixin extends BaseController {
                         buffer.append("<FromUserName><![CDATA[" + (String) message.get("ToUserName") + "]]></FromUserName>");
                         buffer.append("<CreateTime>" + (String) message.get("CreateTime") + "</CreateTime>");
                         buffer.append("<MsgType><![CDATA[text]]></MsgType>");
-                        buffer.append("<Content><![CDATA[" + this.sysConfigService.getByCode("WEIXIN_WELCOME").getValue() + "]]></Content>");
+                        buffer.append("<Content><![CDATA[" + sysConfigService.getByCode("WEIXIN_WELCOME").getValue() + "]]></Content>");
                         buffer.append("</xml>");
 
                         response.setContentType("text/xml;charset=UTF-8");
@@ -142,7 +132,7 @@ public class Weixin extends BaseController {
                         int number = Integer.parseInt(content.substring(3));
                         map = new HashMap();
                         map.put("pageSize", Integer.valueOf(number));
-                        list = this.articlesService.getList(new Articles(), map);
+                        list = articlesService.getList(new Articles(), map);
                         buffer = new StringBuffer();
                         buffer.append("<xml>");
                         buffer.append("<ToUserName><![CDATA[" + (String) message.get("FromUserName") + "]]></ToUserName>");
@@ -172,7 +162,7 @@ public class Weixin extends BaseController {
 
                 String memWeixinAdminCode = null;
                 if (StaticProp.IS_USER_MEMCACHED)
-                    memWeixinAdminCode = (String) this.memcachedClient.get(MemcacheKeys.WEIXIN_ADMIN_TOKEN.getKey());
+                    memWeixinAdminCode = (String) memcachedClient.get(MemcacheKeys.WEIXIN_ADMIN_TOKEN.getKey());
                 else {
                     memWeixinAdminCode = (String) StaticProp.SERVLET_CONTEXT.getAttribute(MemcacheKeys.WEIXIN_ADMIN_TOKEN.getKey());
                 }
@@ -180,9 +170,9 @@ public class Weixin extends BaseController {
                 if ((memWeixinAdminCode != null) && (memWeixinAdminCode.equals(content))) {
                     WeixinAdmin weixinAdmin = new WeixinAdmin();
                     weixinAdmin.setOpenid((String) message.get("FromUserName"));
-                    this.weixinAdminService.insertSelective(weixinAdmin);
+                    weixinAdminService.insertSelective(weixinAdmin);
                     if (StaticProp.IS_USER_MEMCACHED)
-                        this.memcachedClient.delete(MemcacheKeys.WEIXIN_ADMIN_TOKEN.getKey());
+                        memcachedClient.delete(MemcacheKeys.WEIXIN_ADMIN_TOKEN.getKey());
                     else {
                         StaticProp.SERVLET_CONTEXT.removeAttribute(MemcacheKeys.WEIXIN_ADMIN_TOKEN.getKey());
                     }
@@ -205,7 +195,7 @@ public class Weixin extends BaseController {
                     String openid = (String) message.get("FromUserName");
                     List resources = null;
                     if (StaticProp.IS_USER_MEMCACHED)
-                        resources = (List) this.memcachedClient.get(MemcacheKeys.WEIXIN_RESOURCES.getKey() + openid);
+                        resources = (List) memcachedClient.get(MemcacheKeys.WEIXIN_RESOURCES.getKey() + openid);
                     else {
                         resources = (List) StaticProp.SERVLET_CONTEXT.getAttribute(MemcacheKeys.WEIXIN_RESOURCES.getKey() + openid);
                     }
@@ -213,7 +203,7 @@ public class Weixin extends BaseController {
                     if ((resources != null) && (!resources.isEmpty())) {
                         List openIds = null;
                         if (StaticProp.IS_USER_MEMCACHED)
-                            openIds = (List) this.memcachedClient.get(MemcacheKeys.WEIXIN_RESOURCES.getKey() + "openids");
+                            openIds = (List) memcachedClient.get(MemcacheKeys.WEIXIN_RESOURCES.getKey() + "openids");
                         else {
                             openIds = (List) StaticProp.SERVLET_CONTEXT.getAttribute(MemcacheKeys.WEIXIN_RESOURCES.getKey() + "openids");
                         }
@@ -225,7 +215,7 @@ public class Weixin extends BaseController {
                             openIds.add(openid);
                         }
                         if (StaticProp.IS_USER_MEMCACHED)
-                            this.memcachedClient.set(MemcacheKeys.WEIXIN_RESOURCES.getKey() + "openids", 86400, openIds);
+                            memcachedClient.set(MemcacheKeys.WEIXIN_RESOURCES.getKey() + "openids", 86400, openIds);
                         else {
                             StaticProp.SERVLET_CONTEXT.setAttribute(MemcacheKeys.WEIXIN_RESOURCES.getKey() + "openids", openIds);
                         }
@@ -251,12 +241,12 @@ public class Weixin extends BaseController {
                 vo.and(Expressions.like("title", "%" + content + "%"));
                 Tags tagBean = new Tags();
                 tagBean.setName(content);
-                tagBean = (Tags) this.tagsService.getByCondition(tagBean);
+                tagBean = (Tags) tagsService.getByCondition(tagBean);
                 if (tagBean != null) {
                     List aids = Lists.newArrayList();
                     ArticlesTags condition = new ArticlesTags();
                     condition.setTid(tagBean.getId());
-                    List tagArticles = this.articlesTagsService.getList(condition, null);
+                    List tagArticles = articlesTagsService.getList(condition, null);
                     for (ArticlesTags atag : tagArticles) {
                         aids.add(atag.getAid());
                     }
@@ -266,7 +256,7 @@ public class Weixin extends BaseController {
                 }
                 map.put("vo", vo);
                 map.put("pageSize", Integer.valueOf(10));
-                List list = this.articlesService.getList(new Articles(), map);
+                List list = articlesService.getList(new Articles(), map);
                 if (list.isEmpty()) {
                     StringBuffer buffer = new StringBuffer();
                     buffer.append("<xml>");
@@ -313,7 +303,7 @@ public class Weixin extends BaseController {
                 String openid = (String) message.get("FromUserName");
                 WeixinAdmin weixinAdmin = new WeixinAdmin();
                 weixinAdmin.setOpenid(openid);
-                weixinAdmin = (WeixinAdmin) this.weixinAdminService.getByCondition(weixinAdmin);
+                weixinAdmin = (WeixinAdmin) weixinAdminService.getByCondition(weixinAdmin);
                 if (weixinAdmin == null) {
                     StringBuffer buffer = new StringBuffer();
                     buffer.append("<xml>");
@@ -331,7 +321,7 @@ public class Weixin extends BaseController {
                 }
                 List resources = null;
                 if (StaticProp.IS_USER_MEMCACHED)
-                    resources = (List) this.memcachedClient.get(MemcacheKeys.WEIXIN_RESOURCES.getKey() + openid);
+                    resources = (List) memcachedClient.get(MemcacheKeys.WEIXIN_RESOURCES.getKey() + openid);
                 else {
                     resources = (List) StaticProp.SERVLET_CONTEXT.getAttribute(MemcacheKeys.WEIXIN_RESOURCES.getKey() + openid);
                 }
@@ -345,7 +335,7 @@ public class Weixin extends BaseController {
                 resource.put("mediaId", message.get("MediaId"));
                 resources.add(resource);
                 if (StaticProp.IS_USER_MEMCACHED) {
-                    this.memcachedClient.set(MemcacheKeys.WEIXIN_RESOURCES.getKey() + openid, 86400, resources);
+                    memcachedClient.set(MemcacheKeys.WEIXIN_RESOURCES.getKey() + openid, 86400, resources);
                 } else {
                     StaticProp.SERVLET_CONTEXT.setAttribute(MemcacheKeys.WEIXIN_RESOURCES.getKey() + openid, resources);
                 }

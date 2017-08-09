@@ -1,10 +1,10 @@
 package com.xxp.blog.controller.admin;
 
-import cc.s2m.util.BeanConverter;
-import cc.s2m.util.Page;
 import com.xxp.blog.controller.base.BaseController;
 import com.xxp.blog.pojo.SysLog;
 import com.xxp.blog.service.ISysLog;
+import com.xxp.blog.util.BeanConverter;
+import com.xxp.blog.util.Page;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +29,10 @@ public class SysLogController extends BaseController {
         if (page == null) page = Integer.valueOf(1);
         Map map = new HashMap();
         if (bean != null) {
-            map.putAll(BeanConverter.toMap(bean, false));
+            map.putAll(BeanConverter.toMap(bean));
             model.addAttribute("bean", bean);
         }
-        Page pageBean = this.sysLogService.getPage(page.intValue(), 50, null, map);
+        Page pageBean = sysLogService.getPage(page.intValue(), 50, null, map);
         model.addAttribute("pageBean", pageBean);
         return "admin/sysLog";
     }
@@ -40,7 +40,7 @@ public class SysLogController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            SysLog bean = (SysLog) this.sysLogService.selectByPrimaryKey(id);
+            SysLog bean = (SysLog) sysLogService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/sysLog_add";
@@ -49,7 +49,7 @@ public class SysLogController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            SysLog bean = (SysLog) this.sysLogService.selectByPrimaryKey(id);
+            SysLog bean = (SysLog) sysLogService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/sysLog_view";
@@ -62,9 +62,9 @@ public class SysLogController extends BaseController {
             return "empty";
         }
         if (bean.getId() == null) {
-            this.sysLogService.insertSelective(bean);
+            sysLogService.insertSelective(bean);
         } else {
-            this.sysLogService.updateByPrimaryKeySelective(bean);
+            sysLogService.updateByPrimaryKeySelective(bean);
         }
         return "success";
     }
@@ -72,9 +72,9 @@ public class SysLogController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        SysLog bean = (SysLog) this.sysLogService.selectByPrimaryKey(id);
+        SysLog bean = (SysLog) sysLogService.selectByPrimaryKey(id);
         if (bean != null) {
-            this.sysLogService.deleteByPrimaryKey(id);
+            sysLogService.deleteByPrimaryKey(id);
         }
         return "success";
     }
@@ -82,7 +82,7 @@ public class SysLogController extends BaseController {
     @RequestMapping(value = {"/clearLogs"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String clearLogs() {
-        this.sysLogService.delete(new SysLog(), null);
+        sysLogService.delete(new SysLog(), null);
         LOGGER.error("清空日志");
         return "success";
     }

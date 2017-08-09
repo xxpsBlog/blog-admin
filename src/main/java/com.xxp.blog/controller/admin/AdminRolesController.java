@@ -1,19 +1,18 @@
 package com.xxp.blog.controller.admin;
 
-import cc.s2m.util.BeanConverter;
-import cc.s2m.util.Page;
 import com.xxp.blog.controller.base.BaseController;
 import com.xxp.blog.pojo.AdminRoles;
 import com.xxp.blog.service.IAdminRoles;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.xxp.blog.util.BeanConverter;
+import com.xxp.blog.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller("admin_AdminRolesController")
 @RequestMapping({"/admin/adminRoles"})
@@ -27,10 +26,10 @@ public class AdminRolesController extends BaseController {
         if (page == null) page = Integer.valueOf(1);
         Map map = new HashMap();
         if (bean != null) {
-            map.putAll(BeanConverter.toMap(bean, false));
+            map.putAll(BeanConverter.toMap(bean));
             model.addAttribute("bean", bean);
         }
-        Page pageBean = this.adminRolesService.getPage(page.intValue(), 50, null, map);
+        Page pageBean = adminRolesService.getPage(page.intValue(), 50, null, map);
         model.addAttribute("pageBean", pageBean);
         return "admin/adminRoles";
     }
@@ -38,7 +37,7 @@ public class AdminRolesController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            AdminRoles bean = (AdminRoles) this.adminRolesService.selectByPrimaryKey(id);
+            AdminRoles bean = (AdminRoles) adminRolesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/adminRoles_add";
@@ -47,7 +46,7 @@ public class AdminRolesController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            AdminRoles bean = (AdminRoles) this.adminRolesService.selectByPrimaryKey(id);
+            AdminRoles bean = (AdminRoles) adminRolesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/adminRoles_view";
@@ -60,9 +59,9 @@ public class AdminRolesController extends BaseController {
             return "empty";
         }
         if (bean.getId() == null) {
-            this.adminRolesService.insertSelective(bean);
+            adminRolesService.insertSelective(bean);
         } else {
-            this.adminRolesService.updateByPrimaryKeySelective(bean);
+            adminRolesService.updateByPrimaryKeySelective(bean);
         }
         return "success";
     }
@@ -70,9 +69,9 @@ public class AdminRolesController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        AdminRoles bean = (AdminRoles) this.adminRolesService.selectByPrimaryKey(id);
+        AdminRoles bean = (AdminRoles) adminRolesService.selectByPrimaryKey(id);
         if (bean != null) {
-            this.adminRolesService.deleteByPrimaryKey(id);
+            adminRolesService.deleteByPrimaryKey(id);
         }
         return "success";
     }

@@ -1,9 +1,9 @@
 package com.xxp.blog.service.impl;
 
-import cc.s2m.util.BeanConverter;
 import cc.s2m.util.Method;
 import cc.s2m.util.PageUtil;
 import com.xxp.blog.dao.BaseDao;
+import com.xxp.blog.util.BeanConverter;
 import com.xxp.blog.util.Page;
 import com.xxp.blog.vo.VO;
 
@@ -23,7 +23,7 @@ public abstract class BaseServiceImpl<T, DAO extends BaseDao<T, PK>, PK extends 
         if (map == null) {
             map = new HashMap<String, Object>();
         }
-        map.putAll(BeanConverter.toMap(condition, false));
+        map.putAll(BeanConverter.toMap(condition));
         return getDao().delete(map);
     }
 
@@ -80,7 +80,7 @@ public abstract class BaseServiceImpl<T, DAO extends BaseDao<T, PK>, PK extends 
             map = new HashMap<String, Object>();
         }
         if (condition != null) {
-            map.putAll(BeanConverter.toMap(condition, false));
+            map.putAll(BeanConverter.toMap(condition));
         }
         return getDao().getList(map);
     }

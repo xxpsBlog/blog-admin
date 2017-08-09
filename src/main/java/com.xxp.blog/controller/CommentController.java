@@ -1,20 +1,17 @@
-package cc.s2m.web.s2mBlog.controller;
+package com.xxp.blog.controller;
 
-import cc.s2m.util.IpUtil;
-import cc.s2m.web.s2mBlog.controller.base.BaseController;
-import cc.s2m.web.s2mBlog.pojo.Articles;
-import cc.s2m.web.s2mBlog.pojo.Comment;
-import cc.s2m.web.s2mBlog.service.IArticles;
-import cc.s2m.web.s2mBlog.service.IComment;
 import com.google.common.base.Strings;
-
-import java.util.Date;
-import javax.servlet.http.HttpServletRequest;
-
+import com.xxp.blog.controller.base.BaseController;
+import com.xxp.blog.pojo.Articles;
+import com.xxp.blog.service.IArticles;
+import com.xxp.blog.service.IComment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Controller
 @RequestMapping({"/comment"})
@@ -41,7 +38,7 @@ public class CommentController extends BaseController {
         if (Strings.isNullOrEmpty(bean.getMsg())) {
             return "empty";
         }
-        Articles article = (Articles) this.articlesService.selectByPrimaryKey(bean.getAid());
+        Articles article = (Articles) articlesService.selectByPrimaryKey(bean.getAid());
         if (article == null) {
             return "noArticle";
         }
@@ -49,7 +46,7 @@ public class CommentController extends BaseController {
 
         Comment condition = new Comment();
         condition.setIp(ip);
-        Comment lastThisipComment = (Comment) this.commentService.getByCondition(condition);
+        Comment lastThisipComment = (Comment) commentService.getByCondition(condition);
         if (lastThisipComment != null) {
             long rex = new Date().getTime() - lastThisipComment.getDateAdd().getTime();
             rex = rex / 1000L / 60L;
@@ -58,11 +55,11 @@ public class CommentController extends BaseController {
             }
         }
 
-        this.articlesService.addCommentNumber(article.getId().intValue());
+        articlesService.addCommentNumber(article.getId().intValue());
 
         bean.setIp(ip);
         bean.setDateAdd(new Date());
-        this.commentService.insertSelective(bean);
+        commentService.insertSelective(bean);
         return "success";
     }
 }

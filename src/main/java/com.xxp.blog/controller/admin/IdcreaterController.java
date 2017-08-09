@@ -25,7 +25,7 @@ public class IdcreaterController extends BaseController {
 
     @RequestMapping(value = {"/list"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String list(Model model) {
-        List list = this.idcreaterService.getList(new Idcreater(), null);
+        List list = idcreaterService.getList(new Idcreater(), null);
         model.addAttribute("list", list);
 
         return "admin/idcreater";
@@ -34,7 +34,7 @@ public class IdcreaterController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(@RequestParam(required = false) Integer id, Model model) {
         if (id != null) {
-            Idcreater bean = (Idcreater) this.idcreaterService.selectByPrimaryKey(id);
+            Idcreater bean = (Idcreater) idcreaterService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/idcreater_add";
@@ -48,9 +48,9 @@ public class IdcreaterController extends BaseController {
         }
         Idcreater bean = new Idcreater();
         if (id != null) {
-            bean = (Idcreater) this.idcreaterService.selectByPrimaryKey(id);
+            bean = (Idcreater) idcreaterService.selectByPrimaryKey(id);
         }
-        Idcreater bean_ = this.idcreaterService.getByName(name);
+        Idcreater bean_ = idcreaterService.getByName(name);
         if ((bean_ != null) && (!bean_.getId().equals(bean.getId()))) {
             bean_ = null;
             return "exist";
@@ -60,13 +60,13 @@ public class IdcreaterController extends BaseController {
         if (id == null) {
             bean.setName(name);
             bean.setValue(value);
-            this.idcreaterService.insert(bean);
+            idcreaterService.insert(bean);
         } else {
             Map map = new HashMap();
             map.put("name", bean.getName());
             map.put("valueOld", bean.getValue());
             map.put("value", value);
-            this.idcreaterService.updateValues(map);
+            idcreaterService.updateValues(map);
         }
         return "success";
     }
@@ -74,9 +74,9 @@ public class IdcreaterController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(HttpServletRequest request, HttpServletResponse response, @RequestParam(required = false) Integer id) {
-        Idcreater bean = (Idcreater) this.idcreaterService.selectByPrimaryKey(id);
+        Idcreater bean = (Idcreater) idcreaterService.selectByPrimaryKey(id);
         if (bean != null) {
-            this.idcreaterService.deleteByPrimaryKey(id);
+            idcreaterService.deleteByPrimaryKey(id);
         }
         return "success";
     }

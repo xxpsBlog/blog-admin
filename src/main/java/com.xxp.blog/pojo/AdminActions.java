@@ -1,6 +1,20 @@
 package com.xxp.blog.pojo;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+/**
+ * 功能描述：
+ * @ClassName AdminActions
+ * @Author：xinpei.xu
+ * @Date：2017/8/9 14:31
+ */
+@Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class AdminActions extends BaseModelBean {
+
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String name;
@@ -9,51 +23,4 @@ public class AdminActions extends BaseModelBean {
     private Integer level;
     private Integer paixu;
 
-    public Integer getId() {
-        return this.id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUrl() {
-        return this.url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Integer getPid() {
-        return this.pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
-
-    public Integer getLevel() {
-        return this.level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    public Integer getPaixu() {
-        return this.paixu;
-    }
-
-    public void setPaixu(Integer paixu) {
-        this.paixu = paixu;
-    }
 }

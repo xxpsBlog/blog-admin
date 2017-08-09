@@ -1,14 +1,14 @@
-package cc.s2m.web.s2mBlog.controller;
+package com.xxp.blog.controller;
 
-import cc.s2m.web.s2mBlog.controller.base.BaseController;
 
-import java.util.Map;
-
+import com.xxp.blog.controller.base.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 @Controller
 public class UmeditorUpload extends BaseController {

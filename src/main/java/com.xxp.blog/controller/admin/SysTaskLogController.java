@@ -24,7 +24,7 @@ public class SysTaskLogController extends BaseController {
     public String list(Model model, @RequestParam(required = false, defaultValue = "1") Integer page) {
         Map map = new HashMap();
 
-        Page pageBean = this.sysTaskLogService.getPage(page.intValue(), 50, null, map);
+        Page pageBean = sysTaskLogService.getPage(page.intValue(), 50, null, map);
         model.addAttribute("pageBean", pageBean);
 
         return "admin/sysTaskLog";

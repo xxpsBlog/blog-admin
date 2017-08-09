@@ -1,7 +1,6 @@
 package com.xxp.blog.controller.admin;
 
-import cc.s2m.util.BeanConverter;
-import cc.s2m.util.Page;
+import com.google.common.base.Strings;
 import com.xxp.blog.controller.base.BaseController;
 import com.xxp.blog.pojo.Articles;
 import com.xxp.blog.pojo.ArticlesContent;
@@ -11,19 +10,19 @@ import com.xxp.blog.service.IArticles;
 import com.xxp.blog.service.IArticlesContent;
 import com.xxp.blog.service.IArticlesTags;
 import com.xxp.blog.service.ITags;
+import com.xxp.blog.util.BeanConverter;
+import com.xxp.blog.util.Page;
 import com.xxp.blog.vo.Expressions;
 import com.xxp.blog.vo.VO;
-import com.google.common.base.Strings;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller("admin_ArticlesController")
 @RequestMapping({"/admin/articles"})
@@ -46,10 +45,10 @@ public class ArticlesController extends BaseController {
         if (page == null) page = Integer.valueOf(1);
         Map map = new HashMap();
         if (bean != null) {
-            map.putAll(BeanConverter.toMap(bean, false));
+            map.putAll(BeanConverter.toMap(bean));
             model.addAttribute("bean", bean);
         }
-        Page pageBean = this.articlesService.getPage(page.intValue(), 50, null, map);
+        Page pageBean = articlesService.getPage(page.intValue(), 50, null, map);
         model.addAttribute("pageBean", pageBean);
         return "admin/articles";
     }
@@ -57,16 +56,16 @@ public class ArticlesController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
         Tags vo = new Tags();
-        List tags = this.tagsService.getList(vo, null);
+        List tags = tagsService.getList(vo, null);
         model.addAttribute("tags", tags);
         if (id != null) {
-            Articles bean = (Articles) this.articlesService.selectByPrimaryKey(id);
+            Articles bean = (Articles) articlesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
             ArticlesTags condition = new ArticlesTags();
             condition.setAid(id);
-            List tagsSel = this.articlesTagsService.getList(condition, null);
+            List tagsSel = articlesTagsService.getList(condition, null);
             model.addAttribute("tagsSel", tagsSel);
-            ArticlesContent content = (ArticlesContent) this.articlesContentService.selectByPrimaryKey(id);
+            ArticlesContent content = (ArticlesContent) articlesContentService.selectByPrimaryKey(id);
             model.addAttribute("content", content);
         }
         return "admin/articles_add";
@@ -75,7 +74,7 @@ public class ArticlesController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            Articles bean = (Articles) this.articlesService.selectByPrimaryKey(id);
+            Articles bean = (Articles) articlesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/articles_view";
@@ -99,30 +98,30 @@ public class ArticlesController extends BaseController {
         if (bean.getId() == null) {
             Articles condition = new Articles();
             condition.setUrl(bean.getUrl());
-            condition = (Articles) this.articlesService.getByCondition(condition);
+            condition = (Articles) articlesService.getByCondition(condition);
             if (condition != null) {
                 return "exists";
             }
-            this.articlesService.insertSelective(bean);
+            articlesService.insertSelective(bean);
         } else {
             Articles avo = new Articles();
             avo.setUrl(bean.getUrl());
             VO vo = new VO();
             vo.and(Expressions.ne("id", bean.getId()));
-            avo = (Articles) this.articlesService.getByCondition(avo, vo);
+            avo = (Articles) articlesService.getByCondition(avo, vo);
             if (avo != null) {
                 return "exists";
             }
-            this.articlesService.updateByPrimaryKeySelective(bean);
+            articlesService.updateByPrimaryKeySelective(bean);
 
             ArticlesTags condition = new ArticlesTags();
             condition.setAid(bean.getId());
-            List list = this.articlesTagsService.getList(condition, null);
+            List<ArticlesTags> list = articlesTagsService.getList(condition, null);
             for (ArticlesTags atag : list) {
-                this.articlesTagsService.deleteByPrimaryKey(atag.getId());
-                Tags tag = (Tags) this.tagsService.selectByPrimaryKey(atag.getTid());
-                tag.setNumber(Integer.valueOf(this.tagsService.getTagArticleNumber(atag.getTid().intValue())));
-                this.tagsService.updateByPrimaryKeySelective(tag);
+                articlesTagsService.deleteByPrimaryKey(atag.getId());
+                Tags tag = (Tags) tagsService.selectByPrimaryKey(atag.getTid());
+                tag.setNumber(Integer.valueOf(tagsService.getTagArticleNumber(atag.getTid().intValue())));
+                tagsService.updateByPrimaryKeySelective(tag);
             }
         }
         Integer[] arr$ = tags;
@@ -132,21 +131,21 @@ public class ArticlesController extends BaseController {
             ArticlesTags atag = new ArticlesTags();
             atag.setAid(bean.getId());
             atag.setTid(Integer.valueOf(tagId));
-            this.articlesTagsService.insertSelective(atag);
-            Tags tag = (Tags) this.tagsService.selectByPrimaryKey(atag.getTid());
-            tag.setNumber(Integer.valueOf(this.tagsService.getTagArticleNumber(atag.getTid().intValue())));
-            this.tagsService.updateByPrimaryKeySelective(tag);
+            articlesTagsService.insertSelective(atag);
+            Tags tag = (Tags) tagsService.selectByPrimaryKey(atag.getTid());
+            tag.setNumber(Integer.valueOf(tagsService.getTagArticleNumber(atag.getTid().intValue())));
+            tagsService.updateByPrimaryKeySelective(tag);
         }
 
-        ArticlesContent articlesContent = (ArticlesContent) this.articlesContentService.selectByPrimaryKey(bean.getId());
+        ArticlesContent articlesContent = (ArticlesContent) articlesContentService.selectByPrimaryKey(bean.getId());
         if (articlesContent == null) {
             articlesContent = new ArticlesContent();
             articlesContent.setId(bean.getId());
             articlesContent.setContent(content);
-            this.articlesContentService.insert(articlesContent);
+            articlesContentService.insert(articlesContent);
         } else {
             articlesContent.setContent(content);
-            this.articlesContentService.updateByPrimaryKey(articlesContent);
+            articlesContentService.updateByPrimaryKey(articlesContent);
         }
         return "success";
     }
@@ -154,20 +153,20 @@ public class ArticlesController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        Articles bean = (Articles) this.articlesService.selectByPrimaryKey(id);
+        Articles bean = (Articles) articlesService.selectByPrimaryKey(id);
         if (bean != null) {
-            this.articlesService.deleteByPrimaryKey(id);
+            articlesService.deleteByPrimaryKey(id);
         }
         ArticlesTags condition = new ArticlesTags();
         condition.setAid(id);
-        List list = this.articlesTagsService.getList(condition, null);
+        List<ArticlesTags> list = articlesTagsService.getList(condition, null);
         for (ArticlesTags atag : list) {
-            this.articlesTagsService.deleteByPrimaryKey(atag.getId());
-            Tags tag = (Tags) this.tagsService.selectByPrimaryKey(atag.getTid());
-            tag.setNumber(Integer.valueOf(this.tagsService.getTagArticleNumber(atag.getTid().intValue())));
-            this.tagsService.updateByPrimaryKeySelective(tag);
+            articlesTagsService.deleteByPrimaryKey(atag.getId());
+            Tags tag = (Tags) tagsService.selectByPrimaryKey(atag.getTid());
+            tag.setNumber(Integer.valueOf(tagsService.getTagArticleNumber(atag.getTid().intValue())));
+            tagsService.updateByPrimaryKeySelective(tag);
         }
-        this.articlesContentService.deleteByPrimaryKey(id);
+        articlesContentService.deleteByPrimaryKey(id);
         return "success";
     }
 }

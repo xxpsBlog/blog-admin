@@ -40,35 +40,35 @@ public class Blog extends BaseController {
         }
         Articles article = new Articles();
         article.setUrl(url);
-        article = (Articles) this.articlesService.getByCondition(article);
+        article = (Articles) articlesService.getByCondition(article);
         if (article == null) {
             return "404";
         }
         article.setViews(Integer.valueOf(article.getViews().intValue() + 1));
-        this.articlesService.addViewNumber(article.getId().intValue());
+        articlesService.addViewNumber(article.getId().intValue());
         model.addAttribute("bean", article);
-        ArticlesContent content = (ArticlesContent) this.articlesContentService.selectByPrimaryKey(article.getId());
+        ArticlesContent content = (ArticlesContent) articlesContentService.selectByPrimaryKey(article.getId());
         model.addAttribute("content", content);
 
         VO vo = new VO();
         vo.and(Expressions.lt("id", article.getId()));
-        Articles preArt = (Articles) this.articlesService.getByCondition(new Articles(), vo);
+        Articles preArt = (Articles) articlesService.getByCondition(new Articles(), vo);
         model.addAttribute("preArt", preArt);
 
         vo = new VO();
         vo.and(Expressions.gt("id", article.getId()));
-        Articles nextArt = (Articles) this.articlesService.getByCondition(new Articles(), vo, "id ASC");
+        Articles nextArt = (Articles) articlesService.getByCondition(new Articles(), vo, "id ASC");
         model.addAttribute("nextArt", nextArt);
 
         List linkedArtIds = Lists.newArrayList();
         ArticlesTags atagVO = new ArticlesTags();
         atagVO.setAid(article.getId());
-        List<ArticlesTags> atags = this.articlesTagsService.getList(atagVO, null);
+        List<ArticlesTags> atags = articlesTagsService.getList(atagVO, null);
         if (!atags.isEmpty()) {
             for (ArticlesTags atag : atags) {
                 atagVO = new ArticlesTags();
                 atagVO.setTid(atag.getTid());
-                List<ArticlesTags> atags_ = this.articlesTagsService.getList(atagVO, null);
+                List<ArticlesTags> atags_ = articlesTagsService.getList(atagVO, null);
                 for (ArticlesTags atag_ : atags_) {
                     if (!linkedArtIds.contains(atag_.getAid())) {
                         linkedArtIds.add(atag_.getAid());
@@ -82,7 +82,7 @@ public class Blog extends BaseController {
         vo.and(Expressions.ne("id", article.getId()));
         map.put("vo", vo);
         map.put("pageSize", Integer.valueOf(10));
-        List linkedArts = this.articlesService.getList(null, map);
+        List linkedArts = articlesService.getList(null, map);
         model.addAttribute("linkedArts", linkedArts);
         return "detail";
     }

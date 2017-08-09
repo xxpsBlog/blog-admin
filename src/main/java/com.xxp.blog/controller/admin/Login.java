@@ -44,7 +44,7 @@ public class Login extends BaseController {
         }
         Admin condition = new Admin();
         condition.setUsername(username);
-        Admin admin = (Admin) this.adminService.getByCondition(condition);
+        Admin admin = (Admin) adminService.getByCondition(condition);
         if (admin == null) {
             return "noRecord";
         }
@@ -58,14 +58,14 @@ public class Login extends BaseController {
         String cookieId = request.getSession(true).getId();
         cookie.setCookie(StaticProp.cookieID, cookieId, Integer.valueOf(-1), null);
         if (StaticProp.IS_USER_MEMCACHED)
-            this.memcachedClient.set(MemcacheKeys.ADMIN_SESSION.getKey() + cookieId, 1800, admin);
+            memcachedClient.set(MemcacheKeys.ADMIN_SESSION.getKey() + cookieId, 1800, admin);
         else {
             request.getSession(true).setAttribute(MemcacheKeys.ADMIN_SESSION.getKey() + cookieId, admin);
         }
 
         admin.setDateLogin(new Date());
         admin.setIpLogin(IpUtil.getIp(request));
-        this.adminService.updateByPrimaryKey(admin);
+        adminService.updateByPrimaryKey(admin);
         return "success";
     }
 
@@ -75,7 +75,7 @@ public class Login extends BaseController {
         String cookieId = cookie.getCookie(StaticProp.cookieID);
         if ((cookieId != null) && (!cookieId.trim().isEmpty())) {
             if (StaticProp.IS_USER_MEMCACHED)
-                this.memcachedClient.delete(MemcacheKeys.ADMIN_SESSION.getKey() + cookieId);
+                memcachedClient.delete(MemcacheKeys.ADMIN_SESSION.getKey() + cookieId);
             else {
                 request.getSession(true).removeAttribute(MemcacheKeys.ADMIN_SESSION.getKey() + cookieId);
             }

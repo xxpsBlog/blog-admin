@@ -1,25 +1,24 @@
-package cc.s2m.web.s2mBlog.controller;
+package com.xxp.blog.controller;
 
-import cc.s2m.util.Page;
-import cc.s2m.web.s2mBlog.controller.base.BaseController;
-import cc.s2m.web.s2mBlog.pojo.ArticlesTags;
-import cc.s2m.web.s2mBlog.pojo.Tags;
-import cc.s2m.web.s2mBlog.service.IArticles;
-import cc.s2m.web.s2mBlog.service.IArticlesTags;
-import cc.s2m.web.s2mBlog.service.ITags;
-import cc.s2m.web.s2mBlog.vo.Expressions;
-import cc.s2m.web.s2mBlog.vo.VO;
 import com.google.common.collect.Lists;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.xxp.blog.controller.base.BaseController;
+import com.xxp.blog.pojo.ArticlesTags;
+import com.xxp.blog.pojo.Tags;
+import com.xxp.blog.service.IArticles;
+import com.xxp.blog.service.IArticlesTags;
+import com.xxp.blog.service.ITags;
+import com.xxp.blog.util.Page;
+import com.xxp.blog.vo.Expressions;
+import com.xxp.blog.vo.VO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller("TagsController")
 public class TagsController extends BaseController {
@@ -38,7 +37,7 @@ public class TagsController extends BaseController {
     public String list(Model model) {
         Map map = new HashMap();
         map.put("orderBy", "number DESC");
-        List list = this.tagsService.getList(null, map);
+        List list = tagsService.getList(null, map);
         model.addAttribute("list", list);
         return "tags";
     }
@@ -48,14 +47,14 @@ public class TagsController extends BaseController {
         Map map = new HashMap();
         Tags tagsVo = new Tags();
         tagsVo.setUrl(tag);
-        Tags tags = (Tags) this.tagsService.getByCondition(tagsVo);
+        Tags tags = (Tags) tagsService.getByCondition(tagsVo);
         if (tags == null) {
             return "404";
         }
         model.addAttribute("tagBean", tags);
         ArticlesTags atagVO = new ArticlesTags();
         atagVO.setTid(tags.getId());
-        List atags = this.articlesTagsService.getList(atagVO, null);
+        List<ArticlesTags> atags = articlesTagsService.getList(atagVO, null);
         List sids = Lists.newArrayList(new Integer[]{Integer.valueOf(0)});
         for (ArticlesTags atag : atags) {
             sids.add(atag.getAid());
@@ -64,7 +63,7 @@ public class TagsController extends BaseController {
         vo.and(Expressions.in("id", sids));
         map.put("vo", vo);
 
-        Page pageBean = this.articlesService.getPage(1, PAGE_NUMBER, "/tags/" + tag + "/", map);
+        Page pageBean = articlesService.getPage(1, PAGE_NUMBER, "/tags/" + tag + "/", map);
         model.addAttribute("pageBean", pageBean);
         return "index";
     }
@@ -74,14 +73,14 @@ public class TagsController extends BaseController {
         Map map = new HashMap();
         Tags tagsVo = new Tags();
         tagsVo.setUrl(tag);
-        Tags tags = (Tags) this.tagsService.getByCondition(tagsVo);
+        Tags tags = (Tags) tagsService.getByCondition(tagsVo);
         if (tags == null) {
             return "404";
         }
         model.addAttribute("tagBean", tags);
         ArticlesTags atagVO = new ArticlesTags();
         atagVO.setTid(tags.getId());
-        List atags = this.articlesTagsService.getList(atagVO, null);
+        List<ArticlesTags> atags = articlesTagsService.getList(atagVO, null);
         List sids = Lists.newArrayList();
         for (ArticlesTags atag : atags) {
             sids.add(atag.getAid());
@@ -90,7 +89,7 @@ public class TagsController extends BaseController {
         vo.and(Expressions.in("id", sids));
         map.put("vo", vo);
 
-        Page pageBean = this.articlesService.getPage(page.intValue(), PAGE_NUMBER, "/tags/" + tag + "/", map);
+        Page pageBean = articlesService.getPage(page.intValue(), PAGE_NUMBER, "/tags/" + tag + "/", map);
         model.addAttribute("pageBean", pageBean);
         return "index";
     }

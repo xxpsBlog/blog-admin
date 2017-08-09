@@ -42,7 +42,7 @@ public class PassWord extends BaseController {
             return "errorPassword";
         }
         admin.setPwd(DigestUtils.md5Hex(password));
-        this.adminService.updateByPrimaryKey(admin);
+        adminService.updateByPrimaryKey(admin);
 
         delMemObjectFromCookie(MemcacheKeys.ADMIN_SESSION, request, response);
         return "success";

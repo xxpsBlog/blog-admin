@@ -1,23 +1,22 @@
 package com.xxp.blog.controller.admin;
 
-import cc.s2m.util.BeanConverter;
-import cc.s2m.util.Page;
+import com.google.common.base.Strings;
 import com.xxp.blog.controller.base.BaseController;
 import com.xxp.blog.pojo.Comment;
 import com.xxp.blog.service.IArticles;
 import com.xxp.blog.service.IComment;
+import com.xxp.blog.util.BeanConverter;
+import com.xxp.blog.util.Page;
 import com.xxp.blog.vo.Expressions;
 import com.xxp.blog.vo.VO;
-import com.google.common.base.Strings;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller("admin_CommentController")
 @RequestMapping({"/admin/comment"})
@@ -34,7 +33,7 @@ public class CommentController extends BaseController {
         if (page == null) page = Integer.valueOf(1);
         Map map = new HashMap();
         if (bean != null) {
-            map.putAll(BeanConverter.toMap(bean, false));
+            map.putAll(BeanConverter.toMap(bean));
             model.addAttribute("bean", bean);
         }
         VO vo = new VO();
@@ -47,7 +46,7 @@ public class CommentController extends BaseController {
             vo.and(Expressions.like("msg", "%" + bean.getLinkMsg() + "%"));
         }
         map.put("vo", vo);
-        Page pageBean = this.commentService.getPage(page.intValue(), 50, null, map);
+        Page pageBean = commentService.getPage(page.intValue(), 50, null, map);
         model.addAttribute("pageBean", pageBean);
         return "admin/comment";
     }
@@ -55,7 +54,7 @@ public class CommentController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            Comment bean = (Comment) this.commentService.selectByPrimaryKey(id);
+            Comment bean = (Comment) commentService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/comment_add";
@@ -64,7 +63,7 @@ public class CommentController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            Comment bean = (Comment) this.commentService.selectByPrimaryKey(id);
+            Comment bean = (Comment) commentService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/comment_view";
@@ -77,9 +76,9 @@ public class CommentController extends BaseController {
             return "empty";
         }
         if (bean.getId() == null) {
-            this.commentService.insertSelective(bean);
+            commentService.insertSelective(bean);
         } else {
-            this.commentService.updateByPrimaryKeySelective(bean);
+            commentService.updateByPrimaryKeySelective(bean);
         }
         return "success";
     }
@@ -87,10 +86,10 @@ public class CommentController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        Comment bean = (Comment) this.commentService.selectByPrimaryKey(id);
+        Comment bean = (Comment) commentService.selectByPrimaryKey(id);
         if (bean != null) {
-            this.articlesService.removeCommentNumber(bean.getAid().intValue());
-            this.commentService.deleteByPrimaryKey(id);
+            articlesService.removeCommentNumber(bean.getAid().intValue());
+            commentService.deleteByPrimaryKey(id);
         }
         return "success";
     }

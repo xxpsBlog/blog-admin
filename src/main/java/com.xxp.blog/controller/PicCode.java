@@ -1,23 +1,21 @@
-package cc.s2m.web.s2mBlog.controller;
+package com.xxp.blog.controller;
 
-import cc.s2m.util.CookieUtil;
-import cc.s2m.web.s2mBlog.controller.base.BaseController;
-import cc.s2m.web.s2mBlog.util.MemcacheKeys;
-import cc.s2m.web.s2mBlog.util.StaticProp;
-import com.google.code.kaptcha.Producer;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.oracle.jrockit.jfr.Producer;
+import com.xxp.blog.controller.base.BaseController;
+import com.xxp.blog.util.MemcacheKeys;
+import com.xxp.blog.util.StaticProp;
 import net.spy.memcached.MemcachedClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 @Controller
 public class PicCode extends BaseController {
@@ -41,11 +39,11 @@ public class PicCode extends BaseController {
 
         response.setContentType("image/jpeg");
 
-        String capText = this.captchaProducer.createText();
+        String capText = captchaProducer.createText();
 
         saveCode(request, response, capText);
 
-        BufferedImage bi = this.captchaProducer.createImage(capText);
+        BufferedImage bi = captchaProducer.createImage(capText);
 
         ServletOutputStream out = response.getOutputStream();
 
@@ -62,7 +60,7 @@ public class PicCode extends BaseController {
             cookie.setCookie(StaticProp.cookieID, cookieId, Integer.valueOf(-1), null);
         }
         if (StaticProp.IS_USER_MEMCACHED)
-            this.memcachedClient.set(MemcacheKeys.PIC_CODE.getKey() + cookieId, 300, capText);
+            memcachedClient.set(MemcacheKeys.PIC_CODE.getKey() + cookieId, 300, capText);
         else
             request.getSession(true).setAttribute(MemcacheKeys.PIC_CODE.getKey() + cookieId, capText);
     }
