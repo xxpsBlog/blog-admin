@@ -4,7 +4,6 @@ import com.xuxinpei.blog.util.Page;
 import com.xuxinpei.blog.vo.VO;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 public interface BaseService<T, PK extends Serializable> {
@@ -19,7 +18,7 @@ public interface BaseService<T, PK extends Serializable> {
 
     public abstract int insertSelective(T paramT);
 
-    public abstract T selectByPrimaryKey(PK paramPK);
+//    public abstract T selectByPrimaryKey(PK paramPK);
 
     public abstract T getByCondition(T paramT);
 

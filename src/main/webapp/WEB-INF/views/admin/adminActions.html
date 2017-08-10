@@ -70,48 +70,38 @@
 														<th>操作</th>
 													</tr>
 												</thead>
-<#macro option pid>     
-    <#list pageBean.result as bean>
-	<#if bean.pid == pid>
-		<#assign optionName = bean.name>
-		<#if pid !=0>
-			<#assign balankStr = "">
-			<#list 1..bean.level as bankNum>
-			<#assign balankStr = "&#12288;&#12288;" + balankStr>
-			</#list>
-			<#assign optionName = balankStr + "L___" + bean.name>
-		</#if>
-		<tr>
-			<td>
-			${bean.id}
-			</td>
-			<td>
-			${optionName}
-			</td>
-			<td>
-			${bean.url}
-			</td>
-			<td>
-			${bean.level}
-			</td>
-			<td>
-			${bean.paixu}
-			</td>
-			<td>
-				<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
-					<a class="green" href="/admin/adminActions/add/?id=${bean.id}">
-						<i class="icon-edit bigger-120"></i>
-					</a>
-					<a class="red" href="javascript:" onclick="deleteMsg('${bean.id}')">
-						<i class="icon-trash bigger-120"></i>
-					</a>
-				</div>
-			</td>
-		</tr>
-		<@option bean.id />
-	</#if>
-	</#list>
-</#macro>
+												<#macro option pid>
+													<#list pageBean.result as bean>
+													<#if bean.pid == pid>
+														<#assign optionName = bean.name>
+														<#if pid !=0>
+															<#assign balankStr = "">
+															<#list 1..bean.level as bankNum>
+															<#assign balankStr = "&#12288;&#12288;" + balankStr>
+															</#list>
+															<#assign optionName = balankStr + "L___" + bean.name>
+														</#if>
+														<tr>
+															<td>${bean.id}</td>
+															<td>${optionName}</td>
+															<td>${bean.url}</td>
+															<td>${bean.level}</td>
+															<td>${bean.paixu}</td>
+															<td>
+																<div class="visible-md visible-lg hidden-sm hidden-xs action-buttons">
+																	<a class="green" href="/admin/adminActions/add/?id=${bean.id}">
+																		<i class="icon-edit bigger-120"></i>
+																	</a>
+																	<a class="red" href="javascript:" onclick="deleteMsg('${bean.id}')">
+																		<i class="icon-trash bigger-120"></i>
+																	</a>
+																</div>
+															</td>
+														</tr>
+														<@option bean.id />
+													</#if>
+													</#list>
+												</#macro>
 												<tbody>
 													<@option 0 />    
 												</tbody>

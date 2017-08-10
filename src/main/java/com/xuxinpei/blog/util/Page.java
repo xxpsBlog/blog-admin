@@ -12,7 +12,7 @@ public class Page<T> {
 
     private String beginIndex;
 
-    private String pageSize;
+    private String pageSize = "50";
 
     public int getCurPage() {
         return curPage;
