@@ -20,4 +20,8 @@ public class BaseModelBean implements Serializable {
 
     private String orderBy;
 
+    private Integer pageBeginIndex;
+
+    private Integer pageSize;
+
 }

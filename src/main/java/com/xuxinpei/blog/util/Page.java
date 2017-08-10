@@ -14,6 +14,8 @@ public class Page<T> {
 
     private String pageSize = "50";
 
+    private Object result;
+
     public int getCurPage() {
         return curPage;
     }
@@ -36,6 +38,14 @@ public class Page<T> {
 
     public void setPageSize(String pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public Object getResult() {
+        return result;
+    }
+
+    public void setResult(Object result) {
+        this.result = result;
     }
 
     public Page(int maxRows, String url, String params) {

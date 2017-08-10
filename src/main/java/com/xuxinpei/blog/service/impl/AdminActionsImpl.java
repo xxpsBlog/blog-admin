@@ -21,9 +21,9 @@ public class AdminActionsImpl implements IAdminActions {
 //        page.setCurPage(pageNumber);
 //        page = PageUtil.createPage(page, totalRow);
         Page page = Page.createPage(pageNumber, totalRow);
-        map.put("pageBeginIndex", Integer.valueOf(page.getBeginIndex()));
-        map.put("pageSize", Integer.valueOf(page.getPageSize()));
-        page.setResult(getDao().getList(map));
+        bean.setPageBeginIndex(Integer.valueOf(page.getBeginIndex()));
+        bean.setPageSize(Integer.valueOf(page.getPageSize()));
+        page.setResult(adminActionsMapper.getList(bean));
         return page;
     }
 

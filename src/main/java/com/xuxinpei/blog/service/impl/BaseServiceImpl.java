@@ -1,13 +1,11 @@
 package com.xuxinpei.blog.service.impl;
 
-import com.xuxinpei.blog.util.BeanConverter;
 import com.xuxinpei.blog.dao.BaseDao;
 import com.xuxinpei.blog.util.Page;
 import com.xuxinpei.blog.vo.VO;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class BaseServiceImpl<T, DAO extends BaseDao<T, PK>, PK extends Serializable> {
@@ -70,14 +68,15 @@ public abstract class BaseServiceImpl<T, DAO extends BaseDao<T, PK>, PK extends 
     }
 
     public Page<T> getPage(int pageNumber, int maxRows, String url, Map<String, Object> map) {
-        String params = Method.getQuery(map);
-        int totalRow = getDao().getCount(map);
-        Page page = new Page(maxRows, url, params);
-        page.setCurPage(pageNumber);
-        page = PageUtil.createPage(page, totalRow);
-        map.put("pageBeginIndex", Integer.valueOf(page.getBeginIndex()));
-        map.put("pageSize", Integer.valueOf(page.getPageSize()));
-        page.setResult(getDao().getList(map));
-        return page;
+//        String params = Method.getQuery(map);
+//        int totalRow = getDao().getCount(map);
+//        Page page = new Page(maxRows, url, params);
+//        page.setCurPage(pageNumber);
+//        page = PageUtil.createPage(page, totalRow);
+//        map.put("pageBeginIndex", Integer.valueOf(page.getBeginIndex()));
+//        map.put("pageSize", Integer.valueOf(page.getPageSize()));
+//        page.setResult(getDao().getList(map));
+//        return page;
+        return null;
     }
 }
