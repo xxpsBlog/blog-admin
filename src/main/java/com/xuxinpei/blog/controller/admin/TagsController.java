@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -42,25 +43,25 @@ public class TagsController extends BaseController {
         return "admin/tags";
     }
 
-    @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/add"}, method = {RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            Tags bean = (Tags) tagsService.selectByPrimaryKey(id);
+            Tags bean = tagsService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/tags_add";
     }
 
-    @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/view"}, method = {RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            Tags bean = (Tags) tagsService.selectByPrimaryKey(id);
+            Tags bean = tagsService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/tags_view";
     }
 
-    @RequestMapping(value = {"/save"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/save"}, method = {RequestMethod.POST})
     @ResponseBody
     public String save(Model model, Tags bean) {
         if (bean == null) {
@@ -69,13 +70,13 @@ public class TagsController extends BaseController {
         if (bean.getId() == null) {
             Tags condition = new Tags();
             condition.setName(bean.getName());
-            condition = (Tags) tagsService.getByCondition(condition);
+            condition = tagsService.getByCondition(condition);
             if (condition != null) {
                 return "exists";
             }
             condition = new Tags();
             condition.setUrl(bean.getUrl());
-            condition = (Tags) tagsService.getByCondition(condition);
+            condition = tagsService.getByCondition(condition);
             if (condition != null) {
                 return "exists";
             }
@@ -85,13 +86,13 @@ public class TagsController extends BaseController {
             condition.setName(bean.getName());
             VO vo = new VO();
             vo.and(Expressions.ne("id", bean.getId()));
-            condition = (Tags) tagsService.getByCondition(condition, vo);
+            condition = tagsService.getByCondition(condition, vo);
             if (condition != null) {
                 return "exists";
             }
             condition = new Tags();
             condition.setUrl(bean.getUrl());
-            condition = (Tags) tagsService.getByCondition(condition, vo);
+            condition = tagsService.getByCondition(condition, vo);
             if (condition != null) {
                 return "exists";
             }
@@ -100,10 +101,10 @@ public class TagsController extends BaseController {
         return "success";
     }
 
-    @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/del"}, method = {RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        Tags bean = (Tags) tagsService.selectByPrimaryKey(id);
+        Tags bean = tagsService.selectByPrimaryKey(id);
         if (bean != null) {
             tagsService.deleteByPrimaryKey(id);
         }

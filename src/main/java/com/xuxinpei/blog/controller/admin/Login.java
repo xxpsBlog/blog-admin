@@ -9,9 +9,11 @@ import com.xuxinpei.blog.util.MemcacheKeys;
 import com.xuxinpei.blog.util.StaticProp;
 import net.spy.memcached.MemcachedClient;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,12 +31,12 @@ public class Login extends BaseController {
     @Autowired
     private IAdmin adminService;
 
-    @RequestMapping(value = {"/login"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/login"}, method = {RequestMethod.GET})
     public String login() {
         return "admin/login";
     }
 
-    @RequestMapping(value = {"/login/check"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/login/check"}, method = {RequestMethod.POST})
     @ResponseBody
     public String check(HttpServletRequest request, HttpServletResponse response, @RequestParam String username, @RequestParam String password, @RequestParam String picCode) {
         if (!checkCodeIsEqual(request, picCode)) {
@@ -67,11 +69,11 @@ public class Login extends BaseController {
         return "success";
     }
 
-    @RequestMapping(value = {"/loginout"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/loginout"}, method = {RequestMethod.GET})
     public String out(HttpServletRequest request, HttpServletResponse response) {
         CookieUtil cookie = new CookieUtil(request, response);
         String cookieId = cookie.getCookie(StaticProp.cookieID);
-        if ((cookieId != null) && (!cookieId.trim().isEmpty())) {
+        if (StringUtils.isNotBlank(cookieId)) {
             if (StaticProp.IS_USER_MEMCACHED)
                 memcachedClient.delete(MemcacheKeys.ADMIN_SESSION.getKey() + cookieId);
             else {

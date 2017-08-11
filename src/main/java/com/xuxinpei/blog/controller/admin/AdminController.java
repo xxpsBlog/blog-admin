@@ -1,20 +1,20 @@
 package com.xuxinpei.blog.controller.admin;
 
 import com.google.common.base.Strings;
-import com.xuxinpei.blog.service.IRoles;
-import com.xuxinpei.blog.util.BeanConverter;
 import com.xuxinpei.blog.controller.base.BaseController;
 import com.xuxinpei.blog.pojo.Admin;
 import com.xuxinpei.blog.pojo.AdminRoles;
-import com.xuxinpei.blog.pojo.Roles;
 import com.xuxinpei.blog.service.IAdmin;
 import com.xuxinpei.blog.service.IAdminRoles;
+import com.xuxinpei.blog.service.IRoles;
+import com.xuxinpei.blog.util.BeanConverter;
 import com.xuxinpei.blog.util.Page;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -47,10 +47,10 @@ public class AdminController extends BaseController {
         return "admin/admin";
     }
 
-    @RequestMapping(value = {"/stop"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/stop"}, method = {RequestMethod.POST})
     @ResponseBody
     public String stop(Integer id) {
-        Admin bean = (Admin) adminService.selectByPrimaryKey(id);
+        Admin bean = adminService.selectByPrimaryKey(id);
         if (bean == null) {
             return "noAdmin";
         }
@@ -59,13 +59,15 @@ public class AdminController extends BaseController {
         return "success";
     }
 
-    @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/add"}, method = {RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            Admin bean = (Admin) adminService.selectByPrimaryKey(id);
+            Admin bean = adminService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
             // 获取管理角色
-            List myRoles = adminRolesService.getListByAid(id);
+            AdminRoles condition = new AdminRoles();
+            condition.setAid(id);
+            List<AdminRoles> myRoles = adminRolesService.getList(condition);
             model.addAttribute("myRoles", myRoles);
         }
 
@@ -75,16 +77,16 @@ public class AdminController extends BaseController {
         return "admin/admin_add";
     }
 
-    @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/view"}, method = {RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            Admin bean = (Admin) adminService.selectByPrimaryKey(id);
+            Admin bean = adminService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/admin_view";
     }
 
-    @RequestMapping(value = {"/save"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/save"}, method = {RequestMethod.POST})
     @ResponseBody
     public String save(Model model, Admin bean, Integer[] roleIds) {
         if (bean == null) {
@@ -96,7 +98,7 @@ public class AdminController extends BaseController {
 
         Admin condition = new Admin();
         condition.setUsername(bean.getUsername());
-        condition = (Admin) adminService.getByCondition(condition);
+        condition = adminService.getByCondition(condition);
         if (bean.getId() == null) {
             if (condition != null) {
                 return "userNameExist";
@@ -124,10 +126,10 @@ public class AdminController extends BaseController {
         return "success";
     }
 
-    @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/del"}, method = {RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        Admin bean = (Admin) adminService.selectByPrimaryKey(id);
+        Admin bean = adminService.selectByPrimaryKey(id);
         if (bean != null) {
             adminService.deleteByPrimaryKey(id);
 

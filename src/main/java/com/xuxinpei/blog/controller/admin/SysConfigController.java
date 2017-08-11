@@ -1,21 +1,20 @@
 package com.xuxinpei.blog.controller.admin;
 
-import cc.s2m.util.Page;
 import com.xuxinpei.blog.controller.base.BaseController;
 import com.xuxinpei.blog.pojo.SysConfig;
-import com.xuxinpei.blog.vo.Expressions;
 import com.xuxinpei.blog.service.ISysConfig;
+import com.xuxinpei.blog.util.Page;
+import com.xuxinpei.blog.vo.Expressions;
 import com.xuxinpei.blog.vo.VO;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller("admin_SysConfigController")
 @RequestMapping({"/admin/sysConfig"})
@@ -36,7 +35,7 @@ public class SysConfigController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            SysConfig bean = (SysConfig) sysConfigService.selectByPrimaryKey(id);
+            SysConfig bean = sysConfigService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/sysConfig_add";
@@ -45,7 +44,7 @@ public class SysConfigController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            SysConfig bean = (SysConfig) sysConfigService.selectByPrimaryKey(id);
+            SysConfig bean = sysConfigService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/sysConfig_view";
@@ -60,7 +59,7 @@ public class SysConfigController extends BaseController {
         if (bean.getId() == null) {
             SysConfig config = new SysConfig();
             config.setKey(bean.getKey());
-            config = (SysConfig) sysConfigService.getByCondition(config);
+            config = sysConfigService.getByCondition(config);
             if (config != null) {
                 return "exists";
             }
@@ -73,7 +72,7 @@ public class SysConfigController extends BaseController {
             config.setKey(bean.getKey());
             VO vo = new VO();
             vo.and(Expressions.ne("id", bean.getId()));
-            config = (SysConfig) sysConfigService.getByCondition(config, vo);
+            config = sysConfigService.getByCondition(config, vo);
             if (config != null) {
                 return "exists";
             }
@@ -86,7 +85,7 @@ public class SysConfigController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        SysConfig bean = (SysConfig) sysConfigService.selectByPrimaryKey(id);
+        SysConfig bean = sysConfigService.selectByPrimaryKey(id);
         if (bean != null) {
             sysConfigService.deleteByPrimaryKey(id);
         }

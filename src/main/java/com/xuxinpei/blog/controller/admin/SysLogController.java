@@ -19,6 +19,7 @@ import java.util.Map;
 @Controller("admin_SysLogController")
 @RequestMapping({"/admin/sysLog"})
 public class SysLogController extends BaseController {
+
     private static final Logger LOGGER = LogManager.getLogger(SysLogController.class);
 
     @Autowired
@@ -40,7 +41,7 @@ public class SysLogController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            SysLog bean = (SysLog) sysLogService.selectByPrimaryKey(id);
+            SysLog bean = sysLogService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/sysLog_add";
@@ -49,7 +50,7 @@ public class SysLogController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            SysLog bean = (SysLog) sysLogService.selectByPrimaryKey(id);
+            SysLog bean = sysLogService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/sysLog_view";
@@ -72,7 +73,7 @@ public class SysLogController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        SysLog bean = (SysLog) sysLogService.selectByPrimaryKey(id);
+        SysLog bean = sysLogService.selectByPrimaryKey(id);
         if (bean != null) {
             sysLogService.deleteByPrimaryKey(id);
         }
@@ -82,7 +83,7 @@ public class SysLogController extends BaseController {
     @RequestMapping(value = {"/clearLogs"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String clearLogs() {
-        sysLogService.delete(new SysLog(), null);
+        sysLogService.delete(new SysLog());
         LOGGER.error("清空日志");
         return "success";
     }

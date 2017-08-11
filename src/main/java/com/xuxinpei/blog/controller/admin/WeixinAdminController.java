@@ -44,7 +44,7 @@ public class WeixinAdminController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            WeixinAdmin bean = (WeixinAdmin) weixinAdminService.selectByPrimaryKey(id);
+            WeixinAdmin bean = weixinAdminService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         String weixinAdminCode = RandomStringUtils.randomNumeric(6);
@@ -60,7 +60,7 @@ public class WeixinAdminController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            WeixinAdmin bean = (WeixinAdmin) weixinAdminService.selectByPrimaryKey(id);
+            WeixinAdmin bean = weixinAdminService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/weixinAdmin_view";
@@ -83,7 +83,7 @@ public class WeixinAdminController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        WeixinAdmin bean = (WeixinAdmin) weixinAdminService.selectByPrimaryKey(id);
+        WeixinAdmin bean = weixinAdminService.selectByPrimaryKey(id);
         if (bean != null) {
             weixinAdminService.deleteByPrimaryKey(id);
         }

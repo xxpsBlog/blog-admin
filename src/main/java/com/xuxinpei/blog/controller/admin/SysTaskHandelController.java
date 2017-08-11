@@ -23,7 +23,7 @@ public class SysTaskHandelController extends BaseController {
 
     @RequestMapping(value = {"/list"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String list(Model model) {
-        List list = sysTaskHandelService.getList(new SysTaskHandel(), null);
+        List<SysTaskHandel> list = sysTaskHandelService.getList(new SysTaskHandel());
         model.addAttribute("list", list);
 
         return "admin/sysTaskHandel";
@@ -32,7 +32,7 @@ public class SysTaskHandelController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(HttpServletRequest request, HttpServletResponse response, @RequestParam(required = false) Integer id) {
-        SysTaskHandel bean = (SysTaskHandel) sysTaskHandelService.selectByPrimaryKey(id);
+        SysTaskHandel bean = sysTaskHandelService.selectByPrimaryKey(id);
         if (bean != null) {
             sysTaskHandelService.deleteByPrimaryKey(id);
         }
@@ -42,7 +42,7 @@ public class SysTaskHandelController extends BaseController {
     @RequestMapping(value = {"/enable"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String enable(HttpServletRequest request, HttpServletResponse response, @RequestParam(required = false) Integer id) {
-        SysTaskHandel bean = (SysTaskHandel) sysTaskHandelService.selectByPrimaryKey(id);
+        SysTaskHandel bean = sysTaskHandelService.selectByPrimaryKey(id);
         if (bean != null) {
             bean.setIsEnabled(Boolean.valueOf(!bean.getIsEnabled().booleanValue()));
             sysTaskHandelService.updateByPrimaryKey(bean);

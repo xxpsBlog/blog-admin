@@ -54,7 +54,7 @@ public class CommentController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            Comment bean = (Comment) commentService.selectByPrimaryKey(id);
+            Comment bean = commentService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/comment_add";
@@ -63,7 +63,7 @@ public class CommentController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            Comment bean = (Comment) commentService.selectByPrimaryKey(id);
+            Comment bean = commentService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/comment_view";
@@ -86,7 +86,7 @@ public class CommentController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        Comment bean = (Comment) commentService.selectByPrimaryKey(id);
+        Comment bean = commentService.selectByPrimaryKey(id);
         if (bean != null) {
             articlesService.removeCommentNumber(bean.getAid().intValue());
             commentService.deleteByPrimaryKey(id);

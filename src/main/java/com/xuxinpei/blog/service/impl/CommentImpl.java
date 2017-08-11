@@ -7,13 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CommentImpl extends BaseServiceImpl<Comment, CommentMapper, Integer>
-        implements IComment {
+public class CommentImpl implements IComment {
 
     @Autowired
     private CommentMapper commentMapper;
 
-    protected CommentMapper getDao() {
-        return this.commentMapper;
+    public Comment selectByPrimaryKey(Integer id) {
+        return commentMapper.selectByPrimaryKey(id);
+    }
+
+    public void insertSelective(Comment bean) {
+        commentMapper.insertSelective(bean);
+    }
+
+    public void updateByPrimaryKeySelective(Comment bean) {
+        commentMapper.updateByPrimaryKeySelective(bean);
+    }
+
+    public void deleteByPrimaryKey(Integer id) {
+        commentMapper.deleteByPrimaryKey(id);
     }
 }

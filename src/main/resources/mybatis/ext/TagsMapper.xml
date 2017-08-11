@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cc.s2m.web.s2mBlog.dao.TagsMapper" >
+<mapper namespace="com.xuxinpei.blog.dao.TagsMapper" >
   <select id="getTagArticleNumber" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
     SELECT COUNT(id)
     FROM articles_tags

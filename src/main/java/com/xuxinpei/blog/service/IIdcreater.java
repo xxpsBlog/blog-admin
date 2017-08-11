@@ -2,10 +2,20 @@ package com.xuxinpei.blog.service;
 
 import com.xuxinpei.blog.pojo.Idcreater;
 
+import java.util.List;
 import java.util.Map;
 
-public abstract interface IIdcreater extends BaseService<Idcreater, Integer> {
-    public abstract int updateValues(Map<String, Object> paramMap);
+public interface IIdcreater {
 
-    public abstract Idcreater getByName(String paramString);
+    int updateValues(Map<String, Object> paramMap);
+
+    Idcreater getByName(String paramString);
+
+    List<Idcreater> getList();
+
+    Idcreater selectByPrimaryKey(Integer id);
+
+    void insert(Idcreater bean);
+
+    void deleteByPrimaryKey(Integer id);
 }

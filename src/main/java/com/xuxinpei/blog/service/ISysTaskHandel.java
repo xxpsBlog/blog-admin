@@ -2,5 +2,15 @@ package com.xuxinpei.blog.service;
 
 import com.xuxinpei.blog.pojo.SysTaskHandel;
 
-public abstract interface ISysTaskHandel extends BaseService<SysTaskHandel, Integer> {
+import java.util.List;
+
+public interface ISysTaskHandel {
+
+    List<SysTaskHandel> getList(SysTaskHandel sysTaskHandel);
+
+    SysTaskHandel selectByPrimaryKey(Integer id);
+
+    void deleteByPrimaryKey(Integer id);
+
+    void updateByPrimaryKey(SysTaskHandel bean);
 }

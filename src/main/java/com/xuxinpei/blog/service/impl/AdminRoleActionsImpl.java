@@ -7,13 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdminRoleActionsImpl extends BaseServiceImpl<AdminRoleActions, AdminRoleActionsMapper, Integer>
-        implements IAdminRoleActions {
+public class AdminRoleActionsImpl implements IAdminRoleActions {
 
     @Autowired
     private AdminRoleActionsMapper adminRoleActionsMapper;
 
-    protected AdminRoleActionsMapper getDao() {
-        return this.adminRoleActionsMapper;
+    public AdminRoleActions selectByPrimaryKey(Integer id) {
+        return adminRoleActionsMapper.selectByPrimaryKey(id);
+    }
+
+    public void insertSelective(AdminRoleActions bean) {
+        adminRoleActionsMapper.insertSelective(bean);
+    }
+
+    public void updateByPrimaryKeySelective(AdminRoleActions bean) {
+        adminRoleActionsMapper.updateByPrimaryKeySelective(bean);
+    }
+
+    public void deleteByPrimaryKey(Integer id) {
+        adminRoleActionsMapper.deleteByPrimaryKey(id);
     }
 }

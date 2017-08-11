@@ -37,7 +37,7 @@ public class AdminRolesController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            AdminRoles bean = (AdminRoles) adminRolesService.selectByPrimaryKey(id);
+            AdminRoles bean = adminRolesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/adminRoles_add";
@@ -46,7 +46,7 @@ public class AdminRolesController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            AdminRoles bean = (AdminRoles) adminRolesService.selectByPrimaryKey(id);
+            AdminRoles bean = adminRolesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/adminRoles_view";
@@ -69,7 +69,7 @@ public class AdminRolesController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        AdminRoles bean = (AdminRoles) adminRolesService.selectByPrimaryKey(id);
+        AdminRoles bean = adminRolesService.selectByPrimaryKey(id);
         if (bean != null) {
             adminRolesService.deleteByPrimaryKey(id);
         }

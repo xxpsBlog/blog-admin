@@ -37,7 +37,7 @@ public class ArticlesContentController extends BaseController {
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            ArticlesContent bean = (ArticlesContent) articlesContentService.selectByPrimaryKey(id);
+            ArticlesContent bean = articlesContentService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/articlesContent_add";
@@ -46,7 +46,7 @@ public class ArticlesContentController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            ArticlesContent bean = (ArticlesContent) articlesContentService.selectByPrimaryKey(id);
+            ArticlesContent bean = articlesContentService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/articlesContent_view";
@@ -69,7 +69,7 @@ public class ArticlesContentController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        ArticlesContent bean = (ArticlesContent) articlesContentService.selectByPrimaryKey(id);
+        ArticlesContent bean = articlesContentService.selectByPrimaryKey(id);
         if (bean != null) {
             articlesContentService.deleteByPrimaryKey(id);
         }

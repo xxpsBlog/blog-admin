@@ -1,17 +1,16 @@
 package com.xuxinpei.blog.controller.admin;
 
-import cc.s2m.util.Page;
 import com.xuxinpei.blog.controller.base.BaseController;
 import com.xuxinpei.blog.service.ISysTaskLog;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import com.xuxinpei.blog.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller("admin_SysTaskLogController")
 @RequestMapping({"/admin/sysTaskLog"})

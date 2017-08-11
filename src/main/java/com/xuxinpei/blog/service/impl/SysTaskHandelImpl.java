@@ -6,14 +6,27 @@ import com.xuxinpei.blog.service.ISysTaskHandel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class SysTaskHandelImpl extends BaseServiceImpl<SysTaskHandel, SysTaskHandelMapper, Integer>
-        implements ISysTaskHandel {
+public class SysTaskHandelImpl implements ISysTaskHandel {
 
     @Autowired
-    private SysTaskHandelMapper sysTaskHandelDao;
+    private SysTaskHandelMapper sysTaskHandelMapper;
 
-    protected SysTaskHandelMapper getDao() {
-        return this.sysTaskHandelDao;
+    public List<SysTaskHandel> getList(SysTaskHandel bean) {
+        return sysTaskHandelMapper.getList(bean);
+    }
+
+    public SysTaskHandel selectByPrimaryKey(Integer id) {
+        return sysTaskHandelMapper.selectByPrimaryKey(id);
+    }
+
+    public void deleteByPrimaryKey(Integer id) {
+        sysTaskHandelMapper.deleteByPrimaryKey(id);
+    }
+
+    public void updateByPrimaryKey(SysTaskHandel bean) {
+        sysTaskHandelMapper.updateByPrimaryKey(bean);
     }
 }

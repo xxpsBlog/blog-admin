@@ -2,5 +2,14 @@ package com.xuxinpei.blog.service;
 
 import com.xuxinpei.blog.pojo.ArticlesTags;
 
-public abstract interface IArticlesTags extends BaseService<ArticlesTags, Integer> {
+public interface IArticlesTags {
+    
+    ArticlesTags selectByPrimaryKey(Integer id);
+
+    void insertSelective(ArticlesTags bean);
+
+    void updateByPrimaryKeySelective(ArticlesTags bean);
+
+    void deleteByPrimaryKey(Integer id);
+
 }

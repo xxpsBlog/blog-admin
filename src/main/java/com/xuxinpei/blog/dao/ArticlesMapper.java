@@ -1,11 +1,25 @@
 package com.xuxinpei.blog.dao;
 
 import com.xuxinpei.blog.pojo.Articles;
+import com.xuxinpei.blog.vo.VO;
 
-public abstract interface ArticlesMapper extends BaseDao<Articles, Integer> {
-    public abstract int addViewNumber(int paramInt);
+public interface ArticlesMapper {
 
-    public abstract int addCommentNumber(int paramInt);
+    int addViewNumber(int paramInt);
 
-    public abstract int removeCommentNumber(int paramInt);
+    int addCommentNumber(int paramInt);
+
+    int removeCommentNumber(int paramInt);
+
+    Articles selectByPrimaryKey(Integer id);
+
+    Articles getByCondition(Articles condition);
+
+    void insertSelective(Articles bean);
+
+    Articles getByCondition(Articles avo, VO vo);
+
+    void updateByPrimaryKeySelective(Articles bean);
+
+    void deleteByPrimaryKey(Integer id);
 }

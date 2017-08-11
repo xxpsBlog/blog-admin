@@ -6,24 +6,37 @@ import com.xuxinpei.blog.service.IIdcreater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
-public class IdcreaterImpl extends BaseServiceImpl<Idcreater, IdcreaterMapper, Integer>
-        implements IIdcreater {
+public class IdcreaterImpl implements IIdcreater {
 
     @Autowired
-    private IdcreaterMapper idcreaterDao;
+    private IdcreaterMapper idcreaterMapper;
 
     public int updateValues(Map<String, Object> map) {
-        return this.idcreaterDao.updateValues(map);
+        return idcreaterMapper.updateValues(map);
     }
 
     public Idcreater getByName(String name) {
-        return this.idcreaterDao.getByName(name);
+        return idcreaterMapper.getByName(name);
     }
 
-    protected IdcreaterMapper getDao() {
-        return this.idcreaterDao;
+    public List<Idcreater> getList() {
+        return idcreaterMapper.getList();
     }
+
+    public Idcreater selectByPrimaryKey(Integer id) {
+        return idcreaterMapper.selectByPrimaryKey(id);
+    }
+
+    public void insert(Idcreater bean) {
+        idcreaterMapper.insert(bean);
+    }
+
+    public void deleteByPrimaryKey(Integer id) {
+        idcreaterMapper.deleteByPrimaryKey(id);
+    }
+
 }

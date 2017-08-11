@@ -7,13 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ArticlesTagsImpl extends BaseServiceImpl<ArticlesTags, ArticlesTagsMapper, Integer>
-        implements IArticlesTags {
+public class ArticlesTagsImpl implements IArticlesTags {
 
     @Autowired
     private ArticlesTagsMapper articlesTagsMapper;
 
-    protected ArticlesTagsMapper getDao() {
-        return this.articlesTagsMapper;
+    public ArticlesTags selectByPrimaryKey(Integer id) {
+        return articlesTagsMapper.selectByPrimaryKey(id);
+    }
+
+    public void insertSelective(ArticlesTags bean) {
+        articlesTagsMapper.insertSelective(bean);
+    }
+
+    public void updateByPrimaryKeySelective(ArticlesTags bean) {
+        articlesTagsMapper.updateByPrimaryKeySelective(bean);
+    }
+
+    public void deleteByPrimaryKey(Integer id) {
+        articlesTagsMapper.deleteByPrimaryKey(id);
     }
 }

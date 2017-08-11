@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -45,15 +46,15 @@ public class RolesController extends BaseController {
         return "admin/roles";
     }
 
-    @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/add"}, method = {RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
-            Roles bean = (Roles) rolesService.selectByPrimaryKey(id);
+            Roles bean = rolesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
 
             AdminRoleActions condition = new AdminRoleActions();
             condition.setRid(id);
-            List myActions = adminRoleActionsService.getList(condition, null);
+            List<AdminRoleActions> myActions = adminRoleActionsService.getList(condition, null);
             model.addAttribute("myActions", myActions);
         }
 
@@ -64,16 +65,16 @@ public class RolesController extends BaseController {
         return "admin/roles_add";
     }
 
-    @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/view"}, method = {RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            Roles bean = (Roles) rolesService.selectByPrimaryKey(id);
+            Roles bean = rolesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/roles_view";
     }
 
-    @RequestMapping(value = {"/save"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/save"}, method = {RequestMethod.POST})
     @ResponseBody
     public String save(Model model, Roles bean, Integer[] actionsIds) {
         if (bean == null) {
@@ -100,10 +101,10 @@ public class RolesController extends BaseController {
         return "success";
     }
 
-    @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/del"}, method = {RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        Roles bean = (Roles) rolesService.selectByPrimaryKey(id);
+        Roles bean = rolesService.selectByPrimaryKey(id);
         if (bean != null) {
             rolesService.deleteByPrimaryKey(id);
 

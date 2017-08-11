@@ -59,13 +59,13 @@ public class ArticlesController extends BaseController {
         List tags = tagsService.getList(vo, null);
         model.addAttribute("tags", tags);
         if (id != null) {
-            Articles bean = (Articles) articlesService.selectByPrimaryKey(id);
+            Articles bean = articlesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
             ArticlesTags condition = new ArticlesTags();
             condition.setAid(id);
             List tagsSel = articlesTagsService.getList(condition, null);
             model.addAttribute("tagsSel", tagsSel);
-            ArticlesContent content = (ArticlesContent) articlesContentService.selectByPrimaryKey(id);
+            ArticlesContent content = articlesContentService.selectByPrimaryKey(id);
             model.addAttribute("content", content);
         }
         return "admin/articles_add";
@@ -74,7 +74,7 @@ public class ArticlesController extends BaseController {
     @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
-            Articles bean = (Articles) articlesService.selectByPrimaryKey(id);
+            Articles bean = articlesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
         }
         return "admin/articles_view";
@@ -98,7 +98,7 @@ public class ArticlesController extends BaseController {
         if (bean.getId() == null) {
             Articles condition = new Articles();
             condition.setUrl(bean.getUrl());
-            condition = (Articles) articlesService.getByCondition(condition);
+            condition = articlesService.getByCondition(condition);
             if (condition != null) {
                 return "exists";
             }
@@ -108,7 +108,7 @@ public class ArticlesController extends BaseController {
             avo.setUrl(bean.getUrl());
             VO vo = new VO();
             vo.and(Expressions.ne("id", bean.getId()));
-            avo = (Articles) articlesService.getByCondition(avo, vo);
+            avo = articlesService.getByCondition(avo, vo);
             if (avo != null) {
                 return "exists";
             }
@@ -119,7 +119,7 @@ public class ArticlesController extends BaseController {
             List<ArticlesTags> list = articlesTagsService.getList(condition, null);
             for (ArticlesTags atag : list) {
                 articlesTagsService.deleteByPrimaryKey(atag.getId());
-                Tags tag = (Tags) tagsService.selectByPrimaryKey(atag.getTid());
+                Tags tag = tagsService.selectByPrimaryKey(atag.getTid());
                 tag.setNumber(Integer.valueOf(tagsService.getTagArticleNumber(atag.getTid().intValue())));
                 tagsService.updateByPrimaryKeySelective(tag);
             }
@@ -132,12 +132,12 @@ public class ArticlesController extends BaseController {
             atag.setAid(bean.getId());
             atag.setTid(Integer.valueOf(tagId));
             articlesTagsService.insertSelective(atag);
-            Tags tag = (Tags) tagsService.selectByPrimaryKey(atag.getTid());
+            Tags tag = tagsService.selectByPrimaryKey(atag.getTid());
             tag.setNumber(Integer.valueOf(tagsService.getTagArticleNumber(atag.getTid().intValue())));
             tagsService.updateByPrimaryKeySelective(tag);
         }
 
-        ArticlesContent articlesContent = (ArticlesContent) articlesContentService.selectByPrimaryKey(bean.getId());
+        ArticlesContent articlesContent = articlesContentService.selectByPrimaryKey(bean.getId());
         if (articlesContent == null) {
             articlesContent = new ArticlesContent();
             articlesContent.setId(bean.getId());
@@ -153,7 +153,7 @@ public class ArticlesController extends BaseController {
     @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
-        Articles bean = (Articles) articlesService.selectByPrimaryKey(id);
+        Articles bean = articlesService.selectByPrimaryKey(id);
         if (bean != null) {
             articlesService.deleteByPrimaryKey(id);
         }
@@ -162,7 +162,7 @@ public class ArticlesController extends BaseController {
         List<ArticlesTags> list = articlesTagsService.getList(condition, null);
         for (ArticlesTags atag : list) {
             articlesTagsService.deleteByPrimaryKey(atag.getId());
-            Tags tag = (Tags) tagsService.selectByPrimaryKey(atag.getTid());
+            Tags tag = tagsService.selectByPrimaryKey(atag.getTid());
             tag.setNumber(Integer.valueOf(tagsService.getTagArticleNumber(atag.getTid().intValue())));
             tagsService.updateByPrimaryKeySelective(tag);
         }

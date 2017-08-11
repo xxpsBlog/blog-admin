@@ -9,23 +9,33 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AdminRolesImpl extends BaseServiceImpl<AdminRoles, AdminRolesMapper, Integer>
-        implements IAdminRoles {
+public class AdminRolesImpl implements IAdminRoles {
 
     @Autowired
     private AdminRolesMapper adminRolesMapper;
 
-    protected AdminRolesMapper getDao() {
-        return this.adminRolesMapper;
-    }
-
     /**
      * 获取管理角色
-     * @param id
+     * @param condition
      * @return
      */
-    public List getListByAid(Integer id) {
+    public List<AdminRoles> getList(AdminRoles condition) {
+        return adminRolesMapper.getList(condition);
+    }
 
-        return null;
+    public AdminRoles selectByPrimaryKey(Integer id) {
+        return adminRolesMapper.selectByPrimaryKey(id);
+    }
+
+    public void insertSelective(AdminRoles bean) {
+        adminRolesMapper.insertSelective(bean);
+    }
+
+    public void updateByPrimaryKeySelective(AdminRoles bean) {
+        adminRolesMapper.updateByPrimaryKeySelective(bean);
+    }
+
+    public void deleteByPrimaryKey(Integer id) {
+        adminRolesMapper.deleteByPrimaryKey(id);
     }
 }
