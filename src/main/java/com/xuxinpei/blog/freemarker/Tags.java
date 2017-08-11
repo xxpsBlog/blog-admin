@@ -10,8 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Tags
-        implements TemplateMethodModelEx {
+public class Tags implements TemplateMethodModelEx {
 
     @Autowired
     private ITags tagsService;

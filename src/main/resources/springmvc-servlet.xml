@@ -21,9 +21,9 @@
             </list>  
         </property>  
     </bean>
-    <context:component-scan base-package="cc.s2m.web.s2mBlog.controller" />
-    <context:component-scan base-package="cc.s2m.web.s2mBlog.init" />
-    <context:component-scan base-package="cc.s2m.web.s2mBlog.task" />
+    <context:component-scan base-package="com.xuxinpei.blog.controller" />
+    <context:component-scan base-package="com.xuxinpei.blog.init" />
+    <context:component-scan base-package="com.xuxinpei.blog.task" />
     <cache:annotation-driven />
 	<bean id="memcachedClient" class="net.spy.memcached.spring.MemcachedClientFactoryBean">
 		<!-- <property name="servers" value="host1:11211,host2:11211,host3:11211"/> -->
@@ -79,11 +79,11 @@
 		AuthDescriptor
 		设置authDescriptor,在新的连接上使用身份验证
 	 -->
-    <bean id="cacheManager" class="cc.s2m.web.s2mBlog.util.MemcacheCacheManager">
+    <bean id="cacheManager" class="com.xuxinpei.blog.util.MemcacheCacheManager">
     	<property name="client" ref="memcachedClient"/>
 	    <property name="caches">  
 	        <set>  
-	            <bean class="cc.s2m.web.s2mBlog.util.MemcacheCache">  
+	            <bean class="com.xuxinpei.blog.util.MemcacheCache">
 	                <property name="name" value="defaultCache"/>
 	                <property name="client" ref="memcachedClient"/>
 	            </bean>  
@@ -114,12 +114,12 @@
         -->
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
-			<bean class="cc.s2m.web.s2mBlog.interceptors.TokenInterceptor" />
+			<bean class="com.xuxinpei.blog.interceptors.TokenInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/admin/**"/>
 			<mvc:exclude-mapping path="/admin/login/**"/>
-			<bean class="cc.s2m.web.s2mBlog.interceptors.AdminInterceptor" />
+			<bean class="com.xuxinpei.blog.interceptors.AdminInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 	
@@ -159,19 +159,19 @@
 		<property name="attributesMap">  
 	        <map>  
 	            <entry key="fmExtTags">  
-	                <bean class="cc.s2m.web.s2mBlog.freemarker.Tags" />  
+	                <bean class="com.xuxinpei.blog.freemarker.Tags" />
 	            </entry>  
 	            <entry key="articleTags">  
-	                <bean class="cc.s2m.web.s2mBlog.freemarker.ArticleTag" />  
+	                <bean class="com.xuxinpei.blog.freemarker.ArticleTag" />
 	            </entry>  
 	            <entry key="pageBar">  
-	                <bean class="cc.s2m.web.s2mBlog.freemarker.PageBar" />  
+	                <bean class="com.xuxinpei.blog.freemarker.PageBar" />
 	            </entry>  
 	            <entry key="comments">  
-	                <bean class="cc.s2m.web.s2mBlog.freemarker.CommentExt" />  
+	                <bean class="com.xuxinpei.blog.freemarker.CommentExt" />
 	            </entry>  
 	            <entry key="sysconfig">  
-	                <bean class="cc.s2m.web.s2mBlog.freemarker.SysconfigExt" />  
+	                <bean class="com.xuxinpei.blog.freemarker.SysconfigExt" />
 	            </entry>  
 	        </map>  
 	    </property>

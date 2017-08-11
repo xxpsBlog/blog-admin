@@ -1,9 +1,10 @@
 package com.xuxinpei.blog.freemarker;
 
 import com.google.common.collect.Lists;
+import com.xuxinpei.blog.pojo.ArticlesTags;
+import com.xuxinpei.blog.pojo.Tags;
 import com.xuxinpei.blog.service.IArticlesTags;
 import com.xuxinpei.blog.service.ITags;
-import com.xuxinpei.blog.pojo.ArticlesTags;
 import freemarker.template.SimpleNumber;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
@@ -29,9 +30,9 @@ public class ArticleTag implements TemplateMethodModelEx {
         int aid = number.getAsNumber().intValue();
         ArticlesTags atVo = new ArticlesTags();
         atVo.setAid(Integer.valueOf(aid));
-        List<ArticlesTags> atlist = this.articlesTagsService.getList(atVo, null);
+        List<ArticlesTags> atlist = articlesTagsService.getList(atVo, null);
         for (ArticlesTags atBean : atlist) {
-            com.xuxinpei.blog.pojo.Tags tagBean = (com.xuxinpei.blog.pojo.Tags) this.tagsService.selectByPrimaryKey(atBean.getTid());
+            Tags tagBean = tagsService.selectByPrimaryKey(atBean.getTid());
             if (tagBean != null) {
                 tagList.add(tagBean);
             }
