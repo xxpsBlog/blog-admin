@@ -31,6 +31,7 @@
         <freemarker.version>2.3.23</freemarker.version>
         <lombok.version>1.16.18</lombok.version>
         <spymemcached.version>2.12.3</spymemcached.version>
+        <fastjson.version>1.2.36</fastjson.version>
     </properties>
 
     <dependencies>
@@ -226,6 +227,14 @@
             <version>${spymemcached.version}</version>
         </dependency>
         <!-- end spymemcached -->
+
+        <!-- begin fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+        <!-- end fastjson -->
 
     </dependencies>
 
