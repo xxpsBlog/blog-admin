@@ -1,6 +1,6 @@
 package com.xuxinpei.blog.interceptors;
 
-import cc.s2m.util.CookieUtil;
+import com.google.common.base.Strings;
 import com.xuxinpei.blog.pojo.Admin;
 import com.xuxinpei.blog.pojo.AdminActions;
 import com.xuxinpei.blog.pojo.AdminRoleActions;
@@ -8,17 +8,16 @@ import com.xuxinpei.blog.pojo.AdminRoles;
 import com.xuxinpei.blog.service.IAdminActions;
 import com.xuxinpei.blog.service.IAdminRoleActions;
 import com.xuxinpei.blog.service.IAdminRoles;
+import com.xuxinpei.blog.util.CookieUtil;
 import com.xuxinpei.blog.util.MemcacheKeys;
 import com.xuxinpei.blog.util.StaticProp;
-import com.google.common.base.Strings;
-
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.spy.memcached.MemcachedClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class AdminInterceptor extends HandlerInterceptorAdapter {
 

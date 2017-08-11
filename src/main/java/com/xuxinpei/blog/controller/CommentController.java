@@ -1,10 +1,12 @@
 package com.xuxinpei.blog.controller;
 
 import com.google.common.base.Strings;
-import com.xuxinpei.blog.pojo.Articles;
-import com.xuxinpei.blog.service.IComment;
 import com.xuxinpei.blog.controller.base.BaseController;
+import com.xuxinpei.blog.pojo.Articles;
+import com.xuxinpei.blog.pojo.Comment;
 import com.xuxinpei.blog.service.IArticles;
+import com.xuxinpei.blog.service.IComment;
+import com.xuxinpei.blog.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +48,7 @@ public class CommentController extends BaseController {
 
         Comment condition = new Comment();
         condition.setIp(ip);
-        Comment lastThisipComment = (Comment) commentService.getByCondition(condition);
+        Comment lastThisipComment = commentService.getByCondition(condition);
         if (lastThisipComment != null) {
             long rex = new Date().getTime() - lastThisipComment.getDateAdd().getTime();
             rex = rex / 1000L / 60L;

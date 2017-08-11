@@ -1,17 +1,17 @@
 package com.xuxinpei.blog.interceptors;
 
-import cc.s2m.util.CookieUtil;
+import com.xuxinpei.blog.util.CookieUtil;
 import com.xuxinpei.blog.util.MemcacheKeys;
 import com.xuxinpei.blog.util.StaticProp;
-
-import java.io.PrintWriter;
-import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import net.spy.memcached.MemcachedClient;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.util.UUID;
 
 public class TokenInterceptor extends HandlerInterceptorAdapter {
 
@@ -32,7 +32,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
         String token = getTokenValue(request, response);
         if (("POST".equalsIgnoreCase(request.getMethod())) && (request.getParameterNames().hasMoreElements())) {
             String token_r = request.getParameter("token");
-            if ((token_r == null) || (token_r.trim().isEmpty())) {
+            if (StringUtils.isBlank(token_r)) {
                 response.setContentType("text/html; charset=utf-8");
                 PrintWriter out = response.getWriter();
                 out.println("请求已过期，请返回刷新页面重试！");
@@ -57,7 +57,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
     public String getTokenValue(HttpServletRequest request, HttpServletResponse response) {
         CookieUtil cookie = new CookieUtil(request, response);
         String cookieId = cookie.getCookie(StaticProp.cookieID);
-        if ((cookieId == null) || (cookieId.trim().isEmpty())) {
+        if (StringUtils.isBlank(cookieId)) {
             cookieId = request.getSession(true).getId();
         }
         String token = null;
@@ -67,7 +67,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
             token = (String) request.getSession(true).getAttribute(MemcacheKeys.CSRF_TOKEN.getKey() + cookieId);
         }
 
-        if ((token == null) || (token.trim().isEmpty())) {
+        if (StringUtils.isBlank(token)) {
             token = UUID.randomUUID().toString();
             if (StaticProp.IS_USER_MEMCACHED)
                 this.memcachedClient.set(MemcacheKeys.CSRF_TOKEN.getKey() + cookieId, 1800, token);
