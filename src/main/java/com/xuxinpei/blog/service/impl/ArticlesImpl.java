@@ -3,15 +3,31 @@ package com.xuxinpei.blog.service.impl;
 import com.xuxinpei.blog.dao.ArticlesMapper;
 import com.xuxinpei.blog.pojo.Articles;
 import com.xuxinpei.blog.service.IArticles;
+import com.xuxinpei.blog.util.Page;
 import com.xuxinpei.blog.vo.VO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ArticlesImpl implements IArticles {
 
     @Autowired
     private ArticlesMapper articlesMapper;
+
+    public Page<Articles> getPageBean(Integer page, Articles bean) {
+        int totalRow = articlesMapper.getCount(bean);
+        Page<Articles> pageBean = Page.createPage(page, totalRow);
+        bean.setPageBeginIndex(Integer.valueOf(pageBean.getBeginIndex()));
+        bean.setPageSize(Integer.valueOf(pageBean.getPageSize()));
+        pageBean.setResult(articlesMapper.getList(bean, null));
+        return pageBean;
+    }
+
+    public List<Articles> getList(Articles bean, VO vo) {
+        return articlesMapper.getList(bean, vo);
+    }
 
     public int addViewNumber(int id) {
         return articlesMapper.addViewNumber(id);
@@ -30,7 +46,7 @@ public class ArticlesImpl implements IArticles {
     }
 
     public Articles getByCondition(Articles condition) {
-        return articlesMapper.getByCondition(condition);
+        return getByCondition(condition, null);
     }
 
     public void insertSelective(Articles bean) {

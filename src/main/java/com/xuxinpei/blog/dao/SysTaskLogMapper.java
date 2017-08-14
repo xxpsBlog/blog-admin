@@ -2,5 +2,11 @@ package com.xuxinpei.blog.dao;
 
 import com.xuxinpei.blog.pojo.SysTaskLog;
 
-public abstract interface SysTaskLogMapper extends BaseDao<SysTaskLog, Integer> {
+import java.util.List;
+
+public interface SysTaskLogMapper {
+    
+    int getCount(SysTaskLog bean);
+
+    List<SysTaskLog> getList(SysTaskLog bean);
 }

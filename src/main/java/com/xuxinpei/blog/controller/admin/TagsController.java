@@ -5,7 +5,6 @@ import com.xuxinpei.blog.pojo.ArticlesTags;
 import com.xuxinpei.blog.pojo.Tags;
 import com.xuxinpei.blog.service.IArticlesTags;
 import com.xuxinpei.blog.service.ITags;
-import com.xuxinpei.blog.util.BeanConverter;
 import com.xuxinpei.blog.util.Page;
 import com.xuxinpei.blog.vo.Expressions;
 import com.xuxinpei.blog.vo.VO;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller("admin_TagsController")
 @RequestMapping({"/admin/tags"})
@@ -32,13 +29,10 @@ public class TagsController extends BaseController {
 
     @RequestMapping({"/list"})
     public String list(Model model, Tags bean, Integer page) {
-        if (page == null) page = Integer.valueOf(1);
-        Map map = new HashMap();
-        if (bean != null) {
-            map.putAll(BeanConverter.toMap(bean));
-            model.addAttribute("bean", bean);
+        if (page == null) {
+            page = Integer.valueOf(1);
         }
-        Page pageBean = tagsService.getPage(page.intValue(), 50, null, map);
+        Page<Tags> pageBean = tagsService.getPageBean(page, bean);
         model.addAttribute("pageBean", pageBean);
         return "admin/tags";
     }
@@ -70,13 +64,13 @@ public class TagsController extends BaseController {
         if (bean.getId() == null) {
             Tags condition = new Tags();
             condition.setName(bean.getName());
-            condition = tagsService.getByCondition(condition);
+            condition = tagsService.getByCondition(condition, null);
             if (condition != null) {
                 return "exists";
             }
             condition = new Tags();
             condition.setUrl(bean.getUrl());
-            condition = tagsService.getByCondition(condition);
+            condition = tagsService.getByCondition(condition, null);
             if (condition != null) {
                 return "exists";
             }
@@ -110,7 +104,7 @@ public class TagsController extends BaseController {
         }
         ArticlesTags condition = new ArticlesTags();
         condition.setTid(id);
-        List<ArticlesTags> list = articlesTagsService.getList(condition, null);
+        List<ArticlesTags> list = articlesTagsService.getList(condition);
         for (ArticlesTags atag : list) {
             articlesTagsService.deleteByPrimaryKey(atag.getId());
         }

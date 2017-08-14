@@ -1,8 +1,11 @@
 package com.xuxinpei.blog.service;
 
 import com.xuxinpei.blog.pojo.Admin;
+import com.xuxinpei.blog.util.Page;
 
 public interface IAdmin {
+
+    Page<Admin> getPageBean(Integer page, Admin bean);
 
     Admin selectByPrimaryKey(Integer id);
 
@@ -15,5 +18,4 @@ public interface IAdmin {
     void updateByPrimaryKeySelective(Admin bean);
 
     void deleteByPrimaryKey(Integer id);
-
 }

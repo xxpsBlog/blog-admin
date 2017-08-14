@@ -3,6 +3,7 @@ package com.xuxinpei.blog.service.impl;
 import com.xuxinpei.blog.dao.AdminRolesMapper;
 import com.xuxinpei.blog.pojo.AdminRoles;
 import com.xuxinpei.blog.service.IAdminRoles;
+import com.xuxinpei.blog.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,15 @@ public class AdminRolesImpl implements IAdminRoles {
 
     @Autowired
     private AdminRolesMapper adminRolesMapper;
+
+    public Page<AdminRoles> getPageBean(Integer page, AdminRoles bean) {
+        int totalRow = adminRolesMapper.getCount(bean);
+        Page<AdminRoles> pageBean = Page.createPage(page, totalRow);
+        bean.setPageBeginIndex(Integer.valueOf(pageBean.getBeginIndex()));
+        bean.setPageSize(Integer.valueOf(pageBean.getPageSize()));
+        pageBean.setResult(adminRolesMapper.getList(bean));
+        return pageBean;
+    }
 
     /**
      * 获取管理角色
@@ -37,5 +47,9 @@ public class AdminRolesImpl implements IAdminRoles {
 
     public void deleteByPrimaryKey(Integer id) {
         adminRolesMapper.deleteByPrimaryKey(id);
+    }
+
+    public void delete(AdminRoles condition) {
+        adminRolesMapper.delete(condition);
     }
 }

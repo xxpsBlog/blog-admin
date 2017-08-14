@@ -17,9 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class Blog extends BaseController {
@@ -55,20 +53,22 @@ public class Blog extends BaseController {
         Articles preArt = articlesService.getByCondition(new Articles(), vo);
         model.addAttribute("preArt", preArt);
 
+        Articles articles = new Articles();
+        articles.setOrderBy("id ASC");
         vo = new VO();
         vo.and(Expressions.gt("id", article.getId()));
-        Articles nextArt = articlesService.getByCondition(new Articles(), vo, "id ASC");
+        Articles nextArt = articlesService.getByCondition(articles, vo);
         model.addAttribute("nextArt", nextArt);
 
         List linkedArtIds = Lists.newArrayList();
         ArticlesTags atagVO = new ArticlesTags();
         atagVO.setAid(article.getId());
-        List<ArticlesTags> atags = articlesTagsService.getList(atagVO, null);
+        List<ArticlesTags> atags = articlesTagsService.getList(atagVO);
         if (!atags.isEmpty()) {
             for (ArticlesTags atag : atags) {
                 atagVO = new ArticlesTags();
                 atagVO.setTid(atag.getTid());
-                List<ArticlesTags> atags_ = articlesTagsService.getList(atagVO, null);
+                List<ArticlesTags> atags_ = articlesTagsService.getList(atagVO);
                 for (ArticlesTags atag_ : atags_) {
                     if (!linkedArtIds.contains(atag_.getAid())) {
                         linkedArtIds.add(atag_.getAid());
@@ -76,13 +76,12 @@ public class Blog extends BaseController {
                 }
             }
         }
-        Map map = new HashMap();
+        Articles bean = new Articles();
+        bean.setPageSize(Integer.valueOf(10));
         vo = new VO();
         vo.and(Expressions.in("id", linkedArtIds));
         vo.and(Expressions.ne("id", article.getId()));
-        map.put("vo", vo);
-        map.put("pageSize", Integer.valueOf(10));
-        List linkedArts = articlesService.getList(null, map);
+        List<Articles> linkedArts = articlesService.getList(bean, vo);
         model.addAttribute("linkedArts", linkedArts);
         return "detail";
     }

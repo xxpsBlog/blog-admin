@@ -18,7 +18,7 @@ public class BaseModelBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String orderBy;
+    private String orderBy = "paixu ASC";
 
     private Integer pageBeginIndex;
 

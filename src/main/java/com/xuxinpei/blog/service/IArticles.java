@@ -1,9 +1,16 @@
 package com.xuxinpei.blog.service;
 
 import com.xuxinpei.blog.pojo.Articles;
+import com.xuxinpei.blog.util.Page;
 import com.xuxinpei.blog.vo.VO;
 
+import java.util.List;
+
 public interface IArticles {
+
+    Page<Articles> getPageBean(Integer page, Articles bean);
+
+    List<Articles> getList(Articles bean, VO vo);
 
     int addViewNumber(int paramInt);
 
@@ -22,5 +29,4 @@ public interface IArticles {
     void updateByPrimaryKeySelective(Articles bean);
 
     void deleteByPrimaryKey(Integer id);
-
 }

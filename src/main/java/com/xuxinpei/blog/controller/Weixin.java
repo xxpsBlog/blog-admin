@@ -247,7 +247,7 @@ public class Weixin extends BaseController {
                     List aids = Lists.newArrayList();
                     ArticlesTags condition = new ArticlesTags();
                     condition.setTid(tagBean.getId());
-                    List tagArticles = articlesTagsService.getList(condition, null);
+                    List<ArticlesTags> tagArticles = articlesTagsService.getList(condition, null);
                     for (ArticlesTags atag : tagArticles) {
                         aids.add(atag.getAid());
                     }
@@ -257,7 +257,7 @@ public class Weixin extends BaseController {
                 }
                 map.put("vo", vo);
                 map.put("pageSize", Integer.valueOf(10));
-                List list = articlesService.getList(new Articles(), map);
+                List<Articles> list = articlesService.getList(new Articles(), map);
                 if (list.isEmpty()) {
                     StringBuffer buffer = new StringBuffer();
                     buffer.append("<xml>");

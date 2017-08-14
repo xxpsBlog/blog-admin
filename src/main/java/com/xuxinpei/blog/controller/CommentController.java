@@ -10,6 +10,7 @@ import com.xuxinpei.blog.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class CommentController extends BaseController {
     @Autowired
     private IComment commentService;
 
-    @RequestMapping(value = {"/save"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/save"}, method = {RequestMethod.POST})
     @ResponseBody
     public String detail(HttpServletRequest request, Comment bean) {
         if (bean == null) {
@@ -40,7 +41,7 @@ public class CommentController extends BaseController {
         if (Strings.isNullOrEmpty(bean.getMsg())) {
             return "empty";
         }
-        Articles article = (Articles) articlesService.selectByPrimaryKey(bean.getAid());
+        Articles article = articlesService.selectByPrimaryKey(bean.getAid());
         if (article == null) {
             return "noArticle";
         }

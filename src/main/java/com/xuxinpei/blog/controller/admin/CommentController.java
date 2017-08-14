@@ -1,22 +1,19 @@
 package com.xuxinpei.blog.controller.admin;
 
-import com.google.common.base.Strings;
 import com.xuxinpei.blog.controller.base.BaseController;
 import com.xuxinpei.blog.pojo.Comment;
 import com.xuxinpei.blog.service.IArticles;
 import com.xuxinpei.blog.service.IComment;
-import com.xuxinpei.blog.util.BeanConverter;
 import com.xuxinpei.blog.util.Page;
 import com.xuxinpei.blog.vo.Expressions;
 import com.xuxinpei.blog.vo.VO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller("admin_CommentController")
 @RequestMapping({"/admin/comment"})
@@ -30,28 +27,22 @@ public class CommentController extends BaseController {
 
     @RequestMapping({"/list"})
     public String list(Model model, Comment bean, Integer page) {
-        if (page == null) page = Integer.valueOf(1);
-        Map map = new HashMap();
-        if (bean != null) {
-            map.putAll(BeanConverter.toMap(bean));
-            model.addAttribute("bean", bean);
+        if (page == null) {
+            page = Integer.valueOf(1);
         }
         VO vo = new VO();
-        if (!Strings.isNullOrEmpty(bean.getMsg())) {
-            map.remove("msg");
+        if (StringUtils.isNotBlank(bean.getMsg())) {
             vo.and(Expressions.like("msg", "%" + bean.getMsg() + "%"));
         }
-        if (!Strings.isNullOrEmpty(bean.getLinkMsg())) {
-            map.remove("linkMsg");
+        if (StringUtils.isNotBlank(bean.getLinkMsg())) {
             vo.and(Expressions.like("msg", "%" + bean.getLinkMsg() + "%"));
         }
-        map.put("vo", vo);
-        Page pageBean = commentService.getPage(page.intValue(), 50, null, map);
+        Page<Comment> pageBean = commentService.getPageBean(page, bean, vo);
         model.addAttribute("pageBean", pageBean);
         return "admin/comment";
     }
 
-    @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/add"}, method = {RequestMethod.GET})
     public String add(Model model, Integer id) {
         if (id != null) {
             Comment bean = commentService.selectByPrimaryKey(id);
@@ -60,7 +51,7 @@ public class CommentController extends BaseController {
         return "admin/comment_add";
     }
 
-    @RequestMapping(value = {"/view"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/view"}, method = {RequestMethod.GET})
     public String view(Model model, Integer id) {
         if (id != null) {
             Comment bean = commentService.selectByPrimaryKey(id);
@@ -69,7 +60,7 @@ public class CommentController extends BaseController {
         return "admin/comment_view";
     }
 
-    @RequestMapping(value = {"/save"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/save"}, method = {RequestMethod.POST})
     @ResponseBody
     public String save(Model model, Comment bean) {
         if (bean == null) {
@@ -83,7 +74,7 @@ public class CommentController extends BaseController {
         return "success";
     }
 
-    @RequestMapping(value = {"/del"}, method = {org.springframework.web.bind.annotation.RequestMethod.POST})
+    @RequestMapping(value = {"/del"}, method = {RequestMethod.POST})
     @ResponseBody
     public String del(Integer id) {
         Comment bean = commentService.selectByPrimaryKey(id);

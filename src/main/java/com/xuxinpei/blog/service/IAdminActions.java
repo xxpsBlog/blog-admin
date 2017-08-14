@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IAdminActions {
 
-    Page getPage(int curPage, AdminActions bean);
+    Page<AdminActions> getPageBean(Integer page, AdminActions bean);
 
     AdminActions selectByPrimaryKey(Integer id);
 

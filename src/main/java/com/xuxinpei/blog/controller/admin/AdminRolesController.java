@@ -3,16 +3,12 @@ package com.xuxinpei.blog.controller.admin;
 import com.xuxinpei.blog.controller.base.BaseController;
 import com.xuxinpei.blog.pojo.AdminRoles;
 import com.xuxinpei.blog.service.IAdminRoles;
-import com.xuxinpei.blog.util.BeanConverter;
 import com.xuxinpei.blog.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller("admin_AdminRolesController")
 @RequestMapping({"/admin/adminRoles"})
@@ -23,13 +19,10 @@ public class AdminRolesController extends BaseController {
 
     @RequestMapping({"/list"})
     public String list(Model model, AdminRoles bean, Integer page) {
-        if (page == null) page = Integer.valueOf(1);
-        Map map = new HashMap();
-        if (bean != null) {
-            map.putAll(BeanConverter.toMap(bean));
-            model.addAttribute("bean", bean);
+        if (page == null) {
+            page = Integer.valueOf(1);
         }
-        Page pageBean = adminRolesService.getPage(page.intValue(), 50, null, map);
+        Page<AdminRoles> pageBean = adminRolesService.getPageBean(page, bean);
         model.addAttribute("pageBean", pageBean);
         return "admin/adminRoles";
     }

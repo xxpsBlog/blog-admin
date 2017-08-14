@@ -4,10 +4,10 @@ import com.google.common.base.Strings;
 import com.xuxinpei.blog.controller.base.BaseController;
 import com.xuxinpei.blog.pojo.Admin;
 import com.xuxinpei.blog.pojo.AdminRoles;
+import com.xuxinpei.blog.pojo.Roles;
 import com.xuxinpei.blog.service.IAdmin;
 import com.xuxinpei.blog.service.IAdminRoles;
 import com.xuxinpei.blog.service.IRoles;
-import com.xuxinpei.blog.util.BeanConverter;
 import com.xuxinpei.blog.util.Page;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller("admin_AdminController")
 @RequestMapping({"/admin/admin"})
@@ -36,13 +34,10 @@ public class AdminController extends BaseController {
 
     @RequestMapping({"/list"})
     public String list(Model model, Admin bean, Integer page) {
-        if (page == null) page = Integer.valueOf(1);
-        Map map = new HashMap();
-        if (bean != null) {
-            map.putAll(BeanConverter.toMap(bean));
-            model.addAttribute("bean", bean);
+        if (page == null) {
+            page = Integer.valueOf(1);
         }
-        Page pageBean = adminService.getPage(page.intValue(), 50, null, map);
+        Page<Admin> pageBean = adminService.getPageBean(page, bean);
         model.addAttribute("pageBean", pageBean);
         return "admin/admin";
     }
@@ -72,7 +67,7 @@ public class AdminController extends BaseController {
         }
 
         // 所有角色
-        List roles = rolesService.getList();
+        List<Roles> roles = rolesService.getList(new Roles());
         model.addAttribute("roles", roles);
         return "admin/admin_add";
     }
@@ -112,7 +107,7 @@ public class AdminController extends BaseController {
 
             AdminRoles ar_condition = new AdminRoles();
             ar_condition.setAid(bean.getId());
-            adminRolesService.delete(ar_condition, null);
+            adminRolesService.delete(ar_condition);
         }
 
         if ((roleIds != null) && (roleIds.length > 0)) {
@@ -135,7 +130,7 @@ public class AdminController extends BaseController {
 
             AdminRoles ar_condition = new AdminRoles();
             ar_condition.setAid(id);
-            adminRolesService.delete(String.valueOf(id));
+            adminRolesService.delete(ar_condition);
         }
         return "success";
     }

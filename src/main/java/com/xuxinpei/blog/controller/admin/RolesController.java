@@ -7,7 +7,6 @@ import com.xuxinpei.blog.pojo.Roles;
 import com.xuxinpei.blog.service.IAdminActions;
 import com.xuxinpei.blog.service.IAdminRoleActions;
 import com.xuxinpei.blog.service.IRoles;
-import com.xuxinpei.blog.util.BeanConverter;
 import com.xuxinpei.blog.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller("admin_RolesController")
 @RequestMapping({"/admin/roles"})
@@ -35,13 +32,10 @@ public class RolesController extends BaseController {
 
     @RequestMapping({"/list"})
     public String list(Model model, Roles bean, Integer page) {
-        if (page == null) page = Integer.valueOf(1);
-        Map map = new HashMap();
-        if (bean != null) {
-            map.putAll(BeanConverter.toMap(bean));
-            model.addAttribute("bean", bean);
+        if (page == null) {
+            page = Integer.valueOf(1);
         }
-        Page pageBean = rolesService.getPage(page.intValue(), 2147483647, null, map);
+        Page<Roles> pageBean = rolesService.getPageBean(page, bean);
         model.addAttribute("pageBean", pageBean);
         return "admin/roles";
     }
@@ -54,13 +48,11 @@ public class RolesController extends BaseController {
 
             AdminRoleActions condition = new AdminRoleActions();
             condition.setRid(id);
-            List<AdminRoleActions> myActions = adminRoleActionsService.getList(condition, null);
+            List<AdminRoleActions> myActions = adminRoleActionsService.getList(condition);
             model.addAttribute("myActions", myActions);
         }
 
-        Map map = new HashMap();
-        map.put("orderBy", "paixu ASC");
-        List actions = adminActionsService.getList(new AdminActions(), map);
+        List actions = adminActionsService.getList(new AdminActions());
         model.addAttribute("actions", actions);
         return "admin/roles_add";
     }
@@ -87,7 +79,7 @@ public class RolesController extends BaseController {
 
             AdminRoleActions condition = new AdminRoleActions();
             condition.setRid(bean.getId());
-            adminRoleActionsService.delete(condition, null);
+            adminRoleActionsService.delete(condition);
         }
 
         if ((actionsIds != null) && (actionsIds.length > 0)) {
@@ -110,7 +102,7 @@ public class RolesController extends BaseController {
 
             AdminRoleActions condition = new AdminRoleActions();
             condition.setRid(id);
-            adminRoleActionsService.delete(condition, null);
+            adminRoleActionsService.delete(condition);
         }
         return "success";
     }

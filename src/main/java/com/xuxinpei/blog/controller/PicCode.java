@@ -3,9 +3,11 @@ package com.xuxinpei.blog.controller;
 
 import com.oracle.jrockit.jfr.Producer;
 import com.xuxinpei.blog.controller.base.BaseController;
+import com.xuxinpei.blog.util.CookieUtil;
 import com.xuxinpei.blog.util.MemcacheKeys;
 import com.xuxinpei.blog.util.StaticProp;
 import net.spy.memcached.MemcachedClient;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,7 +57,7 @@ public class PicCode extends BaseController {
     public void saveCode(HttpServletRequest request, HttpServletResponse response, String capText) {
         CookieUtil cookie = new CookieUtil(request, response);
         String cookieId = cookie.getCookie(StaticProp.cookieID);
-        if ((cookieId == null) || (cookieId.trim().isEmpty())) {
+        if (StringUtils.isBlank(cookieId)) {
             cookieId = request.getSession(true).getId();
             cookie.setCookie(StaticProp.cookieID, cookieId, Integer.valueOf(-1), null);
         }

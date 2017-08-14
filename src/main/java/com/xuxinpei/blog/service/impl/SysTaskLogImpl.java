@@ -1,19 +1,24 @@
 package com.xuxinpei.blog.service.impl;
 
 import com.xuxinpei.blog.dao.SysTaskLogMapper;
-import com.xuxinpei.blog.service.ISysTaskLog;
 import com.xuxinpei.blog.pojo.SysTaskLog;
+import com.xuxinpei.blog.service.ISysTaskLog;
+import com.xuxinpei.blog.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysTaskLogImpl extends BaseServiceImpl<SysTaskLog, SysTaskLogMapper, Integer>
-        implements ISysTaskLog {
+public class SysTaskLogImpl implements ISysTaskLog {
 
     @Autowired
-    private SysTaskLogMapper sysTaskLogDao;
+    private SysTaskLogMapper sysTaskLogMapper;
 
-    protected SysTaskLogMapper getDao() {
-        return this.sysTaskLogDao;
+    public Page<SysTaskLog> getPageBean(Integer page, SysTaskLog bean) {
+        int totalRow = sysTaskLogMapper.getCount(bean);
+        Page<SysTaskLog> pageBean = Page.createPage(page, totalRow);
+        bean.setPageBeginIndex(Integer.valueOf(pageBean.getBeginIndex()));
+        bean.setPageSize(Integer.valueOf(pageBean.getPageSize()));
+        pageBean.setResult(sysTaskLogMapper.getList(bean));
+        return pageBean;
     }
 }

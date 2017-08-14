@@ -15,16 +15,14 @@ public class AdminActionsImpl implements IAdminActions {
     @Autowired
     private AdminActionsMapper adminActionsMapper;
 
-    public Page getPage(int pageNumber, AdminActions bean) {
+    public Page<AdminActions> getPageBean(Integer page, AdminActions bean) {
         int totalRow = adminActionsMapper.getCount(bean);
 //        Page page = new Page(params);
-//        page.setCurPage(pageNumber);
-//        page = PageUtil.createPage(page, totalRow);
-        Page page = Page.createPage(pageNumber, totalRow);
-        bean.setPageBeginIndex(Integer.valueOf(page.getBeginIndex()));
-        bean.setPageSize(Integer.valueOf(page.getPageSize()));
-        page.setResult(adminActionsMapper.getList(bean));
-        return page;
+        Page<AdminActions> pageBean = Page.createPage(page, totalRow);
+        bean.setPageBeginIndex(Integer.valueOf(pageBean.getBeginIndex()));
+        bean.setPageSize(Integer.valueOf(pageBean.getPageSize()));
+        pageBean.setResult(adminActionsMapper.getList(bean));
+        return pageBean;
     }
 
     public AdminActions selectByPrimaryKey(Integer id) {

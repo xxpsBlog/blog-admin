@@ -1,8 +1,12 @@
 package com.xuxinpei.blog.service;
 
 import com.xuxinpei.blog.pojo.Comment;
+import com.xuxinpei.blog.util.Page;
+import com.xuxinpei.blog.vo.VO;
 
 public interface IComment {
+
+    Page<Comment> getPageBean(Integer page, Comment bean, VO vo);
 
     Comment selectByPrimaryKey(Integer id);
 
@@ -12,4 +16,5 @@ public interface IComment {
 
     void deleteByPrimaryKey(Integer id);
 
+    Comment getByCondition(Comment bean);
 }

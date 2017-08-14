@@ -42,28 +42,24 @@ public class ArticlesController extends BaseController {
 
     @RequestMapping({"/list"})
     public String list(Model model, Articles bean, Integer page) {
-        if (page == null) page = Integer.valueOf(1);
-        Map map = new HashMap();
-        if (bean != null) {
-            map.putAll(BeanConverter.toMap(bean));
-            model.addAttribute("bean", bean);
+        if (page == null) {
+            page = Integer.valueOf(1);
         }
-        Page pageBean = articlesService.getPage(page.intValue(), 50, null, map);
+        Page<Articles> pageBean = articlesService.getPageBean(page, bean);
         model.addAttribute("pageBean", pageBean);
         return "admin/articles";
     }
 
     @RequestMapping(value = {"/add"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String add(Model model, Integer id) {
-        Tags vo = new Tags();
-        List tags = tagsService.getList(vo, null);
+        List<Tags> tags = tagsService.getList(new Tags());
         model.addAttribute("tags", tags);
         if (id != null) {
             Articles bean = articlesService.selectByPrimaryKey(id);
             model.addAttribute("bean", bean);
             ArticlesTags condition = new ArticlesTags();
             condition.setAid(id);
-            List tagsSel = articlesTagsService.getList(condition, null);
+            List tagsSel = articlesTagsService.getList(condition);
             model.addAttribute("tagsSel", tagsSel);
             ArticlesContent content = articlesContentService.selectByPrimaryKey(id);
             model.addAttribute("content", content);
@@ -116,7 +112,7 @@ public class ArticlesController extends BaseController {
 
             ArticlesTags condition = new ArticlesTags();
             condition.setAid(bean.getId());
-            List<ArticlesTags> list = articlesTagsService.getList(condition, null);
+            List<ArticlesTags> list = articlesTagsService.getList(condition);
             for (ArticlesTags atag : list) {
                 articlesTagsService.deleteByPrimaryKey(atag.getId());
                 Tags tag = tagsService.selectByPrimaryKey(atag.getTid());
@@ -159,7 +155,7 @@ public class ArticlesController extends BaseController {
         }
         ArticlesTags condition = new ArticlesTags();
         condition.setAid(id);
-        List<ArticlesTags> list = articlesTagsService.getList(condition, null);
+        List<ArticlesTags> list = articlesTagsService.getList(condition);
         for (ArticlesTags atag : list) {
             articlesTagsService.deleteByPrimaryKey(atag.getId());
             Tags tag = tagsService.selectByPrimaryKey(atag.getTid());

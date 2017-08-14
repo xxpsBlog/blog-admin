@@ -33,7 +33,7 @@ public class AdminActionsController extends BaseController {
             page = Integer.valueOf(1);
         }
         bean.setOrderBy("paixu ASC");
-        Page pageBean = adminActionsService.getPage(page.intValue(), bean);
+        Page<AdminActions> pageBean = adminActionsService.getPageBean(page, bean);
         model.addAttribute("bean", bean);
         model.addAttribute("pageBean", pageBean);
         return "admin/adminActions";
