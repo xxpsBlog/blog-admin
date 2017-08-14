@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.xuxinpei.blog.pojo.Articles;
+import com.xuxinpei.blog.pojo.Tags;
 import com.xuxinpei.blog.service.*;
 import com.xuxinpei.blog.util.MemcacheKeys;
 import com.xuxinpei.blog.util.StaticProp;
@@ -11,7 +12,6 @@ import com.xuxinpei.blog.vo.Expressions;
 import com.xuxinpei.blog.controller.base.BaseController;
 import com.xuxinpei.blog.pojo.ArticlesTags;
 import com.xuxinpei.blog.pojo.WeixinAdmin;
-import com.xxp.blog.service.*;
 import com.xuxinpei.blog.vo.VO;
 import net.spy.memcached.MemcachedClient;
 import org.apache.log4j.LogManager;
@@ -242,12 +242,12 @@ public class Weixin extends BaseController {
                 vo.and(Expressions.like("title", "%" + content + "%"));
                 Tags tagBean = new Tags();
                 tagBean.setName(content);
-                tagBean = (Tags) tagsService.getByCondition(tagBean);
+                tagBean = tagsService.getByCondition(tagBean, null);
                 if (tagBean != null) {
                     List aids = Lists.newArrayList();
                     ArticlesTags condition = new ArticlesTags();
                     condition.setTid(tagBean.getId());
-                    List<ArticlesTags> tagArticles = articlesTagsService.getList(condition, null);
+                    List<ArticlesTags> tagArticles = articlesTagsService.getList(condition);
                     for (ArticlesTags atag : tagArticles) {
                         aids.add(atag.getAid());
                     }

@@ -35,9 +35,9 @@ public class TagsController extends BaseController {
 
     @RequestMapping({"/tags"})
     public String list(Model model) {
-        Map map = new HashMap();
-        map.put("orderBy", "number DESC");
-        List list = tagsService.getList(null, map);
+        Tags tags = new Tags();
+        tags.setOrderBy("number DESC");
+        List<Tags> list = tagsService.getList(tags);
         model.addAttribute("list", list);
         return "tags";
     }
@@ -47,14 +47,14 @@ public class TagsController extends BaseController {
         Map map = new HashMap();
         Tags tagsVo = new Tags();
         tagsVo.setUrl(tag);
-        Tags tags = (Tags) tagsService.getByCondition(tagsVo);
+        Tags tags = tagsService.getByCondition(tagsVo, null);
         if (tags == null) {
             return "404";
         }
         model.addAttribute("tagBean", tags);
         ArticlesTags atagVO = new ArticlesTags();
         atagVO.setTid(tags.getId());
-        List<ArticlesTags> atags = articlesTagsService.getList(atagVO, null);
+        List<ArticlesTags> atags = articlesTagsService.getList(atagVO);
         List sids = Lists.newArrayList(new Integer[]{Integer.valueOf(0)});
         for (ArticlesTags atag : atags) {
             sids.add(atag.getAid());
@@ -73,14 +73,14 @@ public class TagsController extends BaseController {
         Map map = new HashMap();
         Tags tagsVo = new Tags();
         tagsVo.setUrl(tag);
-        Tags tags = (Tags) tagsService.getByCondition(tagsVo);
+        Tags tags = tagsService.getByCondition(tagsVo, null);
         if (tags == null) {
             return "404";
         }
         model.addAttribute("tagBean", tags);
         ArticlesTags atagVO = new ArticlesTags();
         atagVO.setTid(tags.getId());
-        List<ArticlesTags> atags = articlesTagsService.getList(atagVO, null);
+        List<ArticlesTags> atags = articlesTagsService.getList(atagVO);
         List sids = Lists.newArrayList();
         for (ArticlesTags atag : atags) {
             sids.add(atag.getAid());
