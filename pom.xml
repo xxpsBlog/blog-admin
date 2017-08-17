@@ -245,7 +245,7 @@
         </dependency>
         <!-- end kaptcha -->
 
-    </dependencies>
+</dependencies>
 
     <build>
         <finalName>blog-admin</finalName>
