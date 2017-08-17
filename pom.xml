@@ -21,18 +21,29 @@
         <mybatis-springframework.version>1.2.3</mybatis-springframework.version>
 
         <servlet-api.version>3.0.1</servlet-api.version>
-        <jstl.version>1.2</jstl.version>
-        <standard.version>1.1.2</standard.version>
-        <jsp-api.version>2.2.1-b03</jsp-api.version>
+        <servlet_jsp-api.version>2.2.1</servlet_jsp-api.version>
+
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.5</slf4j.version>
 
+        <java_source.version>1.8</java_source.version>
+        <java_target.version>1.8</java_target.version>
+        <maven_compiler_plugin.version>3.3</maven_compiler_plugin.version>
         <guava.version>22.0</guava.version>
         <freemarker.version>2.3.23</freemarker.version>
         <lombok.version>1.16.18</lombok.version>
         <spymemcached.version>2.12.3</spymemcached.version>
         <fastjson.version>1.2.36</fastjson.version>
         <kaptcha.version>2.3.2</kaptcha.version>
+
+        <maven_resources_plugin.version>2.4</maven_resources_plugin.version>
+        <maven_eclipse_plugin.version>2.6</maven_eclipse_plugin.version>
+        <maven_source_plugin.version>2.1.1</maven_source_plugin.version>
+        <maven_jar_plugin.version>2.3.2</maven_jar_plugin.version>
+        <maven_war_plugin.version>2.1.1</maven_war_plugin.version>
+        <maven_install_plugin.version>2.3.1</maven_install_plugin.version>
+        <maven_deploy_plugin.version>2.7</maven_deploy_plugin.version>
+        <maven_surefire_plugin.version>2.12.4</maven_surefire_plugin.version>
     </properties>
 
     <dependencies>
@@ -159,21 +170,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>${jstl.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>taglibs</groupId>
-            <artifactId>standard</artifactId>
-            <version>${standard.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>${jsp-api.version}</version>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>${servlet_jsp-api.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- end servlet -->
@@ -245,10 +244,90 @@
         </dependency>
         <!-- end kaptcha -->
 
-</dependencies>
+    </dependencies>
 
+    <!--<build>-->
+        <!--<finalName>blog-admin</finalName>-->
+    <!--</build>-->
+    <!-- 构建配置 -->
     <build>
-        <finalName>blog-admin</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <configuration>
+                        <useDefaultDelimiters>false</useDefaultDelimiters>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven_jar_plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven_war_plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven_install_plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven_deploy_plugin.version}</version>
+                    <configuration>
+                        <updateReleaseInfo>true</updateReleaseInfo>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven_compiler_plugin.version}</version>
+                    <configuration>
+                        <source>${java_source.version}</source>
+                        <target>${java_target.version}</target>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                    <version>${maven_surefire_plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <!-- 该配置可以让Maven属性在资源文件(src/main/resources、src/test/resources)中被解析 -->
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+            </testResource>
+        </testResources>
     </build>
 
 </project>

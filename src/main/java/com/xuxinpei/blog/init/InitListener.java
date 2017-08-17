@@ -29,8 +29,9 @@ public class InitListener
         } finally {
             IOUtils.closeQuietly(in);
         }
-        for (Iterator i$ = properties.keySet().iterator(); i$.hasNext(); ) {
-            Object key = i$.next();
+        Iterator iterator = properties.keySet().iterator();
+        while (iterator.hasNext()) {
+            Object key = iterator.next();
             StaticProp.sysConfig.put((String) key, evaluate((String) key, properties));
         }
         properties = null;
@@ -84,4 +85,5 @@ public class InitListener
 
     public void contextDestroyed(ServletContextEvent sce) {
     }
+
 }
