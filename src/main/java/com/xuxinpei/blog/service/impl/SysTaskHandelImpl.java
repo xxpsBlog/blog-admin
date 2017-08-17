@@ -29,4 +29,8 @@ public class SysTaskHandelImpl implements ISysTaskHandel {
     public void updateByPrimaryKey(SysTaskHandel bean) {
         sysTaskHandelMapper.updateByPrimaryKey(bean);
     }
+
+    public void insert(SysTaskHandel bean) {
+        sysTaskHandelMapper.insert(bean);
+    }
 }

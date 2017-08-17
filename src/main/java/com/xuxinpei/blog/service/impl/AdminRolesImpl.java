@@ -52,4 +52,8 @@ public class AdminRolesImpl implements IAdminRoles {
     public void delete(AdminRoles condition) {
         adminRolesMapper.delete(condition);
     }
+
+    public AdminRoles getByCondition(AdminRoles bean) {
+        return adminRolesMapper.getByCondition(bean);
+    }
 }

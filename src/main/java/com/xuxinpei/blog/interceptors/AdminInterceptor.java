@@ -12,6 +12,7 @@ import com.xuxinpei.blog.util.CookieUtil;
 import com.xuxinpei.blog.util.MemcacheKeys;
 import com.xuxinpei.blog.util.StaticProp;
 import net.spy.memcached.MemcachedClient;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -38,13 +39,13 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
         String adminLoginUrl = "/admin/login";
         CookieUtil cookie = new CookieUtil(request, response);
         String cookieId = cookie.getCookie(StaticProp.cookieID);
-        if ((cookieId == null) || (cookieId.trim().isEmpty())) {
+        if (StringUtils.isBlank(cookieId)) {
             response.sendRedirect(adminLoginUrl);
             return false;
         }
         Admin admin = null;
         if (StaticProp.IS_USER_MEMCACHED)
-            admin = (Admin) this.memcachedClient.get(MemcacheKeys.ADMIN_SESSION.getKey() + cookieId);
+            admin = (Admin) memcachedClient.get(MemcacheKeys.ADMIN_SESSION.getKey() + cookieId);
         else {
             admin = (Admin) request.getSession(true).getAttribute(MemcacheKeys.ADMIN_SESSION.getKey() + cookieId);
         }
@@ -60,7 +61,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
         }
         AdminActions actions = new AdminActions();
         actions.setUrl(uri);
-        actions = (AdminActions) this.adminActionsService.getByCondition(actions);
+        actions = adminActionsService.getByCondition(actions);
         if (actions == null) {
             actions = new AdminActions();
             actions.setUrl(uri);
@@ -70,7 +71,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
         if (!admin.getUsername().equals("admin")) {
             AdminRoleActions roleActions = new AdminRoleActions();
             roleActions.setAid(actions.getId());
-            List roleActionsList = this.adminRoleActionsService.getList(roleActions, null);
+            List<AdminRoleActions> roleActionsList = adminRoleActionsService.getList(roleActions);
             if (roleActionsList.isEmpty()) {
                 response.setCharacterEncoding("UTF-8");
                 response.setContentType("text/plain; charset=UTF-8");
@@ -82,7 +83,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
                 AdminRoles adminRole = new AdminRoles();
                 adminRole.setAid(admin.getId());
                 adminRole.setRid(roleActions_.getRid());
-                adminRole = (AdminRoles) this.adminRolesService.getByCondition(adminRole);
+                adminRole = adminRolesService.getByCondition(adminRole);
                 if (adminRole != null) {
                     pass = true;
                     break;

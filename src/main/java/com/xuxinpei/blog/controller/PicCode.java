@@ -1,7 +1,7 @@
 package com.xuxinpei.blog.controller;
 
 
-import com.oracle.jrockit.jfr.Producer;
+import com.google.code.kaptcha.Producer;
 import com.xuxinpei.blog.controller.base.BaseController;
 import com.xuxinpei.blog.util.CookieUtil;
 import com.xuxinpei.blog.util.MemcacheKeys;
@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -28,7 +29,7 @@ public class PicCode extends BaseController {
     @Autowired
     private MemcachedClient memcachedClient;
 
-    @RequestMapping(value = {"/code"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/code"}, method = {RequestMethod.GET})
     public void code(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         response.setDateHeader("Expires", 0L);

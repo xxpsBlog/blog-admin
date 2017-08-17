@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class Blog extends BaseController {
     @Autowired
     private IArticlesTags articlesTagsService;
 
-    @RequestMapping(value = {"/blog/{url}"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/blog/{url}"}, method = {RequestMethod.GET})
     public String detail(Model model, @PathVariable String url) {
         if (StringUtils.isBlank(url)) {
             return "404";
@@ -63,12 +64,12 @@ public class Blog extends BaseController {
         List linkedArtIds = Lists.newArrayList();
         ArticlesTags atagVO = new ArticlesTags();
         atagVO.setAid(article.getId());
-        List<ArticlesTags> atags = articlesTagsService.getList(atagVO);
+        List<ArticlesTags> atags = articlesTagsService.getList(atagVO, null);
         if (!atags.isEmpty()) {
             for (ArticlesTags atag : atags) {
                 atagVO = new ArticlesTags();
                 atagVO.setTid(atag.getTid());
-                List<ArticlesTags> atags_ = articlesTagsService.getList(atagVO);
+                List<ArticlesTags> atags_ = articlesTagsService.getList(atagVO, null);
                 for (ArticlesTags atag_ : atags_) {
                     if (!linkedArtIds.contains(atag_.getAid())) {
                         linkedArtIds.add(atag_.getAid());

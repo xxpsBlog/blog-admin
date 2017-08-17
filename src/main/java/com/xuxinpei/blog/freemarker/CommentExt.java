@@ -1,18 +1,15 @@
 package com.xuxinpei.blog.freemarker;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.xuxinpei.blog.pojo.Articles;
-import com.xuxinpei.blog.service.IComment;
 import com.xuxinpei.blog.pojo.Comment;
 import com.xuxinpei.blog.service.IArticles;
+import com.xuxinpei.blog.service.IComment;
 import freemarker.template.SimpleNumber;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Map;
 
 public class CommentExt
         implements TemplateMethodModelEx {
@@ -37,12 +34,10 @@ public class CommentExt
         if (aid != -1) {
             conditon.setAid(Integer.valueOf(aid));
         }
-        Map map = Maps.newHashMap();
-        map.put("orderBy", "id DESC");
-        map.put("pageSize", Integer.valueOf(rows));
-        List<Comment> list = this.commentService.getList(conditon, map);
+        conditon.setOrderBy("id DESC");
+        List<Comment> list = commentService.getList(rows, conditon);
         for (Comment comment : list) {
-            comment.setArticles((Articles) this.articlesService.selectByPrimaryKey(comment.getAid()));
+            comment.setArticles(articlesService.selectByPrimaryKey(comment.getAid()));
         }
         return list;
     }

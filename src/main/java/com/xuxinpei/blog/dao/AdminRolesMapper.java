@@ -19,4 +19,6 @@ public interface AdminRolesMapper {
     void deleteByPrimaryKey(Integer id);
 
     void delete(AdminRoles condition);
+
+    AdminRoles getByCondition(AdminRoles bean);
 }

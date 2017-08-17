@@ -21,4 +21,16 @@ public class SysTaskLogImpl implements ISysTaskLog {
         pageBean.setResult(sysTaskLogMapper.getList(bean));
         return pageBean;
     }
+
+    public void insert(SysTaskLog bean) {
+        sysTaskLogMapper.getList(bean);
+    }
+
+    public SysTaskLog selectByPrimaryKey(Integer id) {
+        return sysTaskLogMapper.selectByPrimaryKey(id);
+    }
+
+    public void updateByPrimaryKey(SysTaskLog bean) {
+        sysTaskLogMapper.updateByPrimaryKey(bean);
+    }
 }

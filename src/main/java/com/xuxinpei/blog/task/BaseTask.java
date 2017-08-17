@@ -22,11 +22,11 @@ public abstract class BaseTask {
     private ISysTaskLog sysTaskLog;
 
     public void run() {
-        Map map = new HashMap();
-        map.put("moduleName", getModule());
-        map.put("hostname", getLocalHostName());
-        map.put("isEnabled", Boolean.valueOf(true));
-        List list = this.sysTaskHandel.getList(new SysTaskHandel(), map);
+        SysTaskHandel sth = new SysTaskHandel();
+        sth.setModuleName(getModule());
+        sth.setHostname(getLocalHostName());
+        sth.setIsEnabled(true);
+        List<SysTaskHandel> list = sysTaskHandel.getList(sth);
         if ((list == null) || (list.size() < 1)) {
             return;
         }
@@ -35,33 +35,33 @@ public abstract class BaseTask {
         bean.setHostname(getLocalHostName());
         bean.setIssuccess(Boolean.valueOf(false));
         bean.setIpAddress(getLocalHostIps());
-        this.sysTaskLog.insert(bean);
-        bean = (SysTaskLog) this.sysTaskLog.selectByPrimaryKey(bean.getId());
+        sysTaskLog.insert(bean);
+        bean = sysTaskLog.selectByPrimaryKey(bean.getId());
         try {
             doTask();
         } catch (Exception e) {
             log.error("自动任务执行出错：", e);
-            this.sysTaskLog.updateByPrimaryKey(bean);
+            sysTaskLog.updateByPrimaryKey(bean);
         }
         bean.setIssuccess(Boolean.valueOf(true));
-        this.sysTaskLog.updateByPrimaryKey(bean);
+        sysTaskLog.updateByPrimaryKey(bean);
     }
 
     @PostConstruct
     public void rsgisterTask()
             throws Exception {
-        Map map = new HashMap();
-        map.put("moduleName", getModule());
-        map.put("hostname", getLocalHostName());
-        List list = this.sysTaskHandel.getList(new SysTaskHandel(), map);
-        if ((list == null) || (list.size() < 1)) {
+        SysTaskHandel sth = new SysTaskHandel();
+        sth.setModuleName(getModule());
+        sth.setHostname(getLocalHostName());
+        List<SysTaskHandel> list = sysTaskHandel.getList(sth);
+        if (list.size() < 1) {
             SysTaskHandel bean = new SysTaskHandel();
             bean.setHostname(getLocalHostName());
             bean.setModuleName(getModule());
             bean.setIpAddress(getLocalHostIps());
             bean.setIsEnabled(Boolean.valueOf(false));
 
-            this.sysTaskHandel.insert(bean);
+            sysTaskHandel.insert(bean);
         }
     }
 

@@ -1,8 +1,8 @@
 package com.xuxinpei.blog.controller.admin;
 
 import com.google.common.base.Strings;
-import com.xuxinpei.blog.pojo.Articles;
 import com.xuxinpei.blog.controller.base.BaseController;
+import com.xuxinpei.blog.pojo.Articles;
 import com.xuxinpei.blog.pojo.ArticlesContent;
 import com.xuxinpei.blog.pojo.ArticlesTags;
 import com.xuxinpei.blog.pojo.Tags;
@@ -10,7 +10,6 @@ import com.xuxinpei.blog.service.IArticles;
 import com.xuxinpei.blog.service.IArticlesContent;
 import com.xuxinpei.blog.service.IArticlesTags;
 import com.xuxinpei.blog.service.ITags;
-import com.xuxinpei.blog.util.BeanConverter;
 import com.xuxinpei.blog.util.Page;
 import com.xuxinpei.blog.vo.Expressions;
 import com.xuxinpei.blog.vo.VO;
@@ -20,9 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller("admin_ArticlesController")
 @RequestMapping({"/admin/articles"})
@@ -59,7 +56,7 @@ public class ArticlesController extends BaseController {
             model.addAttribute("bean", bean);
             ArticlesTags condition = new ArticlesTags();
             condition.setAid(id);
-            List tagsSel = articlesTagsService.getList(condition);
+            List<ArticlesTags> tagsSel = articlesTagsService.getList(condition, null);
             model.addAttribute("tagsSel", tagsSel);
             ArticlesContent content = articlesContentService.selectByPrimaryKey(id);
             model.addAttribute("content", content);
@@ -112,7 +109,7 @@ public class ArticlesController extends BaseController {
 
             ArticlesTags condition = new ArticlesTags();
             condition.setAid(bean.getId());
-            List<ArticlesTags> list = articlesTagsService.getList(condition);
+            List<ArticlesTags> list = articlesTagsService.getList(condition, null);
             for (ArticlesTags atag : list) {
                 articlesTagsService.deleteByPrimaryKey(atag.getId());
                 Tags tag = tagsService.selectByPrimaryKey(atag.getTid());
@@ -155,7 +152,7 @@ public class ArticlesController extends BaseController {
         }
         ArticlesTags condition = new ArticlesTags();
         condition.setAid(id);
-        List<ArticlesTags> list = articlesTagsService.getList(condition);
+        List<ArticlesTags> list = articlesTagsService.getList(condition, null);
         for (ArticlesTags atag : list) {
             articlesTagsService.deleteByPrimaryKey(atag.getId());
             Tags tag = tagsService.selectByPrimaryKey(atag.getTid());

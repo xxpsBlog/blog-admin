@@ -17,7 +17,7 @@ public class ArticlesImpl implements IArticles {
     private ArticlesMapper articlesMapper;
 
     public Page<Articles> getPageBean(Integer page, Articles bean) {
-        int totalRow = articlesMapper.getCount(bean);
+        int totalRow = articlesMapper.getCount(bean, null);
         Page<Articles> pageBean = Page.createPage(page, totalRow);
         bean.setPageBeginIndex(Integer.valueOf(pageBean.getBeginIndex()));
         bean.setPageSize(Integer.valueOf(pageBean.getPageSize()));
@@ -63,5 +63,14 @@ public class ArticlesImpl implements IArticles {
 
     public void deleteByPrimaryKey(Integer id) {
         articlesMapper.deleteByPrimaryKey(id);
+    }
+
+    public Page<Articles> getPageBean(Integer page, int pageSize, String url, Articles bean, VO vo) {
+        int totalRow = articlesMapper.getCount(bean, vo);
+        Page<Articles> pageBean = Page.createPage(page, pageSize, totalRow, url);
+        bean.setPageBeginIndex(Integer.valueOf(pageBean.getBeginIndex()));
+        bean.setPageSize(Integer.valueOf(pageBean.getPageSize()));
+        pageBean.setResult(articlesMapper.getList(bean, vo));
+        return pageBean;
     }
 }

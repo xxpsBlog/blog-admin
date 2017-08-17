@@ -44,4 +44,8 @@ public class AdminActionsImpl implements IAdminActions {
     public List<AdminActions> getList(AdminActions bean) {
         return adminActionsMapper.getList(bean);
     }
+
+    public AdminActions getByCondition(AdminActions bean) {
+        return adminActionsMapper.getByCondition(bean);
+    }
 }

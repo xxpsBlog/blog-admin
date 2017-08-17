@@ -29,4 +29,6 @@ public interface IArticles {
     void updateByPrimaryKeySelective(Articles bean);
 
     void deleteByPrimaryKey(Integer id);
+
+    Page<Articles> getPageBean(Integer page, int pageSize, String url, Articles bean, VO vo);
 }

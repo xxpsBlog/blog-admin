@@ -18,4 +18,6 @@ public interface IAdminActions {
     void deleteByPrimaryKey(Integer id);
 
     List<AdminActions> getList(AdminActions bean);
+
+    AdminActions getByCondition(AdminActions bean);
 }

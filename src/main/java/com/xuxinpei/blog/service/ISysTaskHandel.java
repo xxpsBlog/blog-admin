@@ -13,4 +13,7 @@ public interface ISysTaskHandel {
     void deleteByPrimaryKey(Integer id);
 
     void updateByPrimaryKey(SysTaskHandel bean);
+
+    void insert(SysTaskHandel bean);
+
 }

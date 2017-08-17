@@ -23,9 +23,9 @@ public class ClearAdminActionsTask extends BaseTask {
     }
 
     public void doTask() {
-        List<AdminActions> list = this.adminActionsService.getList(new AdminActions(), null);
+        List<AdminActions> list = this.adminActionsService.getList(new AdminActions());
         for (AdminActions action : list) {
-            AdminActions parent = (AdminActions) this.adminActionsService.selectByPrimaryKey(action.getPid());
+            AdminActions parent = adminActionsService.selectByPrimaryKey(action.getPid());
             if ((parent == null) && (action.getPid().intValue() != 0)) {
                 this.adminActionsService.deleteByPrimaryKey(action.getId());
                 StaticProp.SYSTEM.info("回收无效权限{},{}", new Object[]{action.getName(), action.getUrl()});

@@ -104,7 +104,7 @@ public class TagsController extends BaseController {
         }
         ArticlesTags condition = new ArticlesTags();
         condition.setTid(id);
-        List<ArticlesTags> list = articlesTagsService.getList(condition);
+        List<ArticlesTags> list = articlesTagsService.getList(condition, null);
         for (ArticlesTags atag : list) {
             articlesTagsService.deleteByPrimaryKey(atag.getId());
         }

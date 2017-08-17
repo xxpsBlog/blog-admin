@@ -6,9 +6,7 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Tags implements TemplateMethodModelEx {
 
@@ -21,12 +19,11 @@ public class Tags implements TemplateMethodModelEx {
             return "";
         }
         SimpleNumber number = (SimpleNumber) arguments.get(0);
-        Map map = new HashMap();
-        map.put("orderBy", "number DESC");
-        if (number != null) {
-            map.put("pageSize", Integer.valueOf(number.getAsNumber().intValue()));
-        }
-        List list = this.tagsService.getList(null, map);
+        com.xuxinpei.blog.pojo.Tags bean = new com.xuxinpei.blog.pojo.Tags();
+        bean.setOrderBy("number DESC");
+        bean.setPageBeginIndex(0);
+        bean.setPageSize(Integer.valueOf(number.getAsNumber().intValue()));
+        List<com.xuxinpei.blog.pojo.Tags> list = tagsService.getList(bean);
         return list;
     }
 }

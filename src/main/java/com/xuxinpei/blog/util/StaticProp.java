@@ -20,7 +20,6 @@ public class StaticProp {
     public static ServletContext SERVLET_CONTEXT;
     public static ExecutorService execute = Executors.newFixedThreadPool(20);
     public static String[] allowFiles = {".rar", ".doc", ".docx", ".zip", ".pdf", ".txt", ".swf", ".wmv", ".gif", ".png", ".jpg", ".jpeg", ".bmp"};
-    public static String upYunPath;
     public static String cookieID;
     public static String WX_TOKEN = "";
     private static DataSource dataSource;
@@ -29,9 +28,9 @@ public class StaticProp {
         if (dataSource == null) {
             DriverManagerDataSource ds = new DriverManagerDataSource();
             ds.setDriverClassName("com.mysql.jdbc.Driver");
-            ds.setUrl((String) sysConfig.get("jdbc.url"));
-            ds.setUsername((String) sysConfig.get("jdbc.username"));
-            ds.setPassword((String) sysConfig.get("jdbc.password"));
+            ds.setUrl(sysConfig.get("jdbc.url"));
+            ds.setUsername(sysConfig.get("jdbc.username"));
+            ds.setPassword(sysConfig.get("jdbc.password"));
             dataSource = ds;
         }
         return dataSource.getConnection();

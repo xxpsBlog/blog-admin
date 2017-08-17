@@ -8,6 +8,8 @@ import com.xuxinpei.blog.vo.VO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentImpl implements IComment {
 
@@ -41,5 +43,11 @@ public class CommentImpl implements IComment {
 
     public Comment getByCondition(Comment bean) {
         return commentMapper.getByCondition(bean);
+    }
+
+    public List<Comment> getList(int pageSize, Comment bean) {
+        bean.setPageBeginIndex(0);
+        bean.setPageSize(Integer.valueOf(pageSize));
+        return commentMapper.getList(bean, null);
     }
 }

@@ -10,9 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Controller
 public class Index extends BaseController {
     public static int PAGE_NUMBER = 10;
@@ -22,17 +19,18 @@ public class Index extends BaseController {
 
     @RequestMapping(value = {"/"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String index(Model model) {
-        Map map = new HashMap();
-        Page pageBean = articlesService.getPage(1, PAGE_NUMBER, "/", map);
+        Integer page = 1;
+        Page pageBean = articlesService.getPageBean(page, PAGE_NUMBER, "/", null, null);
         model.addAttribute("pageBean", pageBean);
         return "index";
     }
 
     @RequestMapping(value = {"/page/{page}"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     public String page(Model model, @PathVariable Integer page) {
-        if (page == null) page = Integer.valueOf(1);
-        Map map = new HashMap();
-        Page pageBean = articlesService.getPage(page.intValue(), PAGE_NUMBER, "/", map);
+        if (page == null) {
+            page = Integer.valueOf(1);
+        }
+        Page pageBean = articlesService.getPageBean(page, PAGE_NUMBER, "/", null, null);
         model.addAttribute("pageBean", pageBean);
         return "index";
     }

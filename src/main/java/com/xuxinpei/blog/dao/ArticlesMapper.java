@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ArticlesMapper {
 
-    int getCount(Articles bean);
+    int getCount(@Param("condition") Articles bean, @Param("vo") VO vo);
 
     List<Articles> getList(@Param("condition") Articles bean, @Param("vo") VO vo);
 

@@ -19,7 +19,7 @@ public enum MemcacheKeys {
     }
 
     public String getKey() {
-        return com.xxp.blog.util.StaticProp.cookieID + "_" + this.key;
+        return StaticProp.cookieID + "_" + this.key;
     }
 
     public String getProfile() {

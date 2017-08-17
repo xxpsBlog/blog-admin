@@ -2,6 +2,7 @@ package com.xuxinpei.blog.controller;
 
 import com.google.common.collect.Lists;
 import com.xuxinpei.blog.controller.base.BaseController;
+import com.xuxinpei.blog.pojo.Articles;
 import com.xuxinpei.blog.pojo.ArticlesTags;
 import com.xuxinpei.blog.pojo.Tags;
 import com.xuxinpei.blog.service.IArticles;
@@ -15,13 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller("TagsController")
 public class TagsController extends BaseController {
+
     public static int PAGE_NUMBER = 10;
 
     @Autowired
@@ -44,7 +45,6 @@ public class TagsController extends BaseController {
 
     @RequestMapping({"/tags/{tag}"})
     public String tag(Model model, @PathVariable String tag) {
-        Map map = new HashMap();
         Tags tagsVo = new Tags();
         tagsVo.setUrl(tag);
         Tags tags = tagsService.getByCondition(tagsVo, null);
@@ -54,23 +54,21 @@ public class TagsController extends BaseController {
         model.addAttribute("tagBean", tags);
         ArticlesTags atagVO = new ArticlesTags();
         atagVO.setTid(tags.getId());
-        List<ArticlesTags> atags = articlesTagsService.getList(atagVO);
+        List<ArticlesTags> atags = articlesTagsService.getList(atagVO, null);
         List sids = Lists.newArrayList(new Integer[]{Integer.valueOf(0)});
         for (ArticlesTags atag : atags) {
             sids.add(atag.getAid());
         }
         VO vo = new VO();
         vo.and(Expressions.in("id", sids));
-        map.put("vo", vo);
-
-        Page pageBean = articlesService.getPage(1, PAGE_NUMBER, "/tags/" + tag + "/", map);
+        Integer page = 1;
+        Page<Articles> pageBean = articlesService.getPageBean(page, PAGE_NUMBER, "/tags/" + tag + "/",null, vo);
         model.addAttribute("pageBean", pageBean);
         return "index";
     }
 
-    @RequestMapping(value = {"/tags/{tag}/page/{page}"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @RequestMapping(value = {"/tags/{tag}/page/{page}"}, method = {RequestMethod.GET})
     public String page(Model model, @PathVariable String tag, @PathVariable Integer page) {
-        Map map = new HashMap();
         Tags tagsVo = new Tags();
         tagsVo.setUrl(tag);
         Tags tags = tagsService.getByCondition(tagsVo, null);
@@ -80,16 +78,15 @@ public class TagsController extends BaseController {
         model.addAttribute("tagBean", tags);
         ArticlesTags atagVO = new ArticlesTags();
         atagVO.setTid(tags.getId());
-        List<ArticlesTags> atags = articlesTagsService.getList(atagVO);
+        List<ArticlesTags> atags = articlesTagsService.getList(atagVO, null);
         List sids = Lists.newArrayList();
         for (ArticlesTags atag : atags) {
             sids.add(atag.getAid());
         }
         VO vo = new VO();
         vo.and(Expressions.in("id", sids));
-        map.put("vo", vo);
 
-        Page pageBean = articlesService.getPage(page.intValue(), PAGE_NUMBER, "/tags/" + tag + "/", map);
+        Page<Articles> pageBean = articlesService.getPageBean(page, PAGE_NUMBER, "/tags/" + tag + "/",null, vo);
         model.addAttribute("pageBean", pageBean);
         return "index";
     }

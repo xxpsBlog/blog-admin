@@ -22,6 +22,8 @@ public class Page<T> implements Serializable {
 
     private String pageSize;
 
+    private String url;
+
     // 返回的结果.
     private List<T> result = Collections.emptyList();
 
@@ -65,16 +67,39 @@ public class Page<T> implements Serializable {
         this.result = result;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public static Page createPage(Integer page, int totalRow) {
         // 默认一页展示50条数据
         int pageSize = 50;
         int beginIndex = pageSize * (page.intValue() - 1);
-        return new Page(page, totalRow, String.valueOf(beginIndex));
+        return new Page(page, totalRow, String.valueOf(beginIndex), String.valueOf(pageSize));
     }
 
-    public Page(int curPage, int totalRow, String beginIndex) {
+    public Page(int curPage, int totalRow, String beginIndex, String pageSize) {
         this.curPage = curPage;
         this.totalRow = totalRow;
         this.beginIndex = beginIndex;
+        this.pageSize = pageSize;
+    }
+
+    public Page(int curPage, int totalRow, String beginIndex, String pageSize, String url) {
+        this.curPage = curPage;
+        this.totalRow = totalRow;
+        this.beginIndex = beginIndex;
+        this.pageSize = pageSize;
+        this.url = url;
+    }
+
+    public static Page createPage(Integer page, int pageSize, int totalRow, String url) {
+        int beginIndex = pageSize * (page.intValue() - 1);
+        return new Page(page, totalRow, String.valueOf(beginIndex), String.valueOf(pageSize), url);
+
     }
 }

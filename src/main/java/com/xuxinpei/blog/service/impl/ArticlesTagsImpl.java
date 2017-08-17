@@ -4,6 +4,7 @@ import com.xuxinpei.blog.dao.ArticlesTagsMapper;
 import com.xuxinpei.blog.pojo.ArticlesTags;
 import com.xuxinpei.blog.service.IArticlesTags;
 import com.xuxinpei.blog.util.Page;
+import com.xuxinpei.blog.vo.VO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +21,12 @@ public class ArticlesTagsImpl implements IArticlesTags {
         Page<ArticlesTags> pageBean = Page.createPage(page, totalRow);
         bean.setPageBeginIndex(Integer.valueOf(pageBean.getBeginIndex()));
         bean.setPageSize(Integer.valueOf(pageBean.getPageSize()));
-        pageBean.setResult(articlesTagsMapper.getList(bean));
+        pageBean.setResult(articlesTagsMapper.getList(bean, null));
         return pageBean;
     }
 
-    public List<ArticlesTags> getList(ArticlesTags bean) {
-        return articlesTagsMapper.getList(bean);
+    public List<ArticlesTags> getList(ArticlesTags bean, VO vo) {
+        return articlesTagsMapper.getList(bean, vo);
     }
 
     public ArticlesTags selectByPrimaryKey(Integer id) {
